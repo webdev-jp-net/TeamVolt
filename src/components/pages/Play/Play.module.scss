@@ -1,0 +1,158 @@
+@use 'style/_variable' as *;
+
+.play {
+  display: flex;
+  flex-direction: column;
+
+  * {
+    user-select: none;
+  }
+}
+
+.container {
+  padding: rem(24);
+}
+
+.memberList {
+  display: flex;
+  gap: rem(24);
+  justify-content: center;
+  margin: rem(48) 0;
+}
+
+.member {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.memberIcon {
+  @include rect(rem(36));
+
+  display: block;
+  background-color: currentColor;
+  border-radius: 50%;
+}
+
+.current {
+  position: absolute;
+  top: 100%;
+  margin: rem(6) 0;
+  font-size: rem(12);
+}
+
+.winner {
+  position: absolute;
+  bottom: 100%;
+  margin: rem(6) 0;
+  font-size: rem(12);
+}
+
+.visualizer {
+  position: absolute;
+  top: rem(120);
+  right: rem(24);
+  left: rem(24);
+  display: grid;
+  align-items: end;
+}
+
+.stock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(24) 0;
+  align-items: end;
+  height: 1;
+  margin: rem(12) 0;
+  font-size: rem(72);
+}
+
+.stockItem {
+  width: rem(72);
+  line-height: 1;
+}
+
+.gauge {
+  width: rem(36);
+  height: rem(60);
+  margin: 0 rem(12);
+
+  &.--invisible {
+    opacity: 0;
+  }
+}
+
+.header {
+  display: flex;
+  gap: rem(18) rem(12);
+  padding: rem(24);
+}
+
+.time {
+  width: 4em;
+}
+
+// tapエフェクト
+// 円が広がりながらフェードアウトするキーフレームアニメーション
+@keyframes tap {
+  0% {
+    opacity: 1;
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+.tap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: $c_dark;
+  background: transparent;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.effect {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  display: block;
+  width: rem(36);
+  height: rem(36);
+  margin: auto;
+  pointer-events: none;
+  content: '';
+  user-select: none;
+  background-color: #f4981f80;
+  border-radius: 50%;
+  opacity: 0;
+
+  .--tap & {
+    animation: tap 0.3s ease-out;
+  }
+}
+
+.result {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: rem(60);
+}
+
+.menu {
+  display: grid;
+  gap: rem(18) rem(12);
+  padding: rem(24);
+  margin: auto 0 0;
+}
