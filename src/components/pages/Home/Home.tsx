@@ -2,9 +2,10 @@ import { useDispatch } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
 
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useCallback } from 'react';
 
 import { Button } from 'components/parts/Button';
+import { useGetTeamQuery, useAddTeamMutation } from 'store/team';
 import { updateUserId } from 'store/user';
 
 import { useGenerateAndStoreSessionId } from 'hooks/useGenerateAndStoreSessionId';
@@ -17,6 +18,19 @@ export const Home: FC = () => {
 
   const generateId = useGenerateAndStoreSessionId;
 
+  // チーム情報取得
+  const {
+    isSuccess: getTeamSuccess,
+    isError: getTeamError,
+    refetch: getTeamRefetch,
+  } = useGetTeamQuery();
+
+  // チームを追加する
+  const [
+    sendAddTeam, // mutation trigger
+    { isLoading: teamAddLoading }, // mutation state
+  ] = useAddTeamMutation();
+
   // ページを表示したとき
   useEffect(() => {
     const myId = generateId();
@@ -24,6 +38,10 @@ export const Home: FC = () => {
     dispatch(updateUserId(myId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const testAddTeam = useCallback(() => {
+    sendAddTeam('TEAM-B');
+  }, [sendAddTeam]);
 
   return (
     <div className={`l-page ${styles.home}`}>
@@ -36,6 +54,7 @@ export const Home: FC = () => {
         >
           start
         </Button>
+        <Button handleClick={testAddTeam}>add TEAM-B</Button>
         <div className={styles.icon}>⚡️</div>
       </div>
     </div>
