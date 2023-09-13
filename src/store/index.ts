@@ -1,9 +1,13 @@
 import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
+import player, { playerGetApi, playerAddApi } from './player';
 import team, { teamGetApi, teamAddApi } from './team';
 import user, { statusGetApi, statusUpdateApi } from './user';
 
 const reducer = combineReducers({
+  player,
+  [playerGetApi.reducerPath]: playerGetApi.reducer,
+  [playerAddApi.reducerPath]: playerAddApi.reducer,
   team,
   [teamGetApi.reducerPath]: teamGetApi.reducer,
   [teamAddApi.reducerPath]: teamAddApi.reducer,
@@ -13,6 +17,8 @@ const reducer = combineReducers({
 });
 
 const middleware = getDefaultMiddleware({ serializableCheck: false }).concat(
+  playerGetApi.middleware,
+  playerAddApi.middleware,
   teamGetApi.middleware,
   teamAddApi.middleware,
   statusGetApi.middleware,

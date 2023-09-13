@@ -14,6 +14,7 @@ const initialState: State = {
 
 // RTK Queryの設定
 // https://redux-toolkit.js.org/rtk-query/overview
+// read
 export const teamGetApi = createApi({
   reducerPath: 'teamGetApi',
   baseQuery: async ({ path }) => {
@@ -33,6 +34,7 @@ export const teamGetApi = createApi({
 });
 export const { useGetTeamQuery } = teamGetApi;
 
+// write
 export const teamAddApi = createApi({
   reducerPath: 'teamAddApi',
   baseQuery: async ({ value }) => {

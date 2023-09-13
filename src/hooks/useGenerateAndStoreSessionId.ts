@@ -1,7 +1,7 @@
 /**
- * 端末にユニークなセッションIDを生成・保存する例
- * @return {string} 生成されたセッションID
- * @example const sessionID = generateAndStoreSessionID();
+ * 6桁の16進数を生成する
+ * @return {string} 生成されたID
+ * @example const localId = generateAndStoreSessionID();
  */
 
 export const useGenerateAndStoreSessionId = () => {
@@ -19,11 +19,5 @@ export const useGenerateAndStoreSessionId = () => {
 
     return hexId;
   }
-
-  // localStorageにuserIdが存在しているか確認
-  const watchId = localStorage.getItem('userId');
-  // 存在しない場合は生成する
-  const myId = watchId || generateHexId();
-  localStorage.setItem('userId', myId);
-  return myId;
+  return generateHexId();
 };
