@@ -1,0 +1,10 @@
+@use "style/_variable" as *;
+
+.itemButton {
+  position: relative;
+  display: grid;
+  width: 100%;
+  background-color: transparent;
+  border: 0 none;
+  appearance: none;
+}

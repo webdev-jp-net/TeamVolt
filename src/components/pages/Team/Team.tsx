@@ -10,6 +10,8 @@ import { useGetTeamQuery, useAddTeamMutation } from 'store/team';
 
 import styles from './Team.module.scss';
 
+import { ListItem } from './components/ListItem';
+
 export const Team: FC = () => {
   const navigate = useNavigate();
   const { teamList } = useSelector((state: RootState) => state.team);
@@ -44,9 +46,17 @@ export const Team: FC = () => {
         <header className={styles.header}>
           <h1>Pick Your Team</h1>
         </header>
-        <ul>
+        <ul className={styles.list}>
           {teamList.map(team => (
-            <li key={team.id}>{team.name}</li>
+            <li key={team.id} className={styles.item}>
+              <ListItem
+                name={team.name}
+                disabled={getTeamError || teamAddLoading}
+                handleClick={() => {
+                  alert(team.name);
+                }}
+              />
+            </li>
           ))}
         </ul>
         <div className={styles.addForm}>
