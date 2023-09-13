@@ -5,6 +5,11 @@ exports[`Home Homeのスナップショット 1`] = `
   <div
     class="l-page home"
   >
+    <div
+      class="icon"
+    >
+      ⚡️
+    </div>
     <h1
       class="title"
     >
@@ -17,13 +22,8 @@ exports[`Home Homeのスナップショット 1`] = `
         class="button --basic"
         type="button"
       >
-        start
+        Team Up!
       </button>
-      <div
-        class="icon"
-      >
-        ⚡️
-      </div>
     </div>
   </div>
 </DocumentFragment>

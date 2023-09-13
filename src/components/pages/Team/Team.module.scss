@@ -1,0 +1,32 @@
+@use "style/_variable" as *;
+
+.team {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  margin: rem(24) rem(24) auto;
+}
+
+.addForm {
+  display: flex;
+  gap: rem(12);
+  margin: rem(24);
+}
+
+.input {
+  width: 100%;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  margin: auto rem(24) rem(24);
+}
+
