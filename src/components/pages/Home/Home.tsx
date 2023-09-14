@@ -44,7 +44,7 @@ export const Home: FC = () => {
       <div className={styles.menu}>
         <Button
           handleClick={() => {
-            navigate('/team');
+            navigate('/team-up');
           }}
         >
           Team Up!

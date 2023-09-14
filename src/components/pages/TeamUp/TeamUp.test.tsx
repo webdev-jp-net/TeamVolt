@@ -1,12 +1,12 @@
-import { Router } from 'react-router-dom';
-
 import { Provider } from 'react-redux';
+
+import { Router } from 'react-router-dom';
 
 import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { store } from 'store';
 
-import { Team } from './Team';
+import { TeamUp } from './TeamUp';
 const history = createMemoryHistory();
 
 describe('Team', () => {
@@ -18,7 +18,7 @@ describe('Team', () => {
     const { asFragment } = render(
       <Provider store={store}>
         <Router location={history.location} navigator={history}>
-          <Team />
+          <TeamUp />
         </Router>
       </Provider>
     );
