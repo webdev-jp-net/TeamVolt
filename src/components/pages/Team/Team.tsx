@@ -1,11 +1,12 @@
 import { FC, useState, useCallback, ChangeEvent } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
+import { updateTeam } from 'store/player';
 import { useGetTeamQuery, useAddTeamMutation } from 'store/team';
 
 import styles from './Team.module.scss';
@@ -13,6 +14,7 @@ import styles from './Team.module.scss';
 import { ListItem } from './components/ListItem';
 
 export const Team: FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { teamList } = useSelector((state: RootState) => state.team);
 
@@ -40,6 +42,12 @@ export const Team: FC = () => {
     getTeamRefetch();
   }, [sendAddTeam, getTeamRefetch, newTeamName]);
 
+  // チーム選択
+  const handleSelectTeam = useCallback((myTeamId: string) => {
+    dispatch(updateTeam(myTeamId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <article className={styles.team}>
@@ -50,10 +58,11 @@ export const Team: FC = () => {
           {teamList.map(team => (
             <li key={team.id} className={styles.item}>
               <ListItem
+                id={team.id}
                 name={team.name}
                 disabled={getTeamError || teamAddLoading}
                 handleClick={() => {
-                  alert(team.name);
+                  handleSelectTeam(team.id);
                 }}
               />
             </li>

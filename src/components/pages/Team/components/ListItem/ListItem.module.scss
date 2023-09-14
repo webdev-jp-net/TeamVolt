@@ -4,7 +4,13 @@
   position: relative;
   display: grid;
   width: 100%;
+  padding: rem(6);
   background-color: transparent;
   border: 0 none;
   appearance: none;
+
+  &.current {
+    color: white;
+    background: tomato;
+  }
 }

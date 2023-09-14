@@ -8,6 +8,7 @@ type State = {
   localId: string;
   player?: string;
   playerList: PlayerArticleData[];
+  team?: string;
 };
 
 const initialState: State = {
@@ -69,6 +70,13 @@ const player = createSlice({
         localId: action.payload,
       };
     },
+    // 所属チーム更新
+    updateTeam: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        team: action.payload,
+      };
+    },
   },
   extraReducers: builder => {
     // 成功: プレイヤー情報取得
@@ -93,7 +101,7 @@ const player = createSlice({
 });
 
 // Action Creator
-export const { updateLocalId } = player.actions;
+export const { updateLocalId, updateTeam } = player.actions;
 
 // Reducer
 export default player.reducer;

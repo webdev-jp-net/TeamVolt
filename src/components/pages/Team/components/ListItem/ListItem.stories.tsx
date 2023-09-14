@@ -7,6 +7,7 @@ export default {
   title: 'ListItem',
   component: ListItem,
   args: {
+    id: '0123456789',
     name: 'SAMPLE TEAM',
     handleClick: action(''),
   },
