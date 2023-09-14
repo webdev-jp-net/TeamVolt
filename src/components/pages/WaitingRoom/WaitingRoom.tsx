@@ -1,4 +1,4 @@
-import { FC, useEffect, useCallback, useMemo } from 'react';
+import { FC, useEffect, useState, useCallback, useMemo } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -24,10 +24,47 @@ export const WaitingRoom: FC = () => {
 
   // チーム情報の取得
   const {
+    isLoading: getDrawResultLoading,
     isSuccess: getDrawResultSuccess,
     isError: getDrawResultError,
     refetch: getDrawResultRefetch,
+    isFetching: getDrawResultFetching,
   } = useGetTeamArticleQuery(selectedTeam || '', { skip: !selectedTeam });
+
+  // 配列の要素からランダムに一つ引き当てる
+  const getRandomElement = (list: string[]) => {
+    const index = Math.floor(Math.random() * list.length);
+    return list[index];
+  };
+
+  // 抽選
+  const [isDrawConfirm, setIsDrawConfirm] = useState(false);
+  useEffect(() => {
+    if (isDrawConfirm && !getDrawResultFetching && myTeam) {
+      if (myTeam.member.length > 1) {
+        if (
+          window.confirm(
+            myTeam.member.length +
+              ' people are currently entering. Do you want to raffle with these members?'
+          )
+        ) {
+          // 抽選
+          const result = getRandomElement(myTeam.member);
+          // 書き込み
+          // sendDrawResult(result);
+          console.log({ result });
+        }
+      } else {
+        alert('There are not enough members to draw.');
+      }
+
+      setIsDrawConfirm(false);
+    }
+  }, [isDrawConfirm, getDrawResultFetching, myTeam]);
+  const handleDraw = () => {
+    getDrawResultRefetch();
+    setIsDrawConfirm(true);
+  };
 
   // チームメンバーを削除する
   const [sendRemoveMember] = useRemoveMemberMutation();
@@ -52,14 +89,15 @@ export const WaitingRoom: FC = () => {
           <CurrentMembers memberList={myTeam.member} myself={localId} />
         </div>
         <footer className={styles.footer}>
-          <Button
-            handleClick={() => {
-              navigate('/');
-            }}
-          >
+          <Button handleClick={handleDraw} disabled={getDrawResultLoading || getDrawResultFetching}>
             Ready to go!
           </Button>
-          <Button handleClick={getDrawResultRefetch}>reload</Button>
+          <Button
+            handleClick={getDrawResultRefetch}
+            disabled={getDrawResultLoading || getDrawResultFetching}
+          >
+            reload
+          </Button>
           <Button handleClick={handleCancel}>cancel</Button>
         </footer>
       </article>
