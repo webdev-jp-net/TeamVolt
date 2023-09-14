@@ -1,0 +1,14 @@
+@use "style/_variable" as *;
+
+.gaugeUi {
+  position: relative;
+  display: grid;
+  align-items: end;
+  padding: rem(2);
+  border: 1px solid #999;
+}
+
+.currentValue {
+  width: 100%;
+  background-color: #f5991e;
+}
