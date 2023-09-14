@@ -3,13 +3,11 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { getDocs, addDoc, collection } from 'firebase/firestore';
 import { db } from 'firebaseDB';
 import { PlayerArticleData } from 'types/player';
-import { TeamArticleData } from 'types/team';
 
 type State = {
   localId: string;
   player?: string;
   playerList: PlayerArticleData[];
-  team?: TeamArticleData;
 };
 
 const initialState: State = {
@@ -19,7 +17,7 @@ const initialState: State = {
 
 // RTK Queryの設定
 // https://redux-toolkit.js.org/rtk-query/overview
-// read
+// 読込用
 export const playerGetApi = createApi({
   reducerPath: 'playerGetApi',
   baseQuery: async ({ path }) => {
@@ -39,7 +37,7 @@ export const playerGetApi = createApi({
 });
 export const { useGetPlayerQuery } = playerGetApi;
 
-// write
+// 書込用
 export const playerAddApi = createApi({
   reducerPath: 'playerAddApi',
   baseQuery: async ({ value }) => {
@@ -71,20 +69,6 @@ const player = createSlice({
         localId: action.payload,
       };
     },
-    // 所属チーム更新
-    updateTeam: (state, action: PayloadAction<TeamArticleData>) => {
-      return {
-        ...state,
-        team: action.payload,
-      };
-    },
-    // 所属チーム脱退
-    escapeTeam: state => {
-      return {
-        ...state,
-        team: undefined,
-      };
-    },
   },
   extraReducers: builder => {
     // 成功: プレイヤー情報取得
@@ -109,7 +93,7 @@ const player = createSlice({
 });
 
 // Action Creator
-export const { updateLocalId, updateTeam, escapeTeam } = player.actions;
+export const { updateLocalId } = player.actions;
 
 // Reducer
 export default player.reducer;

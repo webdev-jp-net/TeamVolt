@@ -6,9 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { updateTeam, escapeTeam } from 'store/player';
-import { useGetTeamQuery } from 'store/team';
-import { useAddEntriesMutation } from 'store/team';
+import { useGetTeamListQuery } from 'store/team';
+import { useAddEntriesMutation, updateTeam, escapeTeam } from 'store/team';
 
 import styles from './Team.module.scss';
 
@@ -19,21 +18,20 @@ export const Team: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { localId, team } = useSelector((state: RootState) => state.player);
-  const { teamList } = useSelector((state: RootState) => state.team);
+  const { localId } = useSelector((state: RootState) => state.player);
+  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
 
   // 既存のチーム情報取得
   const {
     isSuccess: getTeamSuccess,
     isError: getTeamError,
     refetch: getTeamRefetch,
-  } = useGetTeamQuery();
+  } = useGetTeamListQuery();
 
   // チーム選択
   const handleSelectTeam = useCallback(
     (myTeamId: string) => {
-      const currentTeam = teamList.find(teamItem => teamItem.id === myTeamId);
-      if (currentTeam) dispatch(updateTeam(currentTeam));
+      dispatch(updateTeam(myTeamId));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [teamList]
@@ -47,10 +45,10 @@ export const Team: FC = () => {
 
   // 参加ボタン押下
   const joinTeam = useCallback(() => {
-    if (team) {
-      sendAddEntries({ team: team.id, member: localId });
+    if (selectedTeam) {
+      sendAddEntries({ id: selectedTeam, value: localId });
     }
-  }, [localId, sendAddEntries, team]);
+  }, [localId, sendAddEntries, selectedTeam]);
 
   // 参加成功
   useEffect(() => {
@@ -78,7 +76,7 @@ export const Team: FC = () => {
             {teamList.map(item => (
               <li key={item.id} className={styles.item}>
                 <ListItem
-                  selected={item.id === team?.id}
+                  selected={item.id === selectedTeam}
                   name={item.name}
                   disabled={getTeamError}
                   handleClick={() => {
@@ -93,7 +91,7 @@ export const Team: FC = () => {
         <footer className={styles.footer}>
           <Button
             handleClick={joinTeam}
-            disabled={!getTeamSuccess || entriesAddLoading || !team || !localId}
+            disabled={!getTeamSuccess || entriesAddLoading || !selectedTeam || !localId}
           >
             join
           </Button>

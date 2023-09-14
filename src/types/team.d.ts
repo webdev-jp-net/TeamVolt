@@ -5,9 +5,3 @@ export type TeamArticleData = {
   member: string[];
   challenger?: string;
 };
-
-// メンバー追加
-export type TeamMemberEditData = {
-  team: string;
-  member: string;
-};

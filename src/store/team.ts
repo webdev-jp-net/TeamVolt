@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
 import {
   doc,
+  getDoc,
   getDocs,
   updateDoc,
   arrayRemove,
@@ -10,10 +11,11 @@ import {
   runTransaction,
 } from 'firebase/firestore';
 import { db } from 'firebaseDB';
-import { TeamArticleData, TeamMemberEditData } from 'types/team';
+import { TeamArticleData } from 'types/team';
 
 type State = {
   teamList: TeamArticleData[];
+  selectedTeam?: string;
 };
 
 const initialState: State = {
@@ -22,98 +24,113 @@ const initialState: State = {
 
 // RTK Queryの設定
 // https://redux-toolkit.js.org/rtk-query/overview
-// read
 export const teamGetApi = createApi({
   reducerPath: 'teamGetApi',
-  baseQuery: async ({ path }) => {
-    const teamRef = collection(db, path);
-    const teamSnapshot = await getDocs(teamRef);
-    const result = teamSnapshot.docs.map(doc => {
-      return { id: doc.id, ...doc.data() };
-    });
-    return { data: result };
+  baseQuery: async ({ id }: { id?: string }) => {
+    // 全データ
+    if (!id) {
+      const teamRef = collection(db, 'team');
+      const teamSnapshot = await getDocs(teamRef);
+      const result = teamSnapshot.docs.map(doc => {
+        return { id: doc.id, ...doc.data() };
+      });
+      return { data: result };
+    } else {
+      // 特定のデータ
+      const docRef = doc(db, 'status', id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { data: docSnap.data() };
+      } else {
+        return { error: 'No such document!' };
+      }
+    }
   },
   endpoints: builder => ({
     // チーム情報取得
-    getTeam: builder.query<TeamArticleData[], void>({
-      query: () => ({ path: 'team' }),
+    getTeamList: builder.query<TeamArticleData[], void>({
+      query: () => ({}),
+    }),
+    // チーム情報取得
+    getTeamArticle: builder.query<TeamArticleData, string>({
+      query: id => ({ id }),
     }),
   }),
 });
-export const { useGetTeamQuery } = teamGetApi;
-
-// write
-export const teamAddApi = createApi({
-  reducerPath: 'teamAddApi',
-  baseQuery: async ({ value }) => {
-    const teamRef = collection(db, 'team');
-    const docRef = await addDoc(teamRef, {
-      name: value,
-      member: [],
-    });
-    return { data: { id: docRef.id, name: value, member: [] } };
-  },
-  endpoints: builder => ({
-    // チーム情報追加
-    addTeam: builder.mutation<TeamArticleData, string>({
-      query: value => ({ value }),
-    }),
-  }),
-});
-export const { useAddTeamMutation } = teamAddApi;
+export const { useGetTeamListQuery, useGetTeamArticleQuery } = teamGetApi;
 
 // チームメンバー編集
-export const teamMemberApi = createApi({
-  reducerPath: 'teamMemberApi',
-  baseQuery: async ({ operationType, team, member }) => {
-    const documentRef = doc(db, 'team', team);
-
-    if (operationType === 'add') {
-      // 要素を追加
+type teamPostApiProps = {
+  operationType: string;
+  id?: string;
+  value?: string;
+};
+export const teamPostApi = createApi({
+  reducerPath: 'teamPostApi',
+  baseQuery: async ({ operationType, id, value }: teamPostApiProps) => {
+    if (operationType === 'add_team') {
+      // チームを追加
+      const teamRef = collection(db, 'team');
+      const docRef = await addDoc(teamRef, {
+        name: value,
+        member: [],
+      });
+      return { data: { id: docRef.id, name: value, member: [] } };
+    } else if (operationType === 'add_member' && id) {
+      // メンバーを追加
+      const docRef = doc(db, 'team', id);
       try {
         await runTransaction(db, async transaction => {
-          const sfDoc = await transaction.get(documentRef);
+          const sfDoc = await transaction.get(docRef);
           if (!sfDoc.exists()) {
             // eslint-disable-next-line no-throw-literal
             throw 'Document does not exist!';
           }
           const oldMemberList = sfDoc.data().memberList || [];
-          const newMemberList = [...oldMemberList, member];
+          const newMemberList = [...oldMemberList, value];
           const uniqueMemberList = Array.from(new Set(newMemberList));
-          transaction.update(documentRef, { member: uniqueMemberList });
+          transaction.update(docRef, { member: uniqueMemberList });
         });
         console.log('Transaction successfully committed!');
       } catch (e) {
         console.log('Transaction failed: ', e);
       }
-    } else if (operationType === 'remove') {
-      // 要素を削除
-      await updateDoc(documentRef, {
-        member: arrayRemove(member),
+    } else if (operationType === 'remove_member' && id) {
+      const docRef = doc(db, 'team', id);
+      // メンバーを削除
+      await updateDoc(docRef, {
+        member: arrayRemove(value),
       });
     }
     return { data: null };
   },
   endpoints: builder => ({
+    // チームを追加
+    addTeam: builder.mutation<TeamArticleData, string>({
+      query: value => ({
+        operationType: 'add_team',
+        value,
+      }),
+    }),
     // メンバー追加
-    addEntries: builder.mutation<void, TeamMemberEditData>({
-      query: ({ team, member }) => ({
-        operationType: 'add',
-        team,
-        member,
+    addEntries: builder.mutation<void, { id: string; value: string }>({
+      query: ({ id, value }) => ({
+        operationType: 'add_member',
+        id,
+        value,
       }),
     }),
     // メンバー削除
-    removeEntries: builder.mutation<void, TeamMemberEditData>({
-      query: ({ team, member }) => ({
-        operationType: 'remove',
-        team,
-        member,
+    removeEntries: builder.mutation<void, { id: string; value: string }>({
+      query: ({ id, value }) => ({
+        operationType: 'remove_member',
+        id,
+        value,
       }),
     }),
   }),
 });
-export const { useAddEntriesMutation, useRemoveEntriesMutation } = teamMemberApi;
+export const { useAddTeamMutation, useAddEntriesMutation, useRemoveEntriesMutation } = teamPostApi;
 
 const team = createSlice({
   name: 'team',
@@ -127,19 +144,41 @@ const team = createSlice({
         teamList: action.payload,
       };
     },
+    // 所属チーム更新
+    updateTeam: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        selectedTeam: action.payload,
+      };
+    },
+    // 所属チーム脱退
+    escapeTeam: state => {
+      return {
+        ...state,
+        selectedTeam: undefined,
+      };
+    },
   },
 
   extraReducers: builder => {
-    // 成功: チーム情報取得
+    // 成功: チームリスト情報取得
     builder.addMatcher(
-      teamGetApi.endpoints.getTeam.matchFulfilled,
+      teamGetApi.endpoints.getTeamList.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData[]>) => {
         state.teamList = action.payload;
       }
     );
+    // 成功: チーム情報取得
+    builder.addMatcher(
+      teamGetApi.endpoints.getTeamArticle.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
+        state.teamList = [...externalTeamList, action.payload];
+      }
+    );
     // 成功: チーム追加
     builder.addMatcher(
-      teamAddApi.endpoints.addTeam.matchFulfilled,
+      teamPostApi.endpoints.addTeam.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const result = { teamList: [...state.teamList, action.payload] };
         return {
@@ -152,7 +191,7 @@ const team = createSlice({
 });
 
 // Action Creator
-export const { updateTeamList } = team.actions;
+export const { updateTeamList, updateTeam, escapeTeam } = team.actions;
 
 // Reducer
 export default team.reducer;

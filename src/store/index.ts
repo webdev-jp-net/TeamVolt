@@ -1,8 +1,8 @@
 import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
 import player, { playerGetApi, playerAddApi } from './player';
-import team, { teamGetApi, teamAddApi, teamMemberApi } from './team';
-import user, { statusGetApi, statusUpdateApi } from './user';
+import team, { teamGetApi, teamPostApi } from './team';
+// import user, { statusGetApi, statusUpdateApi } from './user';
 
 const reducer = combineReducers({
   player,
@@ -10,21 +10,19 @@ const reducer = combineReducers({
   [playerAddApi.reducerPath]: playerAddApi.reducer,
   team,
   [teamGetApi.reducerPath]: teamGetApi.reducer,
-  [teamAddApi.reducerPath]: teamAddApi.reducer,
-  [teamMemberApi.reducerPath]: teamMemberApi.reducer,
-  user,
-  [statusGetApi.reducerPath]: statusGetApi.reducer,
-  [statusUpdateApi.reducerPath]: statusUpdateApi.reducer,
+  [teamPostApi.reducerPath]: teamPostApi.reducer,
+  // user,
+  // [statusGetApi.reducerPath]: statusGetApi.reducer,
+  // [statusUpdateApi.reducerPath]: statusUpdateApi.reducer,
 });
 
 const middleware = getDefaultMiddleware({ serializableCheck: false }).concat(
   playerGetApi.middleware,
   playerAddApi.middleware,
   teamGetApi.middleware,
-  teamAddApi.middleware,
-  teamMemberApi.middleware,
-  statusGetApi.middleware,
-  statusUpdateApi.middleware
+  teamPostApi.middleware
+  // statusGetApi.middleware,
+  // statusUpdateApi.middleware
 );
 
 export const store = configureStore({ reducer, middleware });
