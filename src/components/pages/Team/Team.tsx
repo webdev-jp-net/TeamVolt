@@ -67,7 +67,7 @@ export const Team: FC = () => {
         <footer className={styles.footer}>
           <Button
             handleClick={() => {
-              navigate('/play');
+              navigate('/waiting-room');
             }}
             disabled={!getTeamSuccess || !team}
           >

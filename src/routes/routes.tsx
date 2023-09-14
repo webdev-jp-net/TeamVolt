@@ -10,6 +10,7 @@ import { useGetPlayerQuery, useAddPlayerMutation, updateLocalId } from 'store/pl
 import { Home } from 'components/pages/Home';
 import { Play } from 'components/pages/Play';
 import { Team } from 'components/pages/Team';
+import { WaitingRoom } from 'components/pages/WaitingRoom';
 
 import { useGenerateAndStoreSessionId } from 'hooks/useGenerateAndStoreSessionId';
 
@@ -92,6 +93,7 @@ export const App: FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/team" element={<Team />} />
         <Route path="/play" element={<Play />} />
+        <Route path="/waiting-room" element={<WaitingRoom />} />
       </Routes>
     </BrowserRouter>
   );

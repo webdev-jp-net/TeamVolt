@@ -45,7 +45,9 @@ export const {{ inputs.name | pascal }}: FC = () => {
 @use "style/_variable" as *;
 
 .{{ inputs.name | lower }} {
-  //
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
 }
 
 
