@@ -15,7 +15,7 @@ export const TimeLeftUi: FC<TimeLeftUiProps> = ({ addClass = [], limit, spurt, c
   }, [currentTime, limit]);
 
   const calcSpurt = useMemo(() => {
-    return spurt ? spurt : Math.floor(limit / 5);
+    return spurt ? spurt : limit - Math.floor(limit / 5);
   }, [spurt, limit]);
 
   const progress = useMemo(() => {
