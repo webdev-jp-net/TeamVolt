@@ -8,6 +8,7 @@ import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
 import { useGetTeamListQuery } from 'store/team';
 import { useAddMemberMutation, updateTeam } from 'store/team';
+import { useRemoveTeamMutation } from 'store/team';
 
 import styles from './Team.module.scss';
 
@@ -52,6 +53,15 @@ export const Team: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entriesAddSuccess]);
 
+  // デバッグ用: チームの削除
+  const [sendRemoveTeamMutation] = useRemoveTeamMutation();
+  const handleRemoveTeam = useCallback(() => {
+    if (window.confirm('Are you sure you want to delete this team?')) {
+      sendRemoveTeamMutation(selectedTeam || '');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTeam]);
+
   return (
     <>
       <article className={styles.team}>
@@ -74,6 +84,14 @@ export const Team: FC = () => {
             ))}
           </ul>
           <AddListItem addClass={[styles.addForm]} />
+          <div className={styles.body}>
+            <Button
+              handleClick={handleRemoveTeam}
+              disabled={!getTeamSuccess || entriesAddLoading || !selectedTeam || !localId}
+            >
+              (debug) delete team
+            </Button>
+          </div>
         </div>
         <footer className={styles.footer}>
           <Button
