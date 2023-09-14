@@ -37,7 +37,13 @@ export const AddListItem: FC<AddListItemProps> = ({ addClass = [], callback }) =
         placeholder="Your team not on the list?"
         className={styles.input}
       />
-      <Button handleClick={testAddTeam} disabled={teamAddLoading || !newTeamName.length}>
+      <Button
+        handleClick={() => {
+          testAddTeam();
+          setNewTeamName('');
+        }}
+        disabled={teamAddLoading || !newTeamName.length}
+      >
         add
       </Button>
     </div>
