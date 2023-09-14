@@ -8,6 +8,7 @@ import {
   arrayRemove,
   arrayUnion,
   addDoc,
+  deleteDoc,
   deleteField,
   collection,
 } from 'firebase/firestore';
@@ -77,6 +78,10 @@ export const teamPostApi = createApi({
         member: [],
       });
       return { data: { id: docRef.id, name: value, member: [] } };
+    } else if (operationType === 'remove_team' && id) {
+      // チームを削除
+      await deleteDoc(doc(db, 'team', id));
+      return { data: id };
     } else if (operationType === 'add_member' && id) {
       // メンバーを追加
       const docRef = doc(db, 'team', id);
@@ -141,6 +146,13 @@ export const teamPostApi = createApi({
         value,
       }),
     }),
+    // チームを削除
+    removeTeam: builder.mutation<string, string>({
+      query: id => ({
+        operationType: 'remove_team',
+        id,
+      }),
+    }),
     // メンバー追加
     addMember: builder.mutation<TeamArticleData, { id: string; value: string }>({
       query: ({ id, value }) => ({
@@ -177,6 +189,7 @@ export const teamPostApi = createApi({
 });
 export const {
   useAddTeamMutation,
+  useRemoveTeamMutation,
   useAddMemberMutation,
   useRemoveMemberMutation,
   useAddChallengerMutation,
@@ -229,6 +242,17 @@ const team = createSlice({
         return {
           ...state,
           ...result,
+        };
+      }
+    );
+    // 成功: チーム削除
+    builder.addMatcher(
+      teamPostApi.endpoints.removeTeam.matchFulfilled,
+      (state, action: PayloadAction<string>) => {
+        const result = state.teamList.filter(team => team.id !== action.payload);
+        return {
+          teamList: result,
+          selectedTeam: undefined,
         };
       }
     );
