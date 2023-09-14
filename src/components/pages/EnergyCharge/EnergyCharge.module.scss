@@ -25,17 +25,26 @@
 
 .body {
   padding: 0 rem(24);
+  margin: rem(48) 0 0;
+}
+
+// 準備
+.ready {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  margin: rem(24) 0;
 }
 
 .console {
   display: flex;
   gap: rem(12);
   align-items: center;
-  margin: rem(24) 0;
+  // margin: rem(24) 0;
 }
 
 .result {
-  margin: rem(48) 0 0;
+  margin-top: rem(-8);
   font-size: rem(18);
 }
 

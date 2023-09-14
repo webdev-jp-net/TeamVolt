@@ -31,6 +31,9 @@ export const EnergyCharge: FC = () => {
     return myTeam?.challenger === localId ? 'Rescuer' : 'Charger';
   }, [myTeam, localId]);
 
+  // 準備完了フラグ
+  const [isReady, setIsReady] = useState<boolean>(false);
+
   // 残り時間
   const [currentTime, setCurrentTime] = useState<number>(0);
   const limit = 30;
@@ -39,7 +42,7 @@ export const EnergyCharge: FC = () => {
   // カウントダウンの処理
   useEffect(() => {
     let timerID: NodeJS.Timeout | undefined;
-    if (currentTime < limit) {
+    if (isReady && currentTime < limit) {
       timerID = setInterval(() => {
         setCurrentTime(currentTime => currentTime + 1);
       }, 1000);
@@ -49,7 +52,7 @@ export const EnergyCharge: FC = () => {
     return () => {
       clearInterval(timerID!);
     };
-  }, [currentTime]);
+  }, [isReady, currentTime]);
 
   // スコアを加算
   const handleTap = () => {
@@ -60,13 +63,24 @@ export const EnergyCharge: FC = () => {
     <article className={styles.article}>
       <header className={styles.header}>
         <h1>Energy Charge</h1>
+        <p>
+          You're on <strong>{job}</strong> duty!
+        </p>
       </header>
 
       <div className={styles.body}>
-        <p className={styles.paragraph}>
-          You're on <strong>{job}</strong> duty!
-        </p>
-        {currentTime < limit ? (
+        {!isReady ? (
+          <div className={styles.ready}>
+            <p>Tap the screen many times to charge the battery.</p>
+            <Button
+              handleClick={() => {
+                setIsReady(true);
+              }}
+            >
+              I'm Ready
+            </Button>
+          </div>
+        ) : currentTime < limit ? (
           <>
             <div className={styles.console}>
               <TimeLeftUi currentTime={currentTime} limit={limit} />
@@ -101,13 +115,22 @@ export const EnergyCharge: FC = () => {
 
       <footer className={styles.footer}>
         {currentTime >= limit && (
-          <Button
-            handleClick={() => {
-              navigate('/');
-            }}
-          >
-            exit
-          </Button>
+          <>
+            <Button
+              handleClick={() => {
+                navigate('/');
+              }}
+            >
+              submit
+            </Button>
+            <Button
+              handleClick={() => {
+                navigate('/');
+              }}
+            >
+              exit
+            </Button>
+          </>
         )}
       </footer>
     </article>
