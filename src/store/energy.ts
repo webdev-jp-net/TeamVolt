@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type State = {
   genEnergy: number;
-  chargeUnits: number;
+  chargeUnits: { member: string; count: number }[];
 };
 const initialState: State = {
   genEnergy: 0,
-  chargeUnits: 0,
+  chargeUnits: [],
 };
 
 const energy = createSlice({
@@ -15,16 +15,19 @@ const energy = createSlice({
   initialState,
 
   reducers: {
+    // 獲得エネルギーを更新
     updateGenEnergy: (state, action: PayloadAction<number>) => {
       return {
         ...state,
         genEnergy: action.payload,
       };
     },
-    updateChargeUnits: (state, action: PayloadAction<number>) => {
+    // 獲得バッテリー数を更新
+    updateChargeUnits: (state, action: PayloadAction<{ member: string; count: number }>) => {
+      const result = { chargeUnits: [...state.chargeUnits, action.payload] };
       return {
         ...state,
-        chargeUnits: action.payload,
+        ...result,
       };
     },
   },
