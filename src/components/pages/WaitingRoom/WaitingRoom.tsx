@@ -82,17 +82,16 @@ export const WaitingRoom: FC = () => {
   // チームメンバーを削除する
   const [sendRemoveMember] = useRemoveMemberMutation();
 
-  // キャンセル
-  const handleCancel = useCallback(() => {
-    dispatch(escapeTeam());
-    if (selectedTeam) sendRemoveMember({ id: selectedTeam, value: localId });
-    // 自分が代表者の場合は代表者を削除する
-    if (myTeam?.challenger === localId)
-      sendRemoveChallenger({ id: selectedTeam || '', value: localId });
-    dispatch(escapeTeam());
-    navigate('/');
+  useEffect(() => {
+    // 退出時にチームを抜ける
+    return () => {
+      // 自分が代表者の場合は代表者を削除する
+      if (myTeam?.challenger === localId)
+        sendRemoveChallenger({ id: selectedTeam || '', value: localId });
+      sendRemoveMember({ id: selectedTeam || '', value: localId });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [myTeam, localId]);
+  }, []);
 
   return myTeam ? (
     <>
@@ -118,7 +117,13 @@ export const WaitingRoom: FC = () => {
           >
             reload
           </Button>
-          <Button handleClick={handleCancel}>cancel</Button>
+          <Button
+            handleClick={() => {
+              navigate('/');
+            }}
+          >
+            cancel
+          </Button>
         </footer>
       </article>
     </>
@@ -137,7 +142,13 @@ export const WaitingRoom: FC = () => {
           >
             Team Up!
           </Button>
-          <Button handleClick={handleCancel}>cancel</Button>
+          <Button
+            handleClick={() => {
+              navigate('/');
+            }}
+          >
+            cancel
+          </Button>
         </footer>
       </article>
     </>
