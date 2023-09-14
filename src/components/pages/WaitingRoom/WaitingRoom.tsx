@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useMemo } from 'react';
+import { FC, useEffect, useState, useMemo, useCallback } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -53,6 +53,9 @@ export const WaitingRoom: FC = () => {
           const result = getRandomElement(myTeam.member);
           // 書き込み
           sendAddChallenger({ id: selectedTeam || '', value: result });
+
+          // エネルギーチャージ画面へ
+          navigate('/energy-charge');
         }
       } else {
         alert('There are not enough members to draw.');
@@ -62,10 +65,17 @@ export const WaitingRoom: FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDrawConfirm, getDrawResultFetching, myTeam]);
-  const handleDraw = () => {
-    getDrawResultRefetch();
-    setIsDrawConfirm(true);
-  };
+
+  const handleDraw = useCallback(() => {
+    // 抽選が終わっている場合はエネルギーチャージ画面へ
+    if (myTeam && myTeam.challenger) navigate('/energy-charge');
+    else {
+      // まだの場合は抽選を実行する
+      getDrawResultRefetch();
+      setIsDrawConfirm(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [myTeam]);
 
   return myTeam ? (
     <>

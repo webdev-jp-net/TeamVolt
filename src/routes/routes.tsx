@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { RootState } from 'store';
 import { useGetPlayerQuery, useAddPlayerMutation, updateLocalId } from 'store/player';
 
+import { EnergyCharge } from 'components/pages/EnergyCharge';
 import { Home } from 'components/pages/Home';
 import { Team } from 'components/pages/Team';
 import { WaitingRoom } from 'components/pages/WaitingRoom';
@@ -92,6 +93,7 @@ export const App: FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/team" element={<Team />} />
         <Route path="/waiting-room" element={<WaitingRoom />} />
+        <Route path="/energy-charge" element={<EnergyCharge />} />
       </Routes>
     </BrowserRouter>
   );
