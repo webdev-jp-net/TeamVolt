@@ -1,18 +1,12 @@
-import { FC, useEffect, useState, useCallback, useMemo } from 'react';
+import { FC, useEffect, useState, useMemo } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import {
-  useGetTeamArticleQuery,
-  useRemoveMemberMutation,
-  useAddChallengerMutation,
-  useRemoveChallengerMutation,
-  escapeTeam,
-} from 'store/team';
+import { useGetTeamArticleQuery, useAddChallengerMutation } from 'store/team';
 
 import styles from './WaitingRoom.module.scss';
 
@@ -20,10 +14,10 @@ import { CurrentMembers } from './components/CurrentMembers/CurrentMembers';
 
 export const WaitingRoom: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { localId } = useSelector((state: RootState) => state.player);
   const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
 
+  // 所属チームの情報
   const myTeam = useMemo(() => {
     return teamList.find(team => team.id === selectedTeam);
   }, [teamList, selectedTeam]);
@@ -31,8 +25,6 @@ export const WaitingRoom: FC = () => {
   // チーム情報の取得
   const {
     isLoading: getDrawResultLoading,
-    isSuccess: getDrawResultSuccess,
-    isError: getDrawResultError,
     refetch: getDrawResultRefetch,
     isFetching: getDrawResultFetching,
   } = useGetTeamArticleQuery(selectedTeam || '', { skip: !selectedTeam });
@@ -45,9 +37,6 @@ export const WaitingRoom: FC = () => {
 
   // 代表者を登録する
   const [sendAddChallenger] = useAddChallengerMutation();
-
-  // 代表者を削除する
-  const [sendRemoveChallenger] = useRemoveChallengerMutation();
 
   // 抽選
   const [isDrawConfirm, setIsDrawConfirm] = useState(false);
@@ -63,7 +52,6 @@ export const WaitingRoom: FC = () => {
           // 抽選
           const result = getRandomElement(myTeam.member);
           // 書き込み
-          // sendDrawResult(result);
           sendAddChallenger({ id: selectedTeam || '', value: result });
         }
       } else {
@@ -78,20 +66,6 @@ export const WaitingRoom: FC = () => {
     getDrawResultRefetch();
     setIsDrawConfirm(true);
   };
-
-  // チームメンバーを削除する
-  const [sendRemoveMember] = useRemoveMemberMutation();
-
-  useEffect(() => {
-    // 退出時にチームを抜ける
-    return () => {
-      // 自分が代表者の場合は代表者を削除する
-      if (myTeam?.challenger === localId)
-        sendRemoveChallenger({ id: selectedTeam || '', value: localId });
-      sendRemoveMember({ id: selectedTeam || '', value: localId });
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return myTeam ? (
     <>

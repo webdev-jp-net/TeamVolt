@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
 import { useGetTeamListQuery } from 'store/team';
-import { useAddMemberMutation, updateTeam, escapeTeam } from 'store/team';
+import { useAddMemberMutation, updateTeam } from 'store/team';
 
 import styles from './Team.module.scss';
 
@@ -22,11 +22,7 @@ export const Team: FC = () => {
   const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
 
   // 既存のチーム情報取得
-  const {
-    isSuccess: getTeamSuccess,
-    isError: getTeamError,
-    refetch: getTeamRefetch,
-  } = useGetTeamListQuery();
+  const { isSuccess: getTeamSuccess, isError: getTeamError } = useGetTeamListQuery();
 
   // チーム選択
   const handleSelectTeam = useCallback(
@@ -52,9 +48,7 @@ export const Team: FC = () => {
 
   // 参加成功
   useEffect(() => {
-    if (entriesAddSuccess) {
-      navigate('/waiting-room');
-    }
+    if (entriesAddSuccess) navigate('/waiting-room');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entriesAddSuccess]);
 
