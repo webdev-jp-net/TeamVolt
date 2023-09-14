@@ -1,14 +1,44 @@
 @use "style/_variable" as *;
 
 .gaugeUi {
+  @include rect(rem(42), rem(68));
+
   position: relative;
   display: grid;
   align-items: end;
   padding: rem(2);
   border: 1px solid #999;
+  border-radius: rem(2);
+
+  &::before,
+  &::after {
+    @include rect(rem(16), rem(3));
+
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    left: 0;
+    display: block;
+    margin: 0 auto;
+    content: '';
+  }
+
+  &::before {
+    @include rect(rem(16), rem(3));
+
+    background-color: #999;
+
+  }
+
+  &::after {
+    @include rect(rem(14), rem(2));
+
+    background-color: white;
+
+  }
 }
 
 .currentValue {
   width: 100%;
-  background-color: #f5991e;
+  background-color: yellowgreen;
 }

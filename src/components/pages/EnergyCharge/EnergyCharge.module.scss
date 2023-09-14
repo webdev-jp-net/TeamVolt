@@ -4,6 +4,10 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   height: 100%;
+
+  * {
+    user-select: none;
+  }
 }
 
 // ヘッダー
@@ -14,9 +18,72 @@
   margin: rem(24) rem(24) auto;
 }
 
-
+// テキスト
 .paragraph {
-  margin: rem(24);
+  margin: rem(24) 0;
+}
+
+.body {
+  padding: 0 rem(24);
+}
+
+.console {
+  display: flex;
+  gap: rem(12);
+  align-items: center;
+  margin: rem(24) 0;
+}
+
+.result {
+  margin: rem(48) 0 0;
+  font-size: rem(18);
+}
+
+// stock
+.visualizer {
+  position: absolute;
+  top: rem(120);
+  right: rem(24);
+  left: rem(24);
+  display: grid;
+  align-items: end;
+}
+
+.stock {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: rem(24) 0;
+  align-items: end;
+  height: 1;
+  margin: rem(36) 0;
+  font-size: rem(72);
+}
+
+.stockItem {
+  width: rem(72);
+  line-height: 1;
+}
+
+.gauge {
+  margin: 0 rem(12);
+
+  &.--invisible {
+    opacity: 0;
+  }
+}
+
+// タップエリア
+.tap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: rem(180) 0 0;
+  color: $c_dark;
+  background: transparent;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 // フッター
