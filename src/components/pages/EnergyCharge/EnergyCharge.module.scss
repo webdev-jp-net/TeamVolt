@@ -95,6 +95,15 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+// 結果確認
+.hasChallenged {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  padding: 0 rem(24);
+  margin: rem(48) 0 0;
+}
+
 // フッター
 .footer {
   display: flex;
