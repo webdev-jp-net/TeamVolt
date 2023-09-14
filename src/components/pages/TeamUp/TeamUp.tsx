@@ -10,12 +10,12 @@ import { useGetTeamListQuery } from 'store/team';
 import { useAddMemberMutation, updateTeam } from 'store/team';
 import { useRemoveTeamMutation } from 'store/team';
 
-import styles from './Team.module.scss';
+import styles from './TeamUp.module.scss';
 
 import { AddListItem } from './components/AddListItem';
 import { ListItem } from './components/ListItem';
 
-export const Team: FC = () => {
+export const TeamUp: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

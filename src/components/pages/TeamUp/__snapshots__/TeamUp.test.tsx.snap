@@ -33,6 +33,17 @@ exports[`Team Teamのスナップショット 1`] = `
           add
         </button>
       </div>
+      <div
+        class="body"
+      >
+        <button
+          class="button --basic"
+          disabled=""
+          type="button"
+        >
+          (debug) delete team
+        </button>
+      </div>
     </div>
     <footer
       class="footer"
