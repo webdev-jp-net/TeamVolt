@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
+<DocumentFragment>
+  <article
+    class="article"
+  >
+    <header
+      class="header"
+    >
+      <h1>
+        Energy Charge
+      </h1>
+    </header>
+    <p
+      class="paragraph"
+    >
+      You're on 
+      <strong>
+        Charger
+      </strong>
+       duty!
+    </p>
+    <footer
+      class="footer"
+    />
+  </article>
+</DocumentFragment>
+`;
