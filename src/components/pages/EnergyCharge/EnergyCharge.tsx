@@ -6,7 +6,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { updateGenEnergy, useAddChargeUnitsMutation, useGetChargeUnitsQuery } from 'store/energy';
+import {
+  updateGenEnergy,
+  resetEnergy,
+  useAddChargeUnitsMutation,
+  useGetChargeUnitsQuery,
+} from 'store/energy';
 
 import styles from './EnergyCharge.module.scss';
 
@@ -91,6 +96,14 @@ export const EnergyCharge: FC = () => {
     }, 0);
   }, [chargeUnits]);
 
+  // 離脱のタイミングでリセット
+  useEffect(() => {
+    return () => {
+      dispatch(resetEnergy());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <article className={styles.article}>
       <header className={styles.header}>
@@ -118,66 +131,67 @@ export const EnergyCharge: FC = () => {
           </div>
         </div>
       ) : (
-        <div className={styles.body}>
-          {!isReady ? (
-            <div className={styles.ready}>
-              <p>Tap the screen many times to charge the battery.</p>
-              <Button
-                handleClick={() => {
-                  setIsReady(true);
-                }}
-              >
-                I'm Ready
-              </Button>
-            </div>
-          ) : currentTime < limit ? (
-            <>
-              <div className={styles.console}>
-                <TimeLeftUi currentTime={currentTime} limit={limit} />
-                <p className={styles.genEnergy}>⚡️ {genEnergy}</p>
+        <>
+          <div className={styles.body}>
+            {!isReady ? (
+              <div className={styles.ready}>
+                <p>Tap the screen many times to charge the battery.</p>
+                <Button
+                  handleClick={() => {
+                    setIsReady(true);
+                  }}
+                >
+                  I'm Ready
+                </Button>
               </div>
-              <button type="button" onClick={handleTap} className={styles.tap}>
-                Tap Screen!!
-              </button>
-            </>
-          ) : (
-            <>
-              <h2 className={styles.result}>Batteries Earned</h2>
-              <p>Great job! Send your results to the Rescuers.</p>
-            </>
-          )}
-          <div className={styles.stock}>
-            {Array(Math.floor(genEnergy / chargeThreshold))
-              .fill(0)
-              .map((_, index) => (
-                <span key={index} className={styles.stockItem}>
-                  🔋
-                </span>
-              ))}
-            {genEnergy > 0 && (
-              <GaugeUi
-                addClass={[styles.gauge, currentTime >= limit ? styles['--invisible'] : '']}
-                currentValue={Math.floor(((genEnergy % chargeThreshold) / chargeThreshold) * 100)}
-              />
+            ) : currentTime < limit ? (
+              <>
+                <div className={styles.console}>
+                  <TimeLeftUi currentTime={currentTime} limit={limit} />
+                  <p className={styles.genEnergy}>⚡️ {genEnergy}</p>
+                </div>
+                <button type="button" onClick={handleTap} className={styles.tap}>
+                  Tap Screen!!
+                </button>
+              </>
+            ) : (
+              <>
+                <h2 className={styles.result}>Batteries Earned</h2>
+                <p>Great job! Send your results to the Rescuers.</p>
+              </>
             )}
+            <div className={styles.stock}>
+              {Array(Math.floor(genEnergy / chargeThreshold))
+                .fill(0)
+                .map((_, index) => (
+                  <span key={index} className={styles.stockItem}>
+                    🔋
+                  </span>
+                ))}
+              {genEnergy > 0 && (
+                <GaugeUi
+                  addClass={[styles.gauge, currentTime >= limit ? styles['--invisible'] : '']}
+                  currentValue={Math.floor(((genEnergy % chargeThreshold) / chargeThreshold) * 100)}
+                />
+              )}
+            </div>
           </div>
-        </div>
+          <footer className={styles.footer}>
+            {currentTime >= limit && (
+              <>
+                <Button handleClick={handleSubmit}>submit</Button>
+                <Button
+                  handleClick={() => {
+                    navigate('/');
+                  }}
+                >
+                  exit
+                </Button>
+              </>
+            )}
+          </footer>
+        </>
       )}
-
-      <footer className={styles.footer}>
-        {currentTime >= limit && (
-          <>
-            <Button handleClick={handleSubmit}>submit</Button>
-            <Button
-              handleClick={() => {
-                navigate('/');
-              }}
-            >
-              exit
-            </Button>
-          </>
-        )}
-      </footer>
     </article>
   );
 };

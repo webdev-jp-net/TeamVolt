@@ -88,6 +88,13 @@ const energy = createSlice({
         genEnergy: action.payload,
       };
     },
+    // 獲得エネルギーをリセット
+    resetEnergy: () => {
+      return {
+        genEnergy: 0,
+        chargeUnits: [],
+      };
+    },
   },
 
   extraReducers: builder => {
@@ -107,7 +114,6 @@ const energy = createSlice({
       energyPostApi.endpoints.addChargeUnits.matchFulfilled,
       (state, action: PayloadAction<ChargeUnitsData>) => {
         const result = { chargeUnits: [...state.chargeUnits, action.payload] };
-        console.log(action.payload);
         return {
           ...state,
           ...result,
@@ -118,7 +124,7 @@ const energy = createSlice({
 });
 
 // Action Creator
-export const { updateGenEnergy } = energy.actions;
+export const { updateGenEnergy, resetEnergy } = energy.actions;
 
 // Reducer
 export default energy.reducer;
