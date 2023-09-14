@@ -3,12 +3,13 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { getDocs, addDoc, collection } from 'firebase/firestore';
 import { db } from 'firebaseDB';
 import { PlayerArticleData } from 'types/player';
+import { TeamArticleData } from 'types/team';
 
 type State = {
   localId: string;
   player?: string;
   playerList: PlayerArticleData[];
-  team?: string;
+  team?: TeamArticleData;
 };
 
 const initialState: State = {
@@ -71,10 +72,17 @@ const player = createSlice({
       };
     },
     // 所属チーム更新
-    updateTeam: (state, action: PayloadAction<string>) => {
+    updateTeam: (state, action: PayloadAction<TeamArticleData>) => {
       return {
         ...state,
         team: action.payload,
+      };
+    },
+    // 所属チーム脱退
+    escapeTeam: state => {
+      return {
+        ...state,
+        team: undefined,
       };
     },
   },
@@ -101,7 +109,7 @@ const player = createSlice({
 });
 
 // Action Creator
-export const { updateLocalId, updateTeam } = player.actions;
+export const { updateLocalId, updateTeam, escapeTeam } = player.actions;
 
 // Reducer
 export default player.reducer;

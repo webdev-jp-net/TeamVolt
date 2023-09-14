@@ -7,8 +7,8 @@ export default {
   title: 'ListItem',
   component: ListItem,
   args: {
-    id: '0123456789',
     name: 'SAMPLE TEAM',
+    selected: false,
     handleClick: action(''),
   },
 } as ComponentMeta<typeof ListItem>;

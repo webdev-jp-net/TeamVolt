@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { updateTeam } from 'store/player';
+import { updateTeam, escapeTeam } from 'store/player';
 import { useGetTeamQuery } from 'store/team';
 
 import styles from './Team.module.scss';
@@ -29,14 +29,18 @@ export const Team: FC = () => {
   } = useGetTeamQuery();
 
   // チーム選択
-  const handleSelectTeam = useCallback((myTeamId: string) => {
-    dispatch(updateTeam(myTeamId));
+  const handleSelectTeam = useCallback(
+    (myTeamId: string) => {
+      const currentTeam = teamList.find(teamItem => teamItem.id === myTeamId);
+      if (currentTeam) dispatch(updateTeam(currentTeam));
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    [teamList]
+  );
 
   // キャンセル
   const handleCancel = useCallback(() => {
-    dispatch(updateTeam(''));
+    dispatch(escapeTeam());
     navigate('/');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -49,14 +53,14 @@ export const Team: FC = () => {
         </header>
         <div>
           <ul className={styles.list}>
-            {teamList.map(team => (
-              <li key={team.id} className={styles.item}>
+            {teamList.map(item => (
+              <li key={item.id} className={styles.item}>
                 <ListItem
-                  id={team.id}
-                  name={team.name}
+                  selected={item.id === team?.id}
+                  name={item.name}
                   disabled={getTeamError}
                   handleClick={() => {
-                    handleSelectTeam(team.id);
+                    handleSelectTeam(item.id);
                   }}
                 />
               </li>
@@ -71,7 +75,7 @@ export const Team: FC = () => {
             }}
             disabled={!getTeamSuccess || !team}
           >
-            START
+            join
           </Button>
           <Button handleClick={handleCancel}>cancel</Button>
         </footer>

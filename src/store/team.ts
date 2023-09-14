@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { getDocs, addDoc, collection } from 'firebase/firestore';
+import { doc, getDocs, addDoc, collection, runTransaction } from 'firebase/firestore';
 import { db } from 'firebaseDB';
-import { TeamArticleData } from 'types/team';
+import { TeamArticleData, TeamMemberAddRequestData } from 'types/team';
 
 type State = {
   teamList: TeamArticleData[];
@@ -53,6 +53,42 @@ export const teamAddApi = createApi({
   }),
 });
 export const { useAddTeamMutation } = teamAddApi;
+
+// チームメンバー追加
+export const teamMemberApi = createApi({
+  reducerPath: 'teamMemberApi',
+  baseQuery: async ({ team, member }) => {
+    const documentRef = doc(db, 'team', team);
+
+    try {
+      await runTransaction(db, async transaction => {
+        const sfDoc = await transaction.get(documentRef);
+        if (!sfDoc.exists()) {
+          // eslint-disable-next-line no-throw-literal
+          throw 'Document does not exist!';
+        }
+        const oldMemberList = sfDoc.data().memberList || [];
+        const newMemberList = [...oldMemberList, member];
+        const uniqueMemberList = Array.from(new Set(newMemberList));
+        transaction.update(documentRef, { member: uniqueMemberList });
+      });
+      console.log('Transaction successfully committed!');
+    } catch (e) {
+      console.log('Transaction failed: ', e);
+    }
+    return { data: null };
+  },
+  endpoints: builder => ({
+    addEntries: builder.mutation<void, TeamMemberAddRequestData>({
+      query: ({ team, member }) => ({
+        team,
+        member,
+      }),
+    }),
+  }),
+});
+
+export const { useAddEntriesMutation } = teamMemberApi;
 
 const team = createSlice({
   name: 'team',
