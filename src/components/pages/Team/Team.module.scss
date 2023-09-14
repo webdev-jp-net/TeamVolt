@@ -1,0 +1,45 @@
+@use "style/_variable" as *;
+
+.team {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+// ヘッダー
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  margin: rem(24) rem(24) auto;
+}
+
+// リスト
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: rem(24);
+}
+
+.item {
+  padding: rem(12) 0;
+  margin: 0;
+  list-style: none;
+  border-bottom: 1px solid #000;
+
+}
+
+// 追加フォーム
+.addForm {
+  margin: rem(24);
+}
+
+// フッター
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  margin: auto rem(24) rem(24);
+}
+

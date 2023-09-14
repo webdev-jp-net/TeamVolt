@@ -6,19 +6,19 @@ import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { store } from 'store';
 
-import { Play } from './Play';
-
+import { EnergyCharge } from './EnergyCharge';
 const history = createMemoryHistory();
-describe('Play', () => {
+
+describe('EnergyCharge', () => {
   beforeEach(() => {
     window.scrollTo = jest.fn();
   });
 
-  it('Playのスナップショット', () => {
+  it('EnergyChargeのスナップショット', () => {
     const { asFragment } = render(
       <Provider store={store}>
         <Router location={history.location} navigator={history}>
-          <Play />
+          <EnergyCharge />
         </Router>
       </Provider>
     );

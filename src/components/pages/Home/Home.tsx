@@ -1,42 +1,54 @@
-import { useDispatch } from 'react-redux';
+import { FC, useEffect, useMemo } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
 
-import { FC, useEffect } from 'react';
-
 import { Button } from 'components/parts/Button';
-import { updateUserId } from 'store/user';
-
-import { useGenerateAndStoreSessionId } from 'hooks/useGenerateAndStoreSessionId';
+import { RootState } from 'store';
+import { useRemoveMemberMutation, useRemoveChallengerMutation, escapeTeam } from 'store/team';
 
 import styles from './Home.module.scss';
 
 export const Home: FC = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { localId } = useSelector((state: RootState) => state.player);
+  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
 
-  const generateId = useGenerateAndStoreSessionId;
+  // 所属チームの情報
+  const myTeam = useMemo(() => {
+    return teamList.find(team => team.id === selectedTeam);
+  }, [teamList, selectedTeam]);
 
-  // ページを表示したとき
+  // 代表者を削除する
+  const [sendRemoveChallenger] = useRemoveChallengerMutation();
+
+  // チームメンバーを削除する
+  const [sendRemoveMember] = useRemoveMemberMutation();
+
   useEffect(() => {
-    const myId = generateId();
-    console.log({ myId });
-    dispatch(updateUserId(myId));
+    // チームに所属したままここまで来た場合はチームをを抜ける
+    // 自分が代表者の場合は代表者を削除する
+    if (myTeam?.challenger === localId)
+      sendRemoveChallenger({ id: selectedTeam || '', value: localId });
+    sendRemoveMember({ id: selectedTeam || '', value: localId });
+    dispatch(escapeTeam());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className={`l-page ${styles.home}`}>
+      <div className={styles.icon}>⚡️</div>
       <h1 className={styles.title}>TeamVolt</h1>
       <div className={styles.menu}>
         <Button
           handleClick={() => {
-            navigate('/play');
+            navigate('/team');
           }}
         >
-          start
+          Team Up!
         </Button>
-        <div className={styles.icon}>⚡️</div>
       </div>
     </div>
   );

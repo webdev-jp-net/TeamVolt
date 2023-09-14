@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WaitingRoom WaitingRoomのスナップショット 1`] = `
+<DocumentFragment>
+  <article
+    class="waitingRoom"
+  >
+    <header
+      class="header"
+    >
+      <h1>
+        You didn't pick the team.
+      </h1>
+    </header>
+    <p
+      class="paragraph"
+    >
+      Pick your team first.
+    </p>
+    <footer
+      class="footer"
+    >
+      <button
+        class="button --basic"
+        type="button"
+      >
+        Team Up!
+      </button>
+      <button
+        class="button --basic"
+        type="button"
+      >
+        cancel
+      </button>
+    </footer>
+  </article>
+</DocumentFragment>
+`;

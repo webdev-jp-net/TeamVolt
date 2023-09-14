@@ -42,8 +42,8 @@ module.exports = {
         },
         pathGroups: [
           {
-            pattern: 'liff',
-            group: 'external',
+            pattern: 'react',
+            group: 'builtin',
             position: 'before',
           },
           {
@@ -58,11 +58,6 @@ module.exports = {
           },
           {
             pattern: 'react-router-dom',
-            group: 'builtin',
-            position: 'before',
-          },
-          {
-            pattern: 'react',
             group: 'builtin',
             position: 'before',
           },
@@ -113,11 +108,10 @@ module.exports = {
           },
         ],
         pathGroupsExcludedImportTypes: [
-          'react',
           'react-router-dom',
           'react-redux',
           '@storybook/react',
-          'liff',
+          'react',
         ],
       },
     ],
