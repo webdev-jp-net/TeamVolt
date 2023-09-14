@@ -6,9 +6,9 @@ import {
   getDocs,
   updateDoc,
   arrayRemove,
+  arrayUnion,
   addDoc,
   collection,
-  runTransaction,
 } from 'firebase/firestore';
 import { db } from 'firebaseDB';
 import { TeamArticleData } from 'types/team';
@@ -79,16 +79,8 @@ export const teamPostApi = createApi({
     } else if (operationType === 'add_member' && id) {
       // メンバーを追加
       const docRef = doc(db, 'team', id);
-      await runTransaction(db, async transaction => {
-        const sfDoc = await transaction.get(docRef);
-        if (!sfDoc.exists()) {
-          // eslint-disable-next-line no-throw-literal
-          throw 'Document does not exist!';
-        }
-        const oldMemberList = sfDoc.data().memberList || [];
-        const newMemberList = [...oldMemberList, value];
-        const uniqueMemberList = Array.from(new Set(newMemberList));
-        transaction.update(docRef, { member: uniqueMemberList });
+      await updateDoc(docRef, {
+        member: arrayUnion(value),
       });
       // レスポンスで返す情報を再取得
       const docSnap = await getDoc(docRef);

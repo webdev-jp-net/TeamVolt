@@ -59,6 +59,7 @@ export const WaitingRoom: FC = () => {
           >
             Ready to go!
           </Button>
+          <Button handleClick={getDrawResultRefetch}>reload</Button>
           <Button handleClick={handleCancel}>cancel</Button>
         </footer>
       </article>

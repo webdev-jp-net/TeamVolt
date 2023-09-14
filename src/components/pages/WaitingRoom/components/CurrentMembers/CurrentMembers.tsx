@@ -16,7 +16,7 @@ export const CurrentMembers: FC<CurrentMembersProps> = ({
   addClass = [],
 }) => {
   return (
-    <div className={[styles.currentmembers, ...addClass].join(' ')}>
+    <div className={[styles.memberList, ...addClass].join(' ')}>
       {memberList.map(item => (
         <div key={item} className={styles.member}>
           {item === challenger && <span className={styles.winner}>challenger</span>}
