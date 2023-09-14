@@ -1,0 +1,58 @@
+@use "style/_variable" as *;
+
+.timeLeftUi {
+  @include rect(rem(60 + 3 + 3));
+
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  background: $c_darkness;
+  border-radius: 50%;
+  transition: opacity $t_ease, transform $t_ease;
+  transform-origin: center;
+
+  &::after {
+    @include fit;
+
+    display: block;
+    content: '';
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px $c_darkness, inset 0 0 0 rem(3) $c_lightness;
+  }
+}
+
+// 目盛り
+.gauge {
+  @include fit;
+}
+
+// 進捗
+.progress {
+  @include rect(rem(66));
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border-radius: 50%;
+}
+
+// 値
+.count {
+  $stroke-width: rem(6);
+  @include rect(rem(42));
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: rem(1);
+  font-size: rem(18);
+  text-align: center;
+  text-shadow: 0 rem(2) $c_lightness,  0 rem(-2) $c_lightness, rem(2) 0 $c_lightness, rem(-2) 0 $c_lightness;
+  background-color: #fffc;
+  border-radius: 50%;
+
+  .--spurt & {
+    color: #F23322;
+  }
+}
