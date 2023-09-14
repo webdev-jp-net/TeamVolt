@@ -8,6 +8,7 @@ import { RootState } from 'store';
 import { useGetPlayerQuery, useAddPlayerMutation, updateLocalId } from 'store/player';
 
 import { Home } from 'components/pages/Home';
+import { Play } from 'components/pages/Play';
 import { Team } from 'components/pages/Team';
 
 import { useGenerateAndStoreSessionId } from 'hooks/useGenerateAndStoreSessionId';
@@ -90,6 +91,7 @@ export const App: FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/team" element={<Team />} />
+        <Route path="/play" element={<Play />} />
       </Routes>
     </BrowserRouter>
   );

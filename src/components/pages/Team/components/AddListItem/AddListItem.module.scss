@@ -1,0 +1,10 @@
+@use "style/_variable" as *;
+
+.addListItem {
+  display: flex;
+  gap: rem(12);
+}
+
+.input {
+  width: 100%;
+}
