@@ -58,13 +58,6 @@ export const Team: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entriesAddSuccess]);
 
-  // キャンセル
-  const handleCancel = useCallback(() => {
-    dispatch(escapeTeam());
-    navigate('/');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <>
       <article className={styles.team}>
@@ -95,7 +88,13 @@ export const Team: FC = () => {
           >
             join
           </Button>
-          <Button handleClick={handleCancel}>cancel</Button>
+          <Button
+            handleClick={() => {
+              navigate('/');
+            }}
+          >
+            cancel
+          </Button>
         </footer>
       </article>
     </>
