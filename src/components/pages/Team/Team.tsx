@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
 import { useGetTeamListQuery } from 'store/team';
-import { useAddEntriesMutation, updateTeam, escapeTeam } from 'store/team';
+import { useAddMemberMutation, updateTeam, escapeTeam } from 'store/team';
 
 import styles from './Team.module.scss';
 
@@ -39,16 +39,16 @@ export const Team: FC = () => {
 
   // 入室メンバーを追加する
   const [
-    sendAddEntries, // mutation trigger
+    sendAddMember, // mutation trigger
     { isLoading: entriesAddLoading, isSuccess: entriesAddSuccess }, // mutation state
-  ] = useAddEntriesMutation();
+  ] = useAddMemberMutation();
 
   // 参加ボタン押下
   const joinTeam = useCallback(() => {
     if (selectedTeam) {
-      sendAddEntries({ id: selectedTeam, value: localId });
+      sendAddMember({ id: selectedTeam, value: localId });
     }
-  }, [localId, sendAddEntries, selectedTeam]);
+  }, [localId, sendAddMember, selectedTeam]);
 
   // 参加成功
   useEffect(() => {
@@ -73,8 +73,8 @@ export const Team: FC = () => {
         </header>
         <div>
           <ul className={styles.list}>
-            {teamList.map(item => (
-              <li key={item.id} className={styles.item}>
+            {teamList.map((item, index) => (
+              <li key={index} className={styles.item}>
                 <ListItem
                   selected={item.id === selectedTeam}
                   name={item.name}

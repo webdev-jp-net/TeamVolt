@@ -17,11 +17,11 @@ export const CurrentMembers: FC<CurrentMembersProps> = ({
 }) => {
   return (
     <div className={[styles.currentmembers, ...addClass].join(' ')}>
-      {memberList.map((value, index) => (
-        <div key={index} className={styles.member}>
-          {value === challenger && <span className={styles.winner}>challenger</span>}
-          <span className={styles.memberIcon} style={{ color: `#${value}` }}></span>
-          {value === myself && <span className={styles.current}>myself</span>}
+      {memberList.map(item => (
+        <div key={item} className={styles.member}>
+          {item === challenger && <span className={styles.winner}>challenger</span>}
+          <span className={styles.memberIcon} style={{ color: `#${item}` }}></span>
+          {item === myself && <span className={styles.current}>myself</span>}
         </div>
       ))}
     </div>

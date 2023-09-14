@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useGetTeamArticleQuery, useRemoveEntriesMutation, escapeTeam } from 'store/team';
+import { useGetTeamArticleQuery, useRemoveMemberMutation, escapeTeam } from 'store/team';
 
 import styles from './WaitingRoom.module.scss';
 
@@ -30,12 +30,12 @@ export const WaitingRoom: FC = () => {
   } = useGetTeamArticleQuery(selectedTeam || '', { skip: !selectedTeam });
 
   // チームメンバーを削除する
-  const [sendRemoveEntries] = useRemoveEntriesMutation();
+  const [sendRemoveMember] = useRemoveMemberMutation();
 
   // キャンセル
   const handleCancel = useCallback(() => {
     dispatch(escapeTeam());
-    if (selectedTeam) sendRemoveEntries({ id: selectedTeam, value: localId });
+    if (selectedTeam) sendRemoveMember({ id: selectedTeam, value: localId });
     dispatch(escapeTeam());
     navigate('/');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,8 +47,10 @@ export const WaitingRoom: FC = () => {
         <header className={styles.header}>
           <h1>{myTeam?.name}</h1>
         </header>
-        <p className={styles.paragraph}>Let's wait for our friends to assemble.</p>
-        <CurrentMembers memberList={myTeam.member} myself={localId} />
+        <div className={styles.body}>
+          <p className={styles.paragraph}>Let's wait for our friends to assemble.</p>
+          <CurrentMembers memberList={myTeam.member} myself={localId} />
+        </div>
         <footer className={styles.footer}>
           <Button
             handleClick={() => {

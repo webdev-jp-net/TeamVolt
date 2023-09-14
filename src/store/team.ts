@@ -37,10 +37,10 @@ export const teamGetApi = createApi({
       return { data: result };
     } else {
       // 特定のデータ
-      const docRef = doc(db, 'status', id);
+      const docRef = doc(db, 'team', id);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        return { data: docSnap.data() };
+        return { data: { id, ...docSnap.data() } };
       } else {
         return { error: 'No such document!' };
       }
@@ -79,21 +79,23 @@ export const teamPostApi = createApi({
     } else if (operationType === 'add_member' && id) {
       // メンバーを追加
       const docRef = doc(db, 'team', id);
-      try {
-        await runTransaction(db, async transaction => {
-          const sfDoc = await transaction.get(docRef);
-          if (!sfDoc.exists()) {
-            // eslint-disable-next-line no-throw-literal
-            throw 'Document does not exist!';
-          }
-          const oldMemberList = sfDoc.data().memberList || [];
-          const newMemberList = [...oldMemberList, value];
-          const uniqueMemberList = Array.from(new Set(newMemberList));
-          transaction.update(docRef, { member: uniqueMemberList });
-        });
-        console.log('Transaction successfully committed!');
-      } catch (e) {
-        console.log('Transaction failed: ', e);
+      await runTransaction(db, async transaction => {
+        const sfDoc = await transaction.get(docRef);
+        if (!sfDoc.exists()) {
+          // eslint-disable-next-line no-throw-literal
+          throw 'Document does not exist!';
+        }
+        const oldMemberList = sfDoc.data().memberList || [];
+        const newMemberList = [...oldMemberList, value];
+        const uniqueMemberList = Array.from(new Set(newMemberList));
+        transaction.update(docRef, { member: uniqueMemberList });
+      });
+      // レスポンスで返す情報を再取得
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { data: { id, ...docSnap.data() } };
+      } else {
+        return { error: 'No such document!' };
       }
     } else if (operationType === 'remove_member' && id) {
       const docRef = doc(db, 'team', id);
@@ -101,8 +103,16 @@ export const teamPostApi = createApi({
       await updateDoc(docRef, {
         member: arrayRemove(value),
       });
+      // レスポンスで返す情報を再取得
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { data: { id, ...docSnap.data() } };
+      } else {
+        return { error: 'No such document!' };
+      }
+    } else {
+      return { error: 'No such document!' };
     }
-    return { data: null };
   },
   endpoints: builder => ({
     // チームを追加
@@ -113,7 +123,7 @@ export const teamPostApi = createApi({
       }),
     }),
     // メンバー追加
-    addEntries: builder.mutation<void, { id: string; value: string }>({
+    addMember: builder.mutation<TeamArticleData, { id: string; value: string }>({
       query: ({ id, value }) => ({
         operationType: 'add_member',
         id,
@@ -121,7 +131,7 @@ export const teamPostApi = createApi({
       }),
     }),
     // メンバー削除
-    removeEntries: builder.mutation<void, { id: string; value: string }>({
+    removeMember: builder.mutation<TeamArticleData, { id: string; value: string }>({
       query: ({ id, value }) => ({
         operationType: 'remove_member',
         id,
@@ -130,7 +140,7 @@ export const teamPostApi = createApi({
     }),
   }),
 });
-export const { useAddTeamMutation, useAddEntriesMutation, useRemoveEntriesMutation } = teamPostApi;
+export const { useAddTeamMutation, useAddMemberMutation, useRemoveMemberMutation } = teamPostApi;
 
 const team = createSlice({
   name: 'team',
@@ -138,12 +148,6 @@ const team = createSlice({
   initialState,
 
   reducers: {
-    updateTeamList: (state, action: PayloadAction<TeamArticleData[]>) => {
-      return {
-        ...state,
-        teamList: action.payload,
-      };
-    },
     // 所属チーム更新
     updateTeam: (state, action: PayloadAction<string>) => {
       return {
@@ -187,11 +191,27 @@ const team = createSlice({
         };
       }
     );
+    // 成功: メンバー追加
+    builder.addMatcher(
+      teamPostApi.endpoints.addMember.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
+        state.teamList = [...externalTeamList, action.payload];
+      }
+    );
+    // 成功: メンバー削除
+    builder.addMatcher(
+      teamPostApi.endpoints.removeMember.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
+        state.teamList = [...externalTeamList, action.payload];
+      }
+    );
   },
 });
 
 // Action Creator
-export const { updateTeamList, updateTeam, escapeTeam } = team.actions;
+export const { updateTeam, escapeTeam } = team.actions;
 
 // Reducer
 export default team.reducer;
