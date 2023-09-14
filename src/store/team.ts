@@ -8,6 +8,7 @@ import {
   arrayRemove,
   arrayUnion,
   addDoc,
+  deleteField,
   collection,
 } from 'firebase/firestore';
 import { db } from 'firebaseDB';
@@ -102,6 +103,32 @@ export const teamPostApi = createApi({
       } else {
         return { error: 'No such document!' };
       }
+    } else if (operationType === 'add_challenger' && id) {
+      const docRef = doc(db, 'team', id);
+      // 代表者を登録
+      await updateDoc(docRef, {
+        challenger: value,
+      });
+      // レスポンスで返す情報を再取得
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { data: { id, ...docSnap.data() } };
+      } else {
+        return { error: 'No such document!' };
+      }
+    } else if (operationType === 'remove_challenger' && id) {
+      const docRef = doc(db, 'team', id);
+      // 代表者を削除
+      await updateDoc(docRef, {
+        challenger: deleteField(),
+      });
+      // レスポンスで返す情報を再取得
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { data: { id, ...docSnap.data() } };
+      } else {
+        return { error: 'No such document!' };
+      }
     } else {
       return { error: 'No such document!' };
     }
@@ -130,9 +157,31 @@ export const teamPostApi = createApi({
         value,
       }),
     }),
+    // 抽選結果追加
+    addChallenger: builder.mutation<TeamArticleData, { id: string; value: string }>({
+      query: ({ id, value }) => ({
+        operationType: 'add_challenger',
+        id,
+        value,
+      }),
+    }),
+    // 抽選結果追加
+    removeChallenger: builder.mutation<TeamArticleData, { id: string; value: string }>({
+      query: ({ id, value }) => ({
+        operationType: 'remove_challenger',
+        id,
+        value,
+      }),
+    }),
   }),
 });
-export const { useAddTeamMutation, useAddMemberMutation, useRemoveMemberMutation } = teamPostApi;
+export const {
+  useAddTeamMutation,
+  useAddMemberMutation,
+  useRemoveMemberMutation,
+  useAddChallengerMutation,
+  useRemoveChallengerMutation,
+} = teamPostApi;
 
 const team = createSlice({
   name: 'team',
@@ -194,6 +243,22 @@ const team = createSlice({
     // 成功: メンバー削除
     builder.addMatcher(
       teamPostApi.endpoints.removeMember.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
+        state.teamList = [...externalTeamList, action.payload];
+      }
+    );
+    // 成功: 代表者追加
+    builder.addMatcher(
+      teamPostApi.endpoints.addChallenger.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
+        state.teamList = [...externalTeamList, action.payload];
+      }
+    );
+    // 成功: 代表者削除
+    builder.addMatcher(
+      teamPostApi.endpoints.removeChallenger.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];

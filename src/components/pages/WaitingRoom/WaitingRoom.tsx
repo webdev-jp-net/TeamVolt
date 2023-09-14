@@ -6,7 +6,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useGetTeamArticleQuery, useRemoveMemberMutation, escapeTeam } from 'store/team';
+import {
+  useGetTeamArticleQuery,
+  useRemoveMemberMutation,
+  useAddChallengerMutation,
+  useRemoveChallengerMutation,
+  escapeTeam,
+} from 'store/team';
 
 import styles from './WaitingRoom.module.scss';
 
@@ -37,6 +43,12 @@ export const WaitingRoom: FC = () => {
     return list[index];
   };
 
+  // 代表者を登録する
+  const [sendAddChallenger] = useAddChallengerMutation();
+
+  // 代表者を削除する
+  const [sendRemoveChallenger] = useRemoveChallengerMutation();
+
   // 抽選
   const [isDrawConfirm, setIsDrawConfirm] = useState(false);
   useEffect(() => {
@@ -52,7 +64,7 @@ export const WaitingRoom: FC = () => {
           const result = getRandomElement(myTeam.member);
           // 書き込み
           // sendDrawResult(result);
-          console.log({ result });
+          sendAddChallenger({ id: selectedTeam || '', value: result });
         }
       } else {
         alert('There are not enough members to draw.');
@@ -60,6 +72,7 @@ export const WaitingRoom: FC = () => {
 
       setIsDrawConfirm(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDrawConfirm, getDrawResultFetching, myTeam]);
   const handleDraw = () => {
     getDrawResultRefetch();
@@ -73,6 +86,9 @@ export const WaitingRoom: FC = () => {
   const handleCancel = useCallback(() => {
     dispatch(escapeTeam());
     if (selectedTeam) sendRemoveMember({ id: selectedTeam, value: localId });
+    // 自分が代表者の場合は代表者を削除する
+    if (myTeam?.challenger === localId)
+      sendRemoveChallenger({ id: selectedTeam || '', value: localId });
     dispatch(escapeTeam());
     navigate('/');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -86,7 +102,11 @@ export const WaitingRoom: FC = () => {
         </header>
         <div className={styles.body}>
           <p className={styles.paragraph}>Let's wait for our friends to assemble.</p>
-          <CurrentMembers memberList={myTeam.member} myself={localId} />
+          <CurrentMembers
+            memberList={myTeam.member}
+            myself={localId}
+            challenger={myTeam.challenger}
+          />
         </div>
         <footer className={styles.footer}>
           <Button handleClick={handleDraw} disabled={getDrawResultLoading || getDrawResultFetching}>
