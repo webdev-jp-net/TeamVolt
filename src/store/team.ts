@@ -1,8 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { doc, getDocs, addDoc, collection, runTransaction } from 'firebase/firestore';
+import {
+  doc,
+  getDocs,
+  updateDoc,
+  arrayRemove,
+  addDoc,
+  collection,
+  runTransaction,
+} from 'firebase/firestore';
 import { db } from 'firebaseDB';
-import { TeamArticleData, TeamMemberAddRequestData } from 'types/team';
+import { TeamArticleData, TeamMemberEditData } from 'types/team';
 
 type State = {
   teamList: TeamArticleData[];
@@ -54,41 +62,58 @@ export const teamAddApi = createApi({
 });
 export const { useAddTeamMutation } = teamAddApi;
 
-// チームメンバー追加
+// チームメンバー編集
 export const teamMemberApi = createApi({
   reducerPath: 'teamMemberApi',
-  baseQuery: async ({ team, member }) => {
+  baseQuery: async ({ operationType, team, member }) => {
     const documentRef = doc(db, 'team', team);
 
-    try {
-      await runTransaction(db, async transaction => {
-        const sfDoc = await transaction.get(documentRef);
-        if (!sfDoc.exists()) {
-          // eslint-disable-next-line no-throw-literal
-          throw 'Document does not exist!';
-        }
-        const oldMemberList = sfDoc.data().memberList || [];
-        const newMemberList = [...oldMemberList, member];
-        const uniqueMemberList = Array.from(new Set(newMemberList));
-        transaction.update(documentRef, { member: uniqueMemberList });
+    if (operationType === 'add') {
+      // 要素を追加
+      try {
+        await runTransaction(db, async transaction => {
+          const sfDoc = await transaction.get(documentRef);
+          if (!sfDoc.exists()) {
+            // eslint-disable-next-line no-throw-literal
+            throw 'Document does not exist!';
+          }
+          const oldMemberList = sfDoc.data().memberList || [];
+          const newMemberList = [...oldMemberList, member];
+          const uniqueMemberList = Array.from(new Set(newMemberList));
+          transaction.update(documentRef, { member: uniqueMemberList });
+        });
+        console.log('Transaction successfully committed!');
+      } catch (e) {
+        console.log('Transaction failed: ', e);
+      }
+    } else if (operationType === 'remove') {
+      // 要素を削除
+      await updateDoc(documentRef, {
+        member: arrayRemove(member),
       });
-      console.log('Transaction successfully committed!');
-    } catch (e) {
-      console.log('Transaction failed: ', e);
     }
     return { data: null };
   },
   endpoints: builder => ({
-    addEntries: builder.mutation<void, TeamMemberAddRequestData>({
+    // メンバー追加
+    addEntries: builder.mutation<void, TeamMemberEditData>({
       query: ({ team, member }) => ({
+        operationType: 'add',
+        team,
+        member,
+      }),
+    }),
+    // メンバー削除
+    removeEntries: builder.mutation<void, TeamMemberEditData>({
+      query: ({ team, member }) => ({
+        operationType: 'remove',
         team,
         member,
       }),
     }),
   }),
 });
-
-export const { useAddEntriesMutation } = teamMemberApi;
+export const { useAddEntriesMutation, useRemoveEntriesMutation } = teamMemberApi;
 
 const team = createSlice({
   name: 'team',

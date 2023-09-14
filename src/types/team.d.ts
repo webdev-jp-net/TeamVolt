@@ -7,7 +7,7 @@ export type TeamArticleData = {
 };
 
 // メンバー追加
-export type TeamMemberAddRequestData = {
+export type TeamMemberEditData = {
   team: string;
   member: string;
 };

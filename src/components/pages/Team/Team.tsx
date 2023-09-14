@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,6 +8,7 @@ import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
 import { updateTeam, escapeTeam } from 'store/player';
 import { useGetTeamQuery } from 'store/team';
+import { useAddEntriesMutation } from 'store/team';
 
 import styles from './Team.module.scss';
 
@@ -18,7 +19,7 @@ export const Team: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { team } = useSelector((state: RootState) => state.player);
+  const { localId, team } = useSelector((state: RootState) => state.player);
   const { teamList } = useSelector((state: RootState) => state.team);
 
   // 既存のチーム情報取得
@@ -37,6 +38,27 @@ export const Team: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [teamList]
   );
+
+  // 入室メンバーを追加する
+  const [
+    sendAddEntries, // mutation trigger
+    { isLoading: entriesAddLoading, isSuccess: entriesAddSuccess }, // mutation state
+  ] = useAddEntriesMutation();
+
+  // 参加ボタン押下
+  const joinTeam = useCallback(() => {
+    if (team) {
+      sendAddEntries({ team: team.id, member: localId });
+    }
+  }, [localId, sendAddEntries, team]);
+
+  // 参加成功
+  useEffect(() => {
+    if (entriesAddSuccess) {
+      navigate('/waiting-room');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entriesAddSuccess]);
 
   // キャンセル
   const handleCancel = useCallback(() => {
@@ -70,10 +92,8 @@ export const Team: FC = () => {
         </div>
         <footer className={styles.footer}>
           <Button
-            handleClick={() => {
-              navigate('/waiting-room');
-            }}
-            disabled={!getTeamSuccess || !team}
+            handleClick={joinTeam}
+            disabled={!getTeamSuccess || entriesAddLoading || !team || !localId}
           >
             join
           </Button>
