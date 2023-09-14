@@ -12,27 +12,38 @@ exports[`Team Teamのスナップショット 1`] = `
         Pick Your Team
       </h1>
     </header>
-    <ul />
-    <div
-      class="addForm"
-    >
-      <input
-        class="input"
-        placeholder="Your team not on the list?"
-        type="text"
-        value=""
+    <div>
+      <ul
+        class="list"
       />
+      <div
+        class="addListItem addForm"
+      >
+        <input
+          class="input"
+          placeholder="Your team not on the list?"
+          type="text"
+          value=""
+        />
+        <button
+          class="button --basic"
+          disabled=""
+          type="button"
+        >
+          add
+        </button>
+      </div>
+    </div>
+    <footer
+      class="footer"
+    >
       <button
         class="button --basic"
         disabled=""
         type="button"
       >
-        add
+        join
       </button>
-    </div>
-    <footer
-      class="footer"
-    >
       <button
         class="button --basic"
         type="button"
