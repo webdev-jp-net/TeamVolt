@@ -4,37 +4,36 @@ import styles from './TimeLeftUi.module.scss';
 
 type TimeLeftUiProps = {
   addClass?: string[];
-  limit?: number;
+  limit: number;
   spurt?: number;
   currentTime: number;
 };
 
-export const TimeLeftUi: FC<TimeLeftUiProps> = ({
-  addClass = [],
-  limit = 60,
-  spurt = 50,
-  currentTime,
-}) => {
+export const TimeLeftUi: FC<TimeLeftUiProps> = ({ addClass = [], limit, spurt, currentTime }) => {
   const remindCount = useMemo(() => {
     return limit - currentTime;
   }, [currentTime, limit]);
 
+  const calcSpurt = useMemo(() => {
+    return spurt ? spurt : Math.floor(limit / 5);
+  }, [spurt, limit]);
+
   const progress = useMemo(() => {
     const progress = Math.floor((currentTime / limit) * 100);
-    const isSpurt = currentTime >= spurt;
+    const isSpurt = currentTime >= calcSpurt;
     return {
       background: `conic-gradient(${isSpurt ? '#ddd' : '#ddd'}, ${
         isSpurt ? '#F7BCB6' : '#ccc'
       } ${progress}%, #000 ${progress}%, #333)`,
     };
-  }, [currentTime, spurt, limit]);
+  }, [currentTime, calcSpurt, limit]);
 
   return (
     <div
       className={[
         styles.timeLeftUi,
         ...addClass,
-        currentTime >= spurt ? styles[`--spurt`] : '',
+        currentTime >= calcSpurt ? styles[`--spurt`] : '',
       ].join(' ')}
     >
       <svg
