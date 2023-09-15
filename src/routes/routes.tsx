@@ -9,6 +9,7 @@ import { useGetPlayerQuery, useAddPlayerMutation, updateLocalId } from 'store/pl
 
 import { EnergyCharge } from 'components/pages/EnergyCharge';
 import { Home } from 'components/pages/Home';
+import { TargetLead } from 'components/pages/TargetLead';
 import { TeamUp } from 'components/pages/TeamUp';
 import { WaitingRoom } from 'components/pages/WaitingRoom';
 
@@ -94,6 +95,7 @@ export const App: FC = () => {
         <Route path="/team-up" element={<TeamUp />} />
         <Route path="/waiting-room" element={<WaitingRoom />} />
         <Route path="/energy-charge" element={<EnergyCharge />} />
+        <Route path="/target-lead" element={<TargetLead />} />
       </Routes>
     </BrowserRouter>
   );

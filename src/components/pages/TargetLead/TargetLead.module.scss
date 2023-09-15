@@ -1,0 +1,16 @@
+@use "style/_variable" as *;
+
+.article {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+
+// フッター
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  margin: auto rem(24) rem(24);
+}
