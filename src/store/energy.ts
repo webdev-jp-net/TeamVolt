@@ -24,7 +24,6 @@ export const energyGetApi = createApi({
       const docRef = doc(db, 'team', id);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.log(docSnap.data().chargeUnits);
         return { data: docSnap.data().chargeUnits };
       } else {
         return { error: 'No such document!' };
