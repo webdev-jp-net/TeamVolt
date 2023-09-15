@@ -38,7 +38,7 @@ export const EnergyCharge: FC = () => {
 
   // チャレンジ済みフラグ
   const hasChallenged = useMemo(() => {
-    return chargeUnits.some(chargeUnit => chargeUnit.member === localId);
+    return chargeUnits ? chargeUnits.some(chargeUnit => chargeUnit.member === localId) : false;
   }, [chargeUnits, localId]);
 
   // 準備完了フラグ
@@ -91,9 +91,11 @@ export const EnergyCharge: FC = () => {
 
   // 合計所持数
   const totalChargeUnits = useMemo(() => {
-    return chargeUnits.reduce((acc, chargeUnit) => {
-      return acc + chargeUnit.count;
-    }, 0);
+    return chargeUnits
+      ? chargeUnits.reduce((acc, chargeUnit) => {
+          return acc + chargeUnit.count;
+        }, 0)
+      : 0;
   }, [chargeUnits]);
 
   // 離脱のタイミングでリセット
