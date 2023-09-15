@@ -115,23 +115,34 @@ export const EnergyCharge: FC = () => {
         </p>
       </header>
       {job === 'Rescuer' || hasChallenged ? (
-        <div className={styles.hasChallenged}>
-          <Button
-            handleClick={handleTeamStockRequest}
-            disabled={!selectedTeam || chargeUnitsLoading}
-          >
-            Check Team Charge
-          </Button>
-          <div className={styles.stock}>
-            {Array(totalChargeUnits)
-              .fill(0)
-              .map((_, index) => (
-                <span key={index} className={styles.stockItem}>
-                  🔋
-                </span>
-              ))}
+        <>
+          <div className={styles.hasChallenged}>
+            <Button
+              handleClick={handleTeamStockRequest}
+              disabled={!selectedTeam || chargeUnitsLoading}
+            >
+              Check Team Charge
+            </Button>
+            <div className={styles.stock}>
+              {Array(totalChargeUnits)
+                .fill(0)
+                .map((_, index) => (
+                  <span key={index} className={styles.stockItem}>
+                    🔋
+                  </span>
+                ))}
+            </div>
           </div>
-        </div>
+          <footer className={styles.footer}>
+            <Button
+              handleClick={() => {
+                navigate('/target-lead');
+              }}
+            >
+              Start Rescue
+            </Button>
+          </footer>
+        </>
       ) : (
         <>
           <div className={styles.body}>
