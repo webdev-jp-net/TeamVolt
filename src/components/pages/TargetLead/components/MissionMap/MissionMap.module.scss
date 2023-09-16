@@ -49,15 +49,16 @@
 }
 
 .icon {
-  @include rect(rem(60));
+  $size: 60;
+  @include rect(rem($size));
 
   position: absolute;
-  top: rem(-24);
-  right: rem(-24);
-  bottom: rem(-24);
-  left: rem(-24);
+  top: rem(-1 * $size);
+  right: rem(-1 * $size);
+  bottom: rem(-1 * $size);
+  left: rem(-1 * $size);
   display: block;
   margin: auto;
-  font-size: rem(60);
+  font-size: rem($size);
   line-height: 1;
 }
