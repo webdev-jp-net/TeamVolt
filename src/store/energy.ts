@@ -102,10 +102,10 @@ const energy = createSlice({
       };
     },
     // 獲得エネルギーをリセット
-    resetEnergy: () => {
+    resetEnergy: store => {
       return {
+        ...store,
         genEnergy: 0,
-        chargeUnits: [],
       };
     },
   },
