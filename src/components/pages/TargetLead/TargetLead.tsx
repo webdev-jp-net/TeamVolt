@@ -14,9 +14,7 @@ import { MissionMap } from './components/MissionMap';
 
 export const TargetLead: FC = () => {
   const navigate = useNavigate();
-  const { localId } = useSelector((state: RootState) => state.player);
   const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-  const { chargeUnits } = useSelector((state: RootState) => state.energy);
 
   // 所属チームの情報
   const myTeam = useMemo(() => {
@@ -50,37 +48,60 @@ export const TargetLead: FC = () => {
 
   // ミッション進捗率
   const progress = useMemo(() => {
-    return Math.floor((currentPosition / totalSteps) * 100);
+    return Math.floor((currentPosition / (totalSteps - 1)) * 100);
   }, [currentPosition, totalSteps]);
 
   // 探索中フラグ
   const [isSearching, setIsSearching] = useState(false);
 
-  // ブースト倍率
-  const [boost, setBoost] = useState(1);
+  // 探索アニメーション再生中
+  const [isSearchAnimate, setIsSearchAnimate] = useState(false);
+
+  // ブースト判定
+  const [isBoost, setIsBoost] = useState(false);
+
+  // ブースト許容閾値
+  const boostThreshold = 24;
 
   // ブーストチャレンジ実行
   const handleBoost = useCallback(() => {
     // 探索中フラグを立てる
     setIsSearching(true);
-    // ランダムで1または2をboostへセット
-    setBoost(Math.floor(Math.random() * 2) + 1);
+    // 探索中アニメーション開始
+    setIsSearchAnimate(true);
   }, []);
 
-  // チャージ実行
-  const handleCharge = useCallback(() => {
-    setIsSearching(false);
-
-    // バッテリー残量を減らす
-    setBatteryStock(batteryStock => batteryStock - 1);
-
+  // ブースト判定
+  const judgeBoost = (x: number, y: number) => {
+    const distance = Math.round(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)));
+    // Boosted
+    const boost = distance < boostThreshold ? 2 : 1;
+    setIsBoost(distance < boostThreshold);
     const payload = 1 * boost;
-    // 現在位置を進める
-    setCurrentPosition(pre => {
-      const result = pre + payload;
-      return result > totalSteps - 1 ? totalSteps - 1 : result;
-    });
-  }, [boost, totalSteps]);
+    console.log({ distance, boost });
+
+    setTimeout(() => {
+      // ブースト解除
+      setIsBoost(false);
+
+      // 探索終了
+      setIsSearching(false);
+
+      // バッテリー残量を減らす
+      setBatteryStock(batteryStock => batteryStock - 1);
+
+      // 現在位置を進める
+      setCurrentPosition(pre => {
+        const result = pre + payload;
+        return result > totalSteps - 1 ? totalSteps - 1 : result;
+      });
+    }, 1000);
+  };
+
+  // チャージ実行
+  const handleCharge = () => {
+    setIsSearchAnimate(false);
+  };
 
   // ミッション達成
   const isComplete = useMemo(() => {
@@ -104,8 +125,14 @@ export const TargetLead: FC = () => {
         <div className={styles.mapArea}>
           {isComplete && <p className={styles.message}>Mission Complete!</p>}
           {isFailed && <p className={styles.message}>Mission Failed...</p>}
+          {isBoost && <p className={styles.message}>Boosted!</p>}
           <MissionMap totalSteps={totalSteps} currentPosition={currentPosition} />
-          <BoostChallenge isActive={isSearching} />
+          <BoostChallenge
+            isActive={isSearching}
+            isAnimate={isSearchAnimate}
+            duration={1000}
+            calcBoost={judgeBoost}
+          />
         </div>
       </div>
 
@@ -116,7 +143,7 @@ export const TargetLead: FC = () => {
           </Button>
         ) : (
           <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
-            {boost > 1 && 'Boosted '}Deliver Charge
+            Deliver Charge
           </Button>
         )}
         <Button

@@ -27,7 +27,7 @@
 .message {
   @include fit;
 
-  z-index: 2;
+  z-index: 3;
   display: grid;
   place-items: center;
   height: 1.5em;

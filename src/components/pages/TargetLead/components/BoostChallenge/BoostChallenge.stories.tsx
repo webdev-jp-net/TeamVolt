@@ -7,8 +7,10 @@ export default {
   title: 'BoostChallenge',
   component: BoostChallenge,
   args: {
+    isAnimate: true,
     isActive: true,
-    handleClick: action(''),
+    duration: 1000,
+    handleDone: action('Done'),
   },
 } as ComponentMeta<typeof BoostChallenge>;
 export const Basic: ComponentStory<typeof BoostChallenge> = args => (

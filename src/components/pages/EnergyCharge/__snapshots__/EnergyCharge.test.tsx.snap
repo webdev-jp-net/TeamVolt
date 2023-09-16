@@ -11,16 +11,34 @@ exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
       <h1>
         Energy Charge
       </h1>
+      <p>
+        You're on 
+        <strong>
+          Charger
+        </strong>
+         duty!
+      </p>
     </header>
-    <p
-      class="paragraph"
+    <div
+      class="body"
     >
-      You're on 
-      <strong>
-        Charger
-      </strong>
-       duty!
-    </p>
+      <div
+        class="ready"
+      >
+        <p>
+          Tap the screen many times to charge the battery.
+        </p>
+        <button
+          class="button --basic"
+          type="button"
+        >
+          I'm Ready
+        </button>
+      </div>
+      <div
+        class="stock"
+      />
+    </div>
     <footer
       class="footer"
     />
