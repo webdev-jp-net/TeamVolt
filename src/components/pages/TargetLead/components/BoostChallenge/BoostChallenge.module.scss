@@ -1,0 +1,79 @@
+@use "style/_variable" as *;
+
+.boostChallenge {
+  @include fit;
+
+  z-index: 2;
+  display: none;
+  place-items: center;
+  padding: rem(12);
+  margin: auto;
+  pointer-events: none;
+
+  &.--active {
+    display: grid;
+    pointer-events: auto;
+  }
+}
+
+.screen {
+  @include fit;
+
+  background: #000c;
+}
+
+.container {
+  @include rect(100%);
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: auto;
+  overflow: hidden;
+  background-color: black;
+}
+
+// 霞がかるアニメーション
+@keyframes smock {
+  from {
+    filter: blur(rem(12));
+    opacity: 0.66;
+  }
+
+  to {
+    filter: blur(rem(3));
+    opacity: 1;
+  }
+
+}
+
+.target {
+  $size: 60;
+  @include rect(calc(100% + ($size * 1px)));
+
+  position: absolute;
+  top: ($size * -1px);
+  right: ($size * -1px);
+  bottom: ($size * -1px);
+  left: ($size * -1px);
+  display: grid;
+  place-items: center;
+  margin: auto;
+  font-size: rem(300);
+  line-height: 1;
+  background: radial-gradient(circle, white, black ($size * 3px));
+  box-shadow: 0 0 0 ($size * 1px) black;
+
+  .--animate & {
+    transition: transform linear;
+    animation: smock  ease-in-out infinite alternate;
+  }
+}
+
+.frame {
+  @include fit;
+
+  pointer-events: none;
+  background: radial-gradient(circle, transparent 35vmin, black 40vmin);
+}
+

@@ -1,0 +1,47 @@
+@use "style/_variable" as *;
+
+.article {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+
+// ヘッダー
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  margin: rem(24) rem(24) auto;
+}
+
+// 本文
+.body {
+  padding: rem(24);
+}
+
+.mapArea {
+  position: relative;
+}
+
+.message {
+  @include fit;
+
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  height: 1.5em;
+  margin: auto;
+  font-size: rem(30);
+  font-weight: bold;
+  background: #fff6;
+}
+
+
+// フッター
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  margin: auto rem(24) rem(24);
+}

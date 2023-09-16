@@ -6,8 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useGetTeamListQuery } from 'store/team';
-import { useAddMemberMutation, updateTeam } from 'store/team';
+import { useGetTeamListQuery, useAddMemberMutation, updateTeam } from 'store/team';
 import { useRemoveTeamMutation } from 'store/team';
 
 import styles from './TeamUp.module.scss';
@@ -21,9 +20,6 @@ export const TeamUp: FC = () => {
 
   const { localId } = useSelector((state: RootState) => state.player);
   const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-
-  // 既存のチーム情報取得
-  const { isSuccess: getTeamSuccess, isError: getTeamError } = useGetTeamListQuery();
 
   // チーム選択
   const handleSelectTeam = useCallback(
@@ -44,6 +40,7 @@ export const TeamUp: FC = () => {
   const joinTeam = useCallback(() => {
     if (selectedTeam) {
       sendAddMember({ id: selectedTeam, value: localId });
+      localStorage.setItem('selectedTeam', selectedTeam);
     }
   }, [localId, sendAddMember, selectedTeam]);
 
@@ -58,6 +55,7 @@ export const TeamUp: FC = () => {
   const handleRemoveTeam = useCallback(() => {
     if (window.confirm('Are you sure you want to delete this team?')) {
       sendRemoveTeamMutation(selectedTeam || '');
+      localStorage.removeItem('selectedTeam');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTeam]);
@@ -75,7 +73,6 @@ export const TeamUp: FC = () => {
                 <ListItem
                   selected={item.id === selectedTeam}
                   name={item.name}
-                  disabled={getTeamError}
                   handleClick={() => {
                     handleSelectTeam(item.id);
                   }}
@@ -87,17 +84,14 @@ export const TeamUp: FC = () => {
           <div className={styles.body}>
             <Button
               handleClick={handleRemoveTeam}
-              disabled={!getTeamSuccess || entriesAddLoading || !selectedTeam || !localId}
+              disabled={entriesAddLoading || !selectedTeam || !localId}
             >
               (debug) delete team
             </Button>
           </div>
         </div>
         <footer className={styles.footer}>
-          <Button
-            handleClick={joinTeam}
-            disabled={!getTeamSuccess || entriesAddLoading || !selectedTeam || !localId}
-          >
+          <Button handleClick={joinTeam} disabled={entriesAddLoading || !selectedTeam || !localId}>
             join
           </Button>
           <Button

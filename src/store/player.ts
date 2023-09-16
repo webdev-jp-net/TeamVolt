@@ -8,11 +8,13 @@ type State = {
   localId: string;
   player?: string;
   playerList: PlayerArticleData[];
+  genEnergy: number;
 };
 
 const initialState: State = {
   localId: '',
   playerList: [],
+  genEnergy: 0,
 };
 
 // RTK Queryの設定
@@ -69,6 +71,20 @@ const player = createSlice({
         localId: action.payload,
       };
     },
+    // 獲得エネルギーを更新
+    updateGenEnergy: (state, action: PayloadAction<number>) => {
+      return {
+        ...state,
+        genEnergy: action.payload,
+      };
+    },
+    // 獲得エネルギーをリセット
+    resetEnergy: store => {
+      return {
+        ...store,
+        genEnergy: 0,
+      };
+    },
   },
   extraReducers: builder => {
     // 成功: プレイヤー情報取得
@@ -93,7 +109,7 @@ const player = createSlice({
 });
 
 // Action Creator
-export const { updateLocalId } = player.actions;
+export const { updateLocalId, updateGenEnergy, resetEnergy } = player.actions;
 
 // Reducer
 export default player.reducer;

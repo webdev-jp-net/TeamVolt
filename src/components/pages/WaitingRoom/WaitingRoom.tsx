@@ -121,7 +121,7 @@ export const WaitingRoom: FC = () => {
         <footer className={styles.footer}>
           <Button
             handleClick={() => {
-              navigate('/team');
+              navigate('/team-up');
             }}
           >
             Team Up!

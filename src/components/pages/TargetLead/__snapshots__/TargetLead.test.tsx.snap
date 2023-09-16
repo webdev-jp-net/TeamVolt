@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TargetLead TargetLeadのスナップショット 1`] = `
+<DocumentFragment>
+  <article
+    class="article"
+  >
+    <header
+      class="header"
+    >
+      <h1>
+        Target Lead
+      </h1>
+      <p>
+        🔋 x 0 / progress: NaN%
+      </p>
+    </header>
+    <div
+      class="body"
+    >
+      <div
+        class="mapArea"
+      >
+        <p
+          class="message"
+        >
+          Mission Complete!
+        </p>
+        <div
+          class="missionMap"
+        >
+          <div
+            class="map"
+          >
+            <div
+              class="cell --current"
+            >
+              <span
+                class="icon"
+              >
+                🤖
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="boostChallenge  "
+        >
+          <div
+            class="screen"
+          />
+          <div
+            class="container"
+          >
+            <div
+              class="target"
+              style="transform: translate(0px, 0px); transition-duration: 1000ms; animation-duration: 1250ms;"
+            >
+              🤖
+            </div>
+            <div
+              class="frame"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer
+      class="footer"
+    >
+      <button
+        class="button --basic"
+        disabled=""
+        type="button"
+      >
+        Search for Rescues
+      </button>
+      <button
+        class="button --basic"
+        type="button"
+      >
+        cancel
+      </button>
+    </footer>
+  </article>
+</DocumentFragment>
+`;
