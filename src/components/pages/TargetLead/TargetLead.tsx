@@ -74,6 +74,16 @@ export const TargetLead: FC = () => {
     });
   }, [boost, totalSteps]);
 
+  // ミッション達成
+  const isComplete = useMemo(() => {
+    return currentPosition >= totalSteps - 1;
+  }, [currentPosition, totalSteps]);
+
+  // ミッション失敗
+  const isFailed = useMemo(() => {
+    return !isComplete && batteryStock < 1;
+  }, [batteryStock, isComplete]);
+
   return (
     <article className={styles.article}>
       <header className={styles.header}>
@@ -83,16 +93,19 @@ export const TargetLead: FC = () => {
         </p>
       </header>
       <div className={styles.body}>
-        <p></p>
-        <MissionMap totalSteps={totalSteps} currentPosition={currentPosition} />
+        <div className={styles.mapArea}>
+          {isComplete && <p className={styles.complete}>Mission Complete!</p>}
+          {isFailed && <p className={styles.complete}>Mission Failed...</p>}
+          <MissionMap totalSteps={totalSteps} currentPosition={currentPosition} />
+        </div>
       </div>
 
       <footer className={styles.footer}>
-        <Button handleClick={handleBoost} disabled={batteryStock < 1}>
+        <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
           Search for Rescues
         </Button>
-        <Button handleClick={handleCharge} disabled={batteryStock < 1}>
-          Deliver Charge
+        <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
+          {boost > 1 && 'Boosted '}Deliver Charge
         </Button>
         <Button
           handleClick={() => {

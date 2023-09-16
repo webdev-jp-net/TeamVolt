@@ -20,6 +20,23 @@
   padding: rem(24);
 }
 
+.mapArea {
+  position: relative;
+}
+
+.complete {
+  @include fit;
+
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  height: 1.5em;
+  margin: auto;
+  font-size: rem(30);
+  font-weight: bold;
+  background: #fff6;
+}
+
 
 // フッター
 .footer {
