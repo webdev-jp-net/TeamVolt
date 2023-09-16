@@ -55,7 +55,13 @@ export const TargetLead: FC = () => {
   // ブースト倍率
   const [boost, setBoost] = useState(1);
 
-  // 実行
+  // ブーストチャレンジ実行
+  const handleBoost = useCallback(() => {
+    // ランダムで1または2をboostへセット
+    setBoost(Math.floor(Math.random() * 2) + 1);
+  }, []);
+
+  // チャージ実行
   const handleCharge = useCallback(() => {
     // バッテリー残量を減らす
     setBatteryStock(batteryStock => batteryStock - 1);
