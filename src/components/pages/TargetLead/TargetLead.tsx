@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useUpdateUsedUnitsMutation } from 'store/team';
+import { useUpdateUsedUnitsMutation, useUpdateCurrentPositionMutation } from 'store/team';
 
 import styles from './TargetLead.module.scss';
 
@@ -55,7 +55,12 @@ export const TargetLead: FC = () => {
   const [sendUpdateUsedUnits] = useUpdateUsedUnitsMutation();
 
   // 現在位置
-  const [currentPosition, setCurrentPosition] = useState(0);
+  const currentPosition = useMemo(() => {
+    return myTeam?.currentPosition ? myTeam?.currentPosition : 0;
+  }, [myTeam]);
+
+  // 現在位置を更新
+  const [sendUpdateCurrentPositions] = useUpdateCurrentPositionMutation();
 
   // ミッション進捗率
   const progress = useMemo(() => {
@@ -102,10 +107,9 @@ export const TargetLead: FC = () => {
       sendUpdateUsedUnits({ id: selectedTeam || '', value: usedUnits + 1 });
 
       // 現在位置を進める
-      setCurrentPosition(pre => {
-        const result = pre + payload;
-        return result > totalSteps - 1 ? totalSteps - 1 : result;
-      });
+      let newCurrentPosition = currentPosition + payload;
+      if (newCurrentPosition > totalSteps - 1) newCurrentPosition = totalSteps - 1;
+      sendUpdateCurrentPositions({ id: selectedTeam || '', value: newCurrentPosition });
     }, 1000);
   };
 

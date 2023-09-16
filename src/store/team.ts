@@ -147,6 +147,19 @@ export const teamPostApi = createApi({
       } else {
         return { error: 'No such document!' };
       }
+    } else if (operationType === 'update_current_positions' && id) {
+      const docRef = doc(db, 'team', id);
+      // 救出ミッション進捗を登録
+      await updateDoc(docRef, {
+        currentPosition: value,
+      });
+      // レスポンスで返す情報を再取得
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { data: { id, ...docSnap.data() } };
+      } else {
+        return { error: 'No such document!' };
+      }
     } else {
       return { error: 'No such document!' };
     }
@@ -206,6 +219,14 @@ export const teamPostApi = createApi({
         value,
       }),
     }),
+    // 救出ミッション進捗を更新
+    updateCurrentPosition: builder.mutation<TeamArticleData, { id: string; value: number }>({
+      query: ({ id, value }) => ({
+        operationType: 'update_current_positions',
+        id,
+        value,
+      }),
+    }),
   }),
 });
 export const {
@@ -216,6 +237,7 @@ export const {
   useAddChallengerMutation,
   useRemoveChallengerMutation,
   useUpdateUsedUnitsMutation,
+  useUpdateCurrentPositionMutation,
 } = teamPostApi;
 
 const team = createSlice({
@@ -313,6 +335,14 @@ const team = createSlice({
     // 成功: 救出ミッション試行数更新
     builder.addMatcher(
       teamPostApi.endpoints.updateUsedUnits.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
+        state.teamList = [...externalTeamList, action.payload];
+      }
+    );
+    // 成功: 救出ミッション進捗更新
+    builder.addMatcher(
+      teamPostApi.endpoints.updateCurrentPosition.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];

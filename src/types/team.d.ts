@@ -8,4 +8,5 @@ export type TeamArticleData = {
   challenger?: string;
   chargeUnits?: ChargeUnitsData[];
   usedUnits?: number;
+  currentPosition?: number;
 };
