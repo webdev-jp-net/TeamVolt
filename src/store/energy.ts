@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, arrayUnion, runTransaction } from 'firebase/firestore';
 import { db } from 'firebaseDB';
 
 type ChargeUnitsData = { member: string; count: number };
@@ -46,13 +46,27 @@ export const energyPostApi = createApi({
   baseQuery: async ({ id, value }: { id?: string; value: ChargeUnitsData }) => {
     if (id && value) {
       const docRef = doc(db, 'team', id);
-      await updateDoc(docRef, {
-        chargeUnits: arrayUnion(value),
-      });
+      try {
+        await runTransaction(db, async transaction => {
+          const sfDoc = await transaction.get(docRef);
+          if (!sfDoc.exists()) {
+            // eslint-disable-next-line no-throw-literal
+            throw 'Document does not exist!';
+          }
+          const oldList = sfDoc.data().chargeUnits || [];
+          const newList = [
+            ...oldList.filter((item: ChargeUnitsData) => item.member !== value.member),
+            value,
+          ];
+          transaction.update(docRef, { chargeUnits: newList });
+        });
+      } catch (e) {
+        console.log('Transaction failure:', e);
+      }
       // レスポンスで返す情報を再取得
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        return { data: value };
+        return { data: docSnap.data().chargeUnits };
       } else {
         return { error: 'No such document!' };
       }
@@ -62,7 +76,7 @@ export const energyPostApi = createApi({
   },
   endpoints: builder => ({
     // 獲得バッテリー追加
-    addChargeUnits: builder.mutation<ChargeUnitsData, { id: string; value: ChargeUnitsData }>({
+    addChargeUnits: builder.mutation<ChargeUnitsData[], { id: string; value: ChargeUnitsData }>({
       query: ({ id, value }) => ({
         operationType: 'remove_challenger',
         id,
@@ -111,8 +125,8 @@ const energy = createSlice({
     // 成功: 獲得バッテリー追加
     builder.addMatcher(
       energyPostApi.endpoints.addChargeUnits.matchFulfilled,
-      (state, action: PayloadAction<ChargeUnitsData>) => {
-        const result = { chargeUnits: [...state.chargeUnits, action.payload] };
+      (state, action: PayloadAction<ChargeUnitsData[]>) => {
+        const result = { chargeUnits: action.payload };
         return {
           ...state,
           ...result,
