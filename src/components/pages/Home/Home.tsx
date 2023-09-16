@@ -34,6 +34,7 @@ export const Home: FC = () => {
       sendRemoveChallenger({ id: selectedTeam || '', value: localId });
     sendRemoveMember({ id: selectedTeam || '', value: localId });
     dispatch(escapeTeam());
+    localStorage.removeItem('selectedTeam');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

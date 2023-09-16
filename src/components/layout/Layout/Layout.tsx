@@ -6,6 +6,7 @@ import { Outlet } from 'react-router-dom';
 
 import { RootState } from 'store';
 import { useGetPlayerQuery, useAddPlayerMutation, updateLocalId } from 'store/player';
+import { useGetTeamListQuery, updateTeam } from 'store/team';
 
 import { useGenerateAndStoreSessionId } from 'hooks/useGenerateAndStoreSessionId';
 
@@ -18,6 +19,7 @@ export const Layout: FC = () => {
   const generateId = useGenerateAndStoreSessionId;
 
   const { playerList } = useSelector((state: RootState) => state.player);
+  const { selectedTeam } = useSelector((state: RootState) => state.team);
 
   // 既存のプレイヤー情報取得
   const { isSuccess: getPlayerSuccess } = useGetPlayerQuery();
@@ -73,11 +75,26 @@ export const Layout: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExistLocalId, getPlayerSuccess]);
 
+  // 既存のチーム情報取得
+  const {} = useGetTeamListQuery();
+
+  // ローカルストレージへ既存のチームが保存されているか
+  const [isExistSelectedTeam, setIsExistSelectedTeam] = useState<string>('');
+  useEffect(() => {
+    if (isExistSelectedTeam && !selectedTeam) dispatch(updateTeam(isExistSelectedTeam));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isExistSelectedTeam, selectedTeam]);
+
   // 初回処理
   useEffect(() => {
-    // localStorageにuserIdが存在しているか確認
+    // localStorageにlocalIdが存在しているか確認
     const watchId = localStorage.getItem('localId');
     setIsExistLocalId(watchId || '');
+
+    // localStorageにselectedTeamが存在しているか確認
+    const watchTeam = localStorage.getItem('selectedTeam');
+    setIsExistSelectedTeam(watchTeam || '');
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
