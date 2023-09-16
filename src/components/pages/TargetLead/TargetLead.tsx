@@ -85,11 +85,7 @@ export const TargetLead: FC = () => {
       </div>
 
       <footer className={styles.footer}>
-        <Button
-          handleClick={() => {
-            navigate('/');
-          }}
-        >
+        <Button handleClick={handleBoost} disabled={batteryStock < 1}>
           Search for Rescues
         </Button>
         <Button handleClick={handleCharge} disabled={batteryStock < 1}>
