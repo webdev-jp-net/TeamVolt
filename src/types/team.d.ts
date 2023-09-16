@@ -7,4 +7,5 @@ export type TeamArticleData = {
   member: string[];
   challenger?: string;
   chargeUnits?: ChargeUnitsData[];
+  usedUnits?: number;
 };

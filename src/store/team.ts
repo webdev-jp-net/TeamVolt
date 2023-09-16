@@ -65,7 +65,7 @@ export const { useGetTeamListQuery, useGetTeamArticleQuery } = teamGetApi;
 type teamPostApiProps = {
   operationType: string;
   id?: string;
-  value?: string;
+  value?: string | number;
 };
 export const teamPostApi = createApi({
   reducerPath: 'teamPostApi',
@@ -134,6 +134,19 @@ export const teamPostApi = createApi({
       } else {
         return { error: 'No such document!' };
       }
+    } else if (operationType === 'update_used_units' && id) {
+      const docRef = doc(db, 'team', id);
+      // 救出ミッション試行回数を登録
+      await updateDoc(docRef, {
+        usedUnits: value,
+      });
+      // レスポンスで返す情報を再取得
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { data: { id, ...docSnap.data() } };
+      } else {
+        return { error: 'No such document!' };
+      }
     } else {
       return { error: 'No such document!' };
     }
@@ -185,6 +198,14 @@ export const teamPostApi = createApi({
         value,
       }),
     }),
+    // 救出ミッション試行数を更新
+    updateUsedUnits: builder.mutation<TeamArticleData, { id: string; value: number }>({
+      query: ({ id, value }) => ({
+        operationType: 'update_used_units',
+        id,
+        value,
+      }),
+    }),
   }),
 });
 export const {
@@ -194,6 +215,7 @@ export const {
   useRemoveMemberMutation,
   useAddChallengerMutation,
   useRemoveChallengerMutation,
+  useUpdateUsedUnitsMutation,
 } = teamPostApi;
 
 const team = createSlice({
@@ -283,6 +305,14 @@ const team = createSlice({
     // 成功: 代表者削除
     builder.addMatcher(
       teamPostApi.endpoints.removeChallenger.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
+        state.teamList = [...externalTeamList, action.payload];
+      }
+    );
+    // 成功: 救出ミッション試行数更新
+    builder.addMatcher(
+      teamPostApi.endpoints.updateUsedUnits.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];

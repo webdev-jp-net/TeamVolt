@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
+import { useUpdateUsedUnitsMutation } from 'store/team';
 
 import styles from './TargetLead.module.scss';
 
@@ -40,8 +41,18 @@ export const TargetLead: FC = () => {
     return totalMembers ? totalMembers * 3 : 1;
   }, [totalMembers]);
 
+  // 使ったバッテリーの数
+  const usedUnits = useMemo(() => {
+    return myTeam?.usedUnits ? myTeam?.usedUnits : 0;
+  }, [myTeam]);
+
   // バッテリー残量
-  const [batteryStock, setBatteryStock] = useState(totalChargeUnits);
+  const batteryStock = useMemo(() => {
+    return totalChargeUnits - usedUnits;
+  }, [totalChargeUnits, usedUnits]);
+
+  // 使ったバッテリー数を更新
+  const [sendUpdateUsedUnits] = useUpdateUsedUnitsMutation();
 
   // 現在位置
   const [currentPosition, setCurrentPosition] = useState(0);
@@ -88,7 +99,7 @@ export const TargetLead: FC = () => {
       setIsSearching(false);
 
       // バッテリー残量を減らす
-      setBatteryStock(batteryStock => batteryStock - 1);
+      sendUpdateUsedUnits({ id: selectedTeam || '', value: usedUnits + 1 });
 
       // 現在位置を進める
       setCurrentPosition(pre => {
