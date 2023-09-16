@@ -27,10 +27,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-[id='root'],
-.l-page {
+[id='root'] {
   position: relative;
   z-index: 1;
+  display: grid;
   height: 100%;
 }
 
