@@ -21,7 +21,7 @@ export const MissionMap: FC<MissionMapProps> = ({ totalSteps, currentPosition, a
                 ' '
               )}
             >
-              ↑{currentPosition === index && <span className={styles.icon}>🤖</span>}
+              {currentPosition === index && <span className={styles.icon}>🤖</span>}
             </div>
           ))
         }

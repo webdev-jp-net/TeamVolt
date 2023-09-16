@@ -42,6 +42,13 @@
   color: white;
   border-radius: 50%;
 
+  &::before {
+    position: absolute;
+    font-size: rem(6);
+    content: '↑';
+    opacity: 0.5;
+  }
+
 
   &.--current {
     color: white;
