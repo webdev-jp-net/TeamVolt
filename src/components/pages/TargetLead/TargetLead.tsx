@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useMemo, useState, useCallback } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -52,6 +52,19 @@ export const TargetLead: FC = () => {
     return Math.floor((currentPosition / totalSteps) * 100);
   }, [currentPosition, totalSteps]);
 
+  // ブースト倍率
+  const [boost, setBoost] = useState(1);
+
+  // 実行
+  const handleCharge = useCallback(() => {
+    // バッテリー残量を減らす
+    setBatteryStock(batteryStock => batteryStock - 1);
+
+    const payload = 1 * boost;
+    // 現在位置を進める
+    setCurrentPosition(pre => pre + payload);
+  }, [boost]);
+
   return (
     <article className={styles.article}>
       <header className={styles.header}>
@@ -66,6 +79,16 @@ export const TargetLead: FC = () => {
       </div>
 
       <footer className={styles.footer}>
+        <Button
+          handleClick={() => {
+            navigate('/');
+          }}
+        >
+          Search for Rescues
+        </Button>
+        <Button handleClick={handleCharge} disabled={batteryStock < 1}>
+          Deliver Charge
+        </Button>
         <Button
           handleClick={() => {
             navigate('/');
