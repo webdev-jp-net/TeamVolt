@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
+import { useGetTeamArticleQuery } from 'store/team';
 import { useUpdateUsedUnitsMutation, useUpdateCurrentPositionMutation } from 'store/team';
 
 import styles from './TargetLead.module.scss';
@@ -15,12 +16,18 @@ import { MissionMap } from './components/MissionMap';
 
 export const TargetLead: FC = () => {
   const navigate = useNavigate();
+  const { localId } = useSelector((state: RootState) => state.player);
   const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
 
   // 所属チームの情報
   const myTeam = useMemo(() => {
     return teamList.find(team => team.id === selectedTeam);
   }, [teamList, selectedTeam]);
+
+  // 役職
+  const job = useMemo(() => {
+    return myTeam?.challenger === localId ? 'Rescuer' : 'Charger';
+  }, [myTeam, localId]);
 
   // チームで獲得しているバッテリー数
   const totalChargeUnits = useMemo(() => {
@@ -128,6 +135,18 @@ export const TargetLead: FC = () => {
     return !isComplete && batteryStock < 1;
   }, [batteryStock, isComplete]);
 
+  // チーム情報の取得
+  const {
+    isLoading: getDrawResultLoading,
+    refetch: getDrawResultRefetch,
+    isFetching: getDrawResultFetching,
+  } = useGetTeamArticleQuery(selectedTeam || '', { skip: !selectedTeam });
+
+  // チームの進捗を確認
+  const handleTeamProgressRequest = useCallback(() => {
+    getDrawResultRefetch();
+  }, [getDrawResultRefetch]);
+
   return (
     <article className={styles.article}>
       <header className={styles.header}>
@@ -152,13 +171,24 @@ export const TargetLead: FC = () => {
       </div>
 
       <footer className={styles.footer}>
-        {!isSearching ? (
-          <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
-            Search for Rescues
-          </Button>
+        {job === 'Rescuer' ? (
+          <>
+            {!isSearching ? (
+              <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
+                Search for Rescues
+              </Button>
+            ) : (
+              <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
+                Deliver Charge
+              </Button>
+            )}
+          </>
         ) : (
-          <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
-            Deliver Charge
+          <Button
+            handleClick={handleTeamProgressRequest}
+            disabled={getDrawResultLoading || getDrawResultFetching}
+          >
+            Check Mission Progress
           </Button>
         )}
         <Button
