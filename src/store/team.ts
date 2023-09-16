@@ -11,9 +11,12 @@ import {
   deleteDoc,
   deleteField,
   collection,
+  runTransaction,
 } from 'firebase/firestore';
 import { db } from 'firebaseDB';
 import { TeamArticleData } from 'types/team';
+
+import type { ChargeUnitsData } from 'types/team';
 
 type State = {
   teamList: TeamArticleData[];
@@ -65,7 +68,7 @@ export const { useGetTeamListQuery, useGetTeamArticleQuery } = teamGetApi;
 type teamPostApiProps = {
   operationType: string;
   id?: string;
-  value?: string | number;
+  value?: string | number | ChargeUnitsData;
 };
 export const teamPostApi = createApi({
   reducerPath: 'teamPostApi',
@@ -127,6 +130,36 @@ export const teamPostApi = createApi({
       await updateDoc(docRef, {
         challenger: deleteField(),
       });
+      // レスポンスで返す情報を再取得
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { data: { id, ...docSnap.data() } };
+      } else {
+        return { error: 'No such document!' };
+      }
+    } else if (operationType === 'add_charge_units' && id && value) {
+      // 獲得バッテリーを登録
+      const docRef = doc(db, 'team', id);
+      try {
+        await runTransaction(db, async transaction => {
+          const sfDoc = await transaction.get(docRef);
+          if (!sfDoc.exists()) {
+            // eslint-disable-next-line no-throw-literal
+            throw 'Document does not exist!';
+          }
+          const oldList = sfDoc.data().chargeUnits || [];
+          const newList = [
+            ...oldList.filter(
+              (item: ChargeUnitsData) =>
+                item.member !== (value as unknown as ChargeUnitsData).member
+            ),
+            value,
+          ];
+          transaction.update(docRef, { chargeUnits: newList });
+        });
+      } catch (e) {
+        console.log('Transaction failure:', e);
+      }
       // レスポンスで返す情報を再取得
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -211,6 +244,14 @@ export const teamPostApi = createApi({
         value,
       }),
     }),
+    // 獲得バッテリー追加
+    addChargeUnits: builder.mutation<TeamArticleData, { id: string; value: ChargeUnitsData }>({
+      query: ({ id, value }) => ({
+        operationType: 'add_charge_units',
+        id,
+        value,
+      }),
+    }),
     // 救出ミッション試行数を更新
     updateUsedUnits: builder.mutation<TeamArticleData, { id: string; value: number }>({
       query: ({ id, value }) => ({
@@ -236,6 +277,7 @@ export const {
   useRemoveMemberMutation,
   useAddChallengerMutation,
   useRemoveChallengerMutation,
+  useAddChargeUnitsMutation,
   useUpdateUsedUnitsMutation,
   useUpdateCurrentPositionMutation,
 } = teamPostApi;
@@ -327,6 +369,14 @@ const team = createSlice({
     // 成功: 代表者削除
     builder.addMatcher(
       teamPostApi.endpoints.removeChallenger.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
+        state.teamList = [...externalTeamList, action.payload];
+      }
+    );
+    // 成功: 獲得バッテリー追加
+    builder.addMatcher(
+      teamPostApi.endpoints.addChargeUnits.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];

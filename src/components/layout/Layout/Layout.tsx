@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
 import { RootState } from 'store';
-import { useGetChargeUnitsQuery } from 'store/energy';
 import { useGetPlayerQuery, useAddPlayerMutation, updateLocalId } from 'store/player';
 import { useGetTeamListQuery, updateTeam } from 'store/team';
 
@@ -85,11 +84,6 @@ export const Layout: FC = () => {
     if (isExistSelectedTeam && !selectedTeam) dispatch(updateTeam(isExistSelectedTeam));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExistSelectedTeam, selectedTeam]);
-
-  // チームのバッテリー情報を取得
-  const {} = useGetChargeUnitsQuery(selectedTeam || '', {
-    skip: !selectedTeam,
-  });
 
   // 初回処理
   useEffect(() => {

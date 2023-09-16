@@ -6,12 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import {
-  updateGenEnergy,
-  resetEnergy,
-  useAddChargeUnitsMutation,
-  useGetChargeUnitsQuery,
-} from 'store/energy';
+import { updateGenEnergy, resetEnergy } from 'store/player';
+import { useGetTeamArticleQuery, useAddChargeUnitsMutation } from 'store/team';
 
 import styles from './EnergyCharge.module.scss';
 
@@ -22,9 +18,8 @@ export const EnergyCharge: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { localId } = useSelector((state: RootState) => state.player);
+  const { localId, genEnergy } = useSelector((state: RootState) => state.player);
   const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-  const { genEnergy, chargeUnits } = useSelector((state: RootState) => state.energy);
 
   // 所属チームの情報
   const myTeam = useMemo(() => {
@@ -38,8 +33,10 @@ export const EnergyCharge: FC = () => {
 
   // チャレンジ済みフラグ
   const hasChallenged = useMemo(() => {
-    return chargeUnits ? chargeUnits.some(chargeUnit => chargeUnit.member === localId) : false;
-  }, [chargeUnits, localId]);
+    return myTeam?.chargeUnits
+      ? myTeam?.chargeUnits.some(chargeUnit => chargeUnit.member === localId)
+      : false;
+  }, [myTeam, localId]);
 
   // 準備完了フラグ
   const [isReady, setIsReady] = useState<boolean>(false);
@@ -77,26 +74,26 @@ export const EnergyCharge: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [genEnergy, selectedTeam, localId]);
 
-  // チームのバッテリー情報を取得
-  const { isLoading: chargeUnitsLoading, refetch: chargeUnitsRefetch } = useGetChargeUnitsQuery(
-    selectedTeam || '',
-    {
-      skip: !selectedTeam,
-    }
-  );
+  // チーム情報の取得
+  const {
+    isLoading: getDrawResultLoading,
+    refetch: getDrawResultRefetch,
+    isFetching: getDrawResultFetching,
+  } = useGetTeamArticleQuery(selectedTeam || '', { skip: !selectedTeam });
+
   const handleTeamStockRequest = useCallback(() => {
-    chargeUnitsRefetch();
+    getDrawResultRefetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 合計所持数
+  // チームで獲得しているバッテリー数
   const totalChargeUnits = useMemo(() => {
-    return chargeUnits
-      ? chargeUnits.reduce((acc, chargeUnit) => {
+    return myTeam?.chargeUnits
+      ? myTeam?.chargeUnits.reduce((acc, chargeUnit) => {
           return acc + chargeUnit.count;
         }, 0)
       : 0;
-  }, [chargeUnits]);
+  }, [myTeam]);
 
   // 離脱のタイミングでリセット
   useEffect(() => {
@@ -121,7 +118,7 @@ export const EnergyCharge: FC = () => {
           <div className={styles.hasChallenged}>
             <Button
               handleClick={handleTeamStockRequest}
-              disabled={!selectedTeam || chargeUnitsLoading}
+              disabled={!selectedTeam || getDrawResultLoading || getDrawResultFetching}
             >
               Check Team Charge
             </Button>
