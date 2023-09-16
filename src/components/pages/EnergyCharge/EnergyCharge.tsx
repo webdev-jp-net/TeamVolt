@@ -100,7 +100,9 @@ export const EnergyCharge: FC = () => {
 
   // 離脱のタイミングでリセット
   useEffect(() => {
+    document.body.classList.add('isFixedScroll');
     return () => {
+      document.body.classList.remove('isFixedScroll');
       dispatch(resetEnergy());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
