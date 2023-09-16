@@ -45,7 +45,7 @@ export const TargetLead: FC = () => {
 
   // ゴールまでのマス数
   const totalSteps = useMemo(() => {
-    return totalMembers ? totalMembers * 3 : 1;
+    return totalMembers ? totalMembers * 4 : 1;
   }, [totalMembers]);
 
   // 使ったバッテリーの数
