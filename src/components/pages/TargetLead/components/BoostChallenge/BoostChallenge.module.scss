@@ -1,0 +1,33 @@
+@use "style/_variable" as *;
+
+.boostChallenge {
+  @include fit;
+
+  z-index: 2;
+  display: none;
+  place-items: center;
+  padding: rem(12);
+  margin: auto;
+  pointer-events: none;
+
+  &.--active {
+    display: grid;
+    pointer-events: auto;
+  }
+}
+
+.screen {
+  @include fit;
+
+  background: #000c;
+}
+
+.container {
+  @include rect(100%);
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: auto;
+  background: #fff6;
+}

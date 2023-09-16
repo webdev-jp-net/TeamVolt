@@ -9,6 +9,7 @@ import { RootState } from 'store';
 
 import styles from './TargetLead.module.scss';
 
+import { BoostChallenge } from './components/BoostChallenge';
 import { MissionMap } from './components/MissionMap';
 
 export const TargetLead: FC = () => {
@@ -52,17 +53,24 @@ export const TargetLead: FC = () => {
     return Math.floor((currentPosition / totalSteps) * 100);
   }, [currentPosition, totalSteps]);
 
+  // 探索中フラグ
+  const [isSearching, setIsSearching] = useState(false);
+
   // ブースト倍率
   const [boost, setBoost] = useState(1);
 
   // ブーストチャレンジ実行
   const handleBoost = useCallback(() => {
+    // 探索中フラグを立てる
+    setIsSearching(true);
     // ランダムで1または2をboostへセット
     setBoost(Math.floor(Math.random() * 2) + 1);
   }, []);
 
   // チャージ実行
   const handleCharge = useCallback(() => {
+    setIsSearching(false);
+
     // バッテリー残量を減らす
     setBatteryStock(batteryStock => batteryStock - 1);
 
@@ -94,19 +102,23 @@ export const TargetLead: FC = () => {
       </header>
       <div className={styles.body}>
         <div className={styles.mapArea}>
-          {isComplete && <p className={styles.complete}>Mission Complete!</p>}
-          {isFailed && <p className={styles.complete}>Mission Failed...</p>}
+          {isComplete && <p className={styles.message}>Mission Complete!</p>}
+          {isFailed && <p className={styles.message}>Mission Failed...</p>}
           <MissionMap totalSteps={totalSteps} currentPosition={currentPosition} />
+          <BoostChallenge isActive={isSearching} />
         </div>
       </div>
 
       <footer className={styles.footer}>
-        <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
-          Search for Rescues
-        </Button>
-        <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
-          {boost > 1 && 'Boosted '}Deliver Charge
-        </Button>
+        {!isSearching ? (
+          <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
+            Search for Rescues
+          </Button>
+        ) : (
+          <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
+            {boost > 1 && 'Boosted '}Deliver Charge
+          </Button>
+        )}
         <Button
           handleClick={() => {
             navigate('/');
