@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { doc, getDoc, updateDoc, arrayUnion, runTransaction } from 'firebase/firestore';
+import { doc, getDoc, runTransaction } from 'firebase/firestore';
 import { db } from 'firebaseDB';
 
-type ChargeUnitsData = { member: string; count: number };
+import type { ChargeUnitsData } from 'types/team';
 
 type State = {
   genEnergy: number;
