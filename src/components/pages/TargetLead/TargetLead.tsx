@@ -31,10 +31,15 @@ export const TargetLead: FC = () => {
       : 0;
   }, [myTeam]);
 
+  // 参加メンバーの人数
+  const totalMembers = useMemo(() => {
+    return myTeam?.chargeUnits ? myTeam?.chargeUnits.length : 0;
+  }, [myTeam]);
+
   // ゴールまでのマス数
   const totalSteps = useMemo(() => {
-    return totalChargeUnits ? totalChargeUnits * 3 : 1;
-  }, [totalChargeUnits]);
+    return totalMembers ? totalMembers * 3 : 1;
+  }, [totalMembers]);
 
   // バッテリー残量
   const [batteryStock, setBatteryStock] = useState(totalChargeUnits);
@@ -42,14 +47,21 @@ export const TargetLead: FC = () => {
   // 現在位置
   const [currentPosition, setCurrentPosition] = useState(0);
 
+  // ミッション進捗率
+  const progress = useMemo(() => {
+    return Math.floor((currentPosition / totalSteps) * 100);
+  }, [currentPosition, totalSteps]);
+
   return (
     <article className={styles.article}>
       <header className={styles.header}>
         <h1>Target Lead</h1>
-        <p>🔋 {batteryStock}</p>
+        <p>
+          🔋 x {batteryStock} / progress: {progress}%
+        </p>
       </header>
       <div className={styles.body}>
-        <p>{totalSteps}</p>
+        <p></p>
         <MissionMap totalSteps={totalSteps} currentPosition={currentPosition} />
       </div>
 
