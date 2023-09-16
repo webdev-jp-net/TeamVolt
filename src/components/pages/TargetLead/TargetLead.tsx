@@ -33,8 +33,8 @@ export const TargetLead: FC = () => {
 
   // ゴールまでのマス数
   const totalSteps = useMemo(() => {
-    return myTeam && myTeam.chargeUnits ? myTeam.chargeUnits.length * 3 : 1;
-  }, [myTeam]);
+    return totalChargeUnits ? totalChargeUnits * 3 : 1;
+  }, [totalChargeUnits]);
 
   // バッテリー残量
   const [batteryStock, setBatteryStock] = useState(totalChargeUnits);
@@ -49,6 +49,7 @@ export const TargetLead: FC = () => {
         <p>🔋 {batteryStock}</p>
       </header>
       <div className={styles.body}>
+        <p>{totalSteps}</p>
         <MissionMap totalSteps={totalSteps} currentPosition={currentPosition} />
       </div>
 
