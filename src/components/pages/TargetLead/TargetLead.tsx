@@ -68,8 +68,11 @@ export const TargetLead: FC = () => {
 
     const payload = 1 * boost;
     // 現在位置を進める
-    setCurrentPosition(pre => pre + payload);
-  }, [boost]);
+    setCurrentPosition(pre => {
+      const result = pre + payload;
+      return result > totalSteps - 1 ? totalSteps - 1 : result;
+    });
+  }, [boost, totalSteps]);
 
   return (
     <article className={styles.article}>
