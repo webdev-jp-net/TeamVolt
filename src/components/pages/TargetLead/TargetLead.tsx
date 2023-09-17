@@ -19,8 +19,7 @@ import { MissionMap } from './components/MissionMap';
 
 export const TargetLead: FC = () => {
   const navigate = useNavigate();
-  const { localId, myTeam } = useSelector((state: RootState) => state.player);
-  const { selectedTeam } = useSelector((state: RootState) => state.team);
+  const { localId, selectedTeam, myTeam } = useSelector((state: RootState) => state.player);
 
   // 役職
   const job = useMemo(() => {

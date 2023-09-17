@@ -8,7 +8,6 @@ import type { ChargeUnitsData } from 'types/team';
 
 type State = {
   teamList: TeamArticleData[];
-  selectedTeam?: string;
 };
 
 const initialState: State = {
@@ -86,22 +85,7 @@ const team = createSlice({
 
   initialState,
 
-  reducers: {
-    // 所属チーム更新
-    updateTeam: (state, action: PayloadAction<string>) => {
-      return {
-        ...state,
-        selectedTeam: action.payload,
-      };
-    },
-    // 所属チーム脱退
-    escapeTeam: state => {
-      return {
-        ...state,
-        selectedTeam: undefined,
-      };
-    },
-  },
+  reducers: {},
 
   extraReducers: builder => {
     // 成功: チームリスト情報取得
@@ -137,7 +121,7 @@ const team = createSlice({
 });
 
 // Action Creator
-export const { updateTeam, escapeTeam } = team.actions;
+// export const {} = team.actions;
 
 // Reducer
 export default team.reducer;

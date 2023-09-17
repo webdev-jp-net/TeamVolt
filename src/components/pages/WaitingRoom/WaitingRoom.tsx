@@ -14,8 +14,7 @@ import { CurrentMembers } from './components/CurrentMembers/CurrentMembers';
 
 export const WaitingRoom: FC = () => {
   const navigate = useNavigate();
-  const { localId, myTeam } = useSelector((state: RootState) => state.player);
-  const { selectedTeam } = useSelector((state: RootState) => state.team);
+  const { localId, selectedTeam, myTeam } = useSelector((state: RootState) => state.player);
 
   // チーム情報の取得
   const {

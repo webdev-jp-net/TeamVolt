@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useAddMemberMutation } from 'store/player';
-import { useGetTeamListQuery, useRemoveTeamMutation, updateTeam } from 'store/team';
+import { updateTeam, useAddMemberMutation } from 'store/player';
+import { useGetTeamListQuery, useRemoveTeamMutation } from 'store/team';
 
 import styles from './TeamUp.module.scss';
 
@@ -18,8 +18,8 @@ export const TeamUp: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { localId } = useSelector((state: RootState) => state.player);
-  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
+  const { localId, selectedTeam } = useSelector((state: RootState) => state.player);
+  const { teamList } = useSelector((state: RootState) => state.team);
 
   // 全チーム情報を取得
   const { refetch: getTeamListRefetch } = useGetTeamListQuery();

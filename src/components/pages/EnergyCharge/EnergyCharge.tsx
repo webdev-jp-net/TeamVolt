@@ -22,8 +22,9 @@ export const EnergyCharge: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { localId, myTeam, genEnergy } = useSelector((state: RootState) => state.player);
-  const { selectedTeam } = useSelector((state: RootState) => state.team);
+  const { localId, selectedTeam, myTeam, genEnergy } = useSelector(
+    (state: RootState) => state.player
+  );
 
   // 役職
   const job = useMemo(() => {

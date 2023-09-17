@@ -6,12 +6,12 @@ import { Outlet } from 'react-router-dom';
 
 import { RootState } from 'store';
 import {
+  updateTeam,
   useGetPlayerQuery,
   useGetTeamArticleQuery,
   useAddPlayerMutation,
   updateLocalId,
 } from 'store/player';
-import { useGetTeamListQuery, updateTeam } from 'store/team';
 
 import { useGenerateAndStoreSessionId } from 'hooks/useGenerateAndStoreSessionId';
 
@@ -23,8 +23,7 @@ export const Layout: FC = () => {
   // ID生成
   const generateId = useGenerateAndStoreSessionId;
 
-  const { playerList } = useSelector((state: RootState) => state.player);
-  const { selectedTeam } = useSelector((state: RootState) => state.team);
+  const { playerList, selectedTeam } = useSelector((state: RootState) => state.player);
 
   // 既存のプレイヤー情報取得
   const { isSuccess: getPlayerSuccess } = useGetPlayerQuery();

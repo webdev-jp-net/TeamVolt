@@ -21,8 +21,9 @@ type State = {
   localId: string;
   player?: string;
   playerList: PlayerArticleData[];
-  genEnergy: number;
+  selectedTeam?: string;
   myTeam?: TeamArticleData;
+  genEnergy: number;
 };
 
 const initialState: State = {
@@ -298,6 +299,20 @@ const player = createSlice({
         localId: action.payload,
       };
     },
+    // 所属チーム更新
+    updateTeam: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        selectedTeam: action.payload,
+      };
+    },
+    // 所属チーム脱退
+    escapeTeam: state => {
+      return {
+        ...state,
+        selectedTeam: undefined,
+      };
+    },
     // 獲得エネルギーを更新
     updateGenEnergy: (state, action: PayloadAction<number>) => {
       return {
@@ -392,7 +407,8 @@ const player = createSlice({
 });
 
 // Action Creator
-export const { updateLocalId, updateGenEnergy, resetEnergy } = player.actions;
+export const { updateLocalId, updateTeam, escapeTeam, updateGenEnergy, resetEnergy } =
+  player.actions;
 
 // Reducer
 export default player.reducer;
