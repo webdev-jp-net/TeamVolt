@@ -137,6 +137,7 @@ export const EnergyCharge: FC = () => {
               handleClick={() => {
                 navigate('/target-lead');
               }}
+              disabled={totalChargeUnits > 0}
             >
               Start Rescue
             </Button>
