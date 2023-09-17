@@ -193,13 +193,6 @@ export const EnergyCharge: FC = () => {
             {currentTime >= limit && (
               <>
                 <Button handleClick={handleSubmit}>submit</Button>
-                <Button
-                  handleClick={() => {
-                    navigate('/');
-                  }}
-                >
-                  exit
-                </Button>
               </>
             )}
           </footer>
