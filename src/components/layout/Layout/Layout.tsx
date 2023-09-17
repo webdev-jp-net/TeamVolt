@@ -5,7 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
 import { RootState } from 'store';
-import { useGetPlayerQuery, useAddPlayerMutation, updateLocalId } from 'store/player';
+import {
+  useGetPlayerQuery,
+  useGetTeamArticleQuery,
+  useAddPlayerMutation,
+  updateLocalId,
+} from 'store/player';
 import { useGetTeamListQuery, updateTeam } from 'store/team';
 
 import { useGenerateAndStoreSessionId } from 'hooks/useGenerateAndStoreSessionId';
@@ -76,7 +81,9 @@ export const Layout: FC = () => {
   }, [isExistLocalId, getPlayerSuccess]);
 
   // 既存のチーム情報取得
-  const {} = useGetTeamListQuery();
+  const { isSuccess: getTeamArticleSuccess } = useGetTeamArticleQuery(selectedTeam || '', {
+    skip: !selectedTeam,
+  });
 
   // ローカルストレージへ既存のチームが保存されているか
   const [isExistSelectedTeam, setIsExistSelectedTeam] = useState<string>('');

@@ -1,14 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { getDocs, addDoc, collection } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+  addDoc,
+  deleteDoc,
+  deleteField,
+  collection,
+  runTransaction,
+} from 'firebase/firestore';
 import { db } from 'firebaseDB';
-import { PlayerArticleData } from 'types/player';
+
+import type { PlayerArticleData } from 'types/player';
+import type { TeamArticleData } from 'types/team';
 
 type State = {
   localId: string;
   player?: string;
   playerList: PlayerArticleData[];
   genEnergy: number;
+  myTeam?: TeamArticleData;
 };
 
 const initialState: State = {
@@ -22,8 +37,8 @@ const initialState: State = {
 // 読込用
 export const playerGetApi = createApi({
   reducerPath: 'playerGetApi',
-  baseQuery: async ({ path }) => {
-    const playerRef = collection(db, path);
+  baseQuery: async () => {
+    const playerRef = collection(db, 'player');
     const playerSnapshot = await getDocs(playerRef);
     const result = playerSnapshot.docs.map(doc => {
       return { id: doc.id, ...doc.data() };
@@ -33,11 +48,32 @@ export const playerGetApi = createApi({
   endpoints: builder => ({
     // プレイヤー情報取得
     getPlayer: builder.query<PlayerArticleData[], void>({
-      query: () => ({ path: 'player' }),
+      query: () => ({}),
     }),
   }),
 });
 export const { useGetPlayerQuery } = playerGetApi;
+
+// チーム情報取得
+export const teamArticleGetApi = createApi({
+  reducerPath: 'teamArticleGetApi',
+  baseQuery: async ({ id }) => {
+    const docRef = doc(db, 'team', id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { data: { id, ...docSnap.data() } };
+    } else {
+      return { error: 'No such document!' };
+    }
+  },
+  endpoints: builder => ({
+    // チーム情報取得
+    getTeamArticle: builder.query<TeamArticleData, string>({
+      query: id => ({ id }),
+    }),
+  }),
+});
+export const { useGetTeamArticleQuery } = teamArticleGetApi;
 
 // 書込用
 export const playerAddApi = createApi({
@@ -103,6 +139,13 @@ const player = createSlice({
           ...state,
           ...result,
         };
+      }
+    );
+    // 成功: チーム情報取得
+    builder.addMatcher(
+      teamArticleGetApi.endpoints.getTeamArticle.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        state.myTeam = action.payload;
       }
     );
   },

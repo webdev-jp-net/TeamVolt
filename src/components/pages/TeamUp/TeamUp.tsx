@@ -21,6 +21,9 @@ export const TeamUp: FC = () => {
   const { localId } = useSelector((state: RootState) => state.player);
   const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
 
+  // 全チーム情報を取得
+  const { refetch: getTeamListRefetch } = useGetTeamListQuery();
+
   // チーム選択
   const handleSelectTeam = useCallback(
     (myTeamId: string) => {
@@ -94,6 +97,7 @@ export const TeamUp: FC = () => {
           <Button handleClick={joinTeam} disabled={entriesAddLoading || !selectedTeam || !localId}>
             join
           </Button>
+          <Button handleClick={getTeamListRefetch}>reload</Button>
           <Button
             handleClick={() => {
               navigate('/');
