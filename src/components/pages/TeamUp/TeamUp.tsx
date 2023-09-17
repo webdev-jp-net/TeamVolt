@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useGetTeamListQuery, useAddMemberMutation, updateTeam } from 'store/team';
-import { useRemoveTeamMutation } from 'store/team';
+import { useAddMemberMutation } from 'store/player';
+import { useGetTeamListQuery, useRemoveTeamMutation, updateTeam } from 'store/team';
 
 import styles from './TeamUp.module.scss';
 

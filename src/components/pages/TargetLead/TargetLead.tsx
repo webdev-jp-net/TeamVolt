@@ -6,8 +6,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useGetTeamArticleQuery } from 'store/team';
-import { useUpdateUsedUnitsMutation, useUpdateCurrentPositionMutation } from 'store/team';
+import {
+  useGetTeamArticleQuery,
+  useUpdateUsedUnitsMutation,
+  useUpdateCurrentPositionMutation,
+} from 'store/player';
 
 import styles from './TargetLead.module.scss';
 
@@ -16,13 +19,8 @@ import { MissionMap } from './components/MissionMap';
 
 export const TargetLead: FC = () => {
   const navigate = useNavigate();
-  const { localId } = useSelector((state: RootState) => state.player);
-  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-
-  // 所属チームの情報
-  const myTeam = useMemo(() => {
-    return teamList.find(team => team.id === selectedTeam);
-  }, [teamList, selectedTeam]);
+  const { localId, myTeam } = useSelector((state: RootState) => state.player);
+  const { selectedTeam } = useSelector((state: RootState) => state.team);
 
   // 役職
   const job = useMemo(() => {

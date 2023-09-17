@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useGetTeamArticleQuery, useAddChallengerMutation } from 'store/team';
+import { useGetTeamArticleQuery, useAddChallengerMutation } from 'store/player';
 
 import styles from './WaitingRoom.module.scss';
 
@@ -14,13 +14,8 @@ import { CurrentMembers } from './components/CurrentMembers/CurrentMembers';
 
 export const WaitingRoom: FC = () => {
   const navigate = useNavigate();
-  const { localId } = useSelector((state: RootState) => state.player);
-  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-
-  // 所属チームの情報
-  const myTeam = useMemo(() => {
-    return teamList.find(team => team.id === selectedTeam);
-  }, [teamList, selectedTeam]);
+  const { localId, myTeam } = useSelector((state: RootState) => state.player);
+  const { selectedTeam } = useSelector((state: RootState) => state.team);
 
   // チーム情報の取得
   const {

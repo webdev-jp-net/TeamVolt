@@ -6,8 +6,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { updateGenEnergy, resetEnergy } from 'store/player';
-import { useGetTeamArticleQuery, useAddChargeUnitsMutation } from 'store/team';
+import {
+  useGetTeamArticleQuery,
+  useAddChargeUnitsMutation,
+  updateGenEnergy,
+  resetEnergy,
+} from 'store/player';
 
 import styles from './EnergyCharge.module.scss';
 
@@ -18,13 +22,8 @@ export const EnergyCharge: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { localId, genEnergy } = useSelector((state: RootState) => state.player);
-  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-
-  // 所属チームの情報
-  const myTeam = useMemo(() => {
-    return teamList.find(team => team.id === selectedTeam);
-  }, [teamList, selectedTeam]);
+  const { localId, myTeam, genEnergy } = useSelector((state: RootState) => state.player);
+  const { selectedTeam } = useSelector((state: RootState) => state.team);
 
   // 役職
   const job = useMemo(() => {

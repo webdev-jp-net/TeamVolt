@@ -8,7 +8,6 @@ import {
   arrayRemove,
   arrayUnion,
   addDoc,
-  deleteDoc,
   deleteField,
   collection,
   runTransaction,
@@ -336,6 +335,55 @@ const player = createSlice({
     // 成功: チーム情報取得
     builder.addMatcher(
       teamArticleGetApi.endpoints.getTeamArticle.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        state.myTeam = action.payload;
+      }
+    );
+    // 成功: メンバー追加
+    builder.addMatcher(
+      teamPostApi.endpoints.addMember.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        state.myTeam = action.payload;
+      }
+    );
+    // 成功: メンバー削除
+    builder.addMatcher(
+      teamPostApi.endpoints.removeMember.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        state.myTeam = action.payload;
+      }
+    );
+    // 成功: 代表者追加
+    builder.addMatcher(
+      teamPostApi.endpoints.addChallenger.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        state.myTeam = action.payload;
+      }
+    );
+    // 成功: 代表者削除
+    builder.addMatcher(
+      teamPostApi.endpoints.removeChallenger.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        state.myTeam = action.payload;
+      }
+    );
+    // 成功: 獲得バッテリー追加
+    builder.addMatcher(
+      teamPostApi.endpoints.addChargeUnits.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        state.myTeam = action.payload;
+      }
+    );
+    // 成功: 救出ミッション試行数更新
+    builder.addMatcher(
+      teamPostApi.endpoints.updateUsedUnits.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        state.myTeam = action.payload;
+      }
+    );
+    // 成功: 救出ミッション進捗更新
+    builder.addMatcher(
+      teamPostApi.endpoints.updateCurrentPosition.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         state.myTeam = action.payload;
       }
