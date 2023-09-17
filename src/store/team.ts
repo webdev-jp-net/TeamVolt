@@ -65,14 +65,14 @@ export const teamGetApi = createApi({
 export const { useGetTeamListQuery, useGetTeamArticleQuery } = teamGetApi;
 
 // チームメンバー編集
-type teamPostApiProps = {
+type teamListPostApiProps = {
   operationType: string;
   id?: string;
   value?: string | number | ChargeUnitsData;
 };
-export const teamPostApi = createApi({
-  reducerPath: 'teamPostApi',
-  baseQuery: async ({ operationType, id, value }: teamPostApiProps) => {
+export const teamListPostApi = createApi({
+  reducerPath: 'teamListPostApi',
+  baseQuery: async ({ operationType, id, value }: teamListPostApiProps) => {
     if (operationType === 'add_team') {
       // チームを追加
       const teamRef = collection(db, 'team');
@@ -280,7 +280,7 @@ export const {
   useAddChargeUnitsMutation,
   useUpdateUsedUnitsMutation,
   useUpdateCurrentPositionMutation,
-} = teamPostApi;
+} = teamListPostApi;
 
 const team = createSlice({
   name: 'team',
@@ -322,7 +322,7 @@ const team = createSlice({
     );
     // 成功: チーム追加
     builder.addMatcher(
-      teamPostApi.endpoints.addTeam.matchFulfilled,
+      teamListPostApi.endpoints.addTeam.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const result = { teamList: [...state.teamList, action.payload] };
         return {
@@ -333,7 +333,7 @@ const team = createSlice({
     );
     // 成功: チーム削除
     builder.addMatcher(
-      teamPostApi.endpoints.removeTeam.matchFulfilled,
+      teamListPostApi.endpoints.removeTeam.matchFulfilled,
       (state, action: PayloadAction<string>) => {
         const result = state.teamList.filter(team => team.id !== action.payload);
         return {
@@ -344,7 +344,7 @@ const team = createSlice({
     );
     // 成功: メンバー追加
     builder.addMatcher(
-      teamPostApi.endpoints.addMember.matchFulfilled,
+      teamListPostApi.endpoints.addMember.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];
@@ -352,7 +352,7 @@ const team = createSlice({
     );
     // 成功: メンバー削除
     builder.addMatcher(
-      teamPostApi.endpoints.removeMember.matchFulfilled,
+      teamListPostApi.endpoints.removeMember.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];
@@ -360,7 +360,7 @@ const team = createSlice({
     );
     // 成功: 代表者追加
     builder.addMatcher(
-      teamPostApi.endpoints.addChallenger.matchFulfilled,
+      teamListPostApi.endpoints.addChallenger.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];
@@ -368,7 +368,7 @@ const team = createSlice({
     );
     // 成功: 代表者削除
     builder.addMatcher(
-      teamPostApi.endpoints.removeChallenger.matchFulfilled,
+      teamListPostApi.endpoints.removeChallenger.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];
@@ -376,7 +376,7 @@ const team = createSlice({
     );
     // 成功: 獲得バッテリー追加
     builder.addMatcher(
-      teamPostApi.endpoints.addChargeUnits.matchFulfilled,
+      teamListPostApi.endpoints.addChargeUnits.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];
@@ -384,7 +384,7 @@ const team = createSlice({
     );
     // 成功: 救出ミッション試行数更新
     builder.addMatcher(
-      teamPostApi.endpoints.updateUsedUnits.matchFulfilled,
+      teamListPostApi.endpoints.updateUsedUnits.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];
@@ -392,7 +392,7 @@ const team = createSlice({
     );
     // 成功: 救出ミッション進捗更新
     builder.addMatcher(
-      teamPostApi.endpoints.updateCurrentPosition.matchFulfilled,
+      teamListPostApi.endpoints.updateCurrentPosition.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         const externalTeamList = state.teamList.filter(team => team.id !== action.payload.id);
         state.teamList = [...externalTeamList, action.payload];
