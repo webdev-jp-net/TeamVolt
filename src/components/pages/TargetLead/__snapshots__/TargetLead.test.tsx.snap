@@ -70,10 +70,9 @@ exports[`TargetLead TargetLeadのスナップショット 1`] = `
     >
       <button
         class="button --basic"
-        disabled=""
         type="button"
       >
-        Search for Rescues
+        Check Mission Progress
       </button>
       <button
         class="button --basic"

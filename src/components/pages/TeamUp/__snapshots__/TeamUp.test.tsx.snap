@@ -59,6 +59,12 @@ exports[`Team Teamのスナップショット 1`] = `
         class="button --basic"
         type="button"
       >
+        reload
+      </button>
+      <button
+        class="button --basic"
+        type="button"
+      >
         cancel
       </button>
     </footer>
