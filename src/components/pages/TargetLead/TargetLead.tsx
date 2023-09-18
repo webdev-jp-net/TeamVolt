@@ -168,33 +168,36 @@ export const TargetLead: FC = () => {
       </div>
 
       <footer className={styles.footer}>
-        {job === 'Rescuer' ? (
-          <>
-            {!isSearching ? (
-              <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
-                Search for Rescues
-              </Button>
-            ) : (
-              <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
-                Deliver Charge
-              </Button>
-            )}
-          </>
+        {!isFailed && !isComplete ? (
+          job === 'Rescuer' ? (
+            <>
+              {!isSearching ? (
+                <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
+                  Search for Rescues
+                </Button>
+              ) : (
+                <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
+                  Deliver Charge
+                </Button>
+              )}
+            </>
+          ) : (
+            <Button
+              handleClick={handleTeamProgressRequest}
+              disabled={getDrawResultLoading || getDrawResultFetching}
+            >
+              Check Mission Progress
+            </Button>
+          )
         ) : (
           <Button
-            handleClick={handleTeamProgressRequest}
-            disabled={getDrawResultLoading || getDrawResultFetching}
+            handleClick={() => {
+              navigate('/');
+            }}
           >
-            Check Mission Progress
+            Close Mission
           </Button>
         )}
-        <Button
-          handleClick={() => {
-            navigate('/');
-          }}
-        >
-          cancel
-        </Button>
       </footer>
     </article>
   );

@@ -2,8 +2,8 @@
 
 .missionMap {
   position: relative;
-  height: 100vmin;
-  margin: rem(24) 0;
+  height: 85vmin;
+  margin: rem(24) 0 0;
   background: radial-gradient(circle, rgb(0 0 0 / 50%), black);
 }
 
@@ -40,7 +40,6 @@
   display: grid;
   place-items: center;
   color: white;
-  border-radius: 50%;
 
   &::before {
     position: absolute;

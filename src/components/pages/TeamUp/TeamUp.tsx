@@ -65,7 +65,7 @@ export const TeamUp: FC = () => {
 
   return (
     <>
-      <article className={styles.team}>
+      <article className={styles.article}>
         <header className={styles.header}>
           <h1>Pick Your Team</h1>
         </header>
@@ -98,13 +98,6 @@ export const TeamUp: FC = () => {
             join
           </Button>
           <Button handleClick={getTeamListRefetch}>reload</Button>
-          <Button
-            handleClick={() => {
-              navigate('/');
-            }}
-          >
-            cancel
-          </Button>
         </footer>
       </article>
     </>

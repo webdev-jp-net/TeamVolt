@@ -73,7 +73,7 @@ export const WaitingRoom: FC = () => {
 
   return myTeam ? (
     <>
-      <article className={styles.waitingRoom}>
+      <article className={styles.article}>
         <header className={styles.header}>
           <h1>{myTeam?.name}</h1>
         </header>
@@ -95,13 +95,6 @@ export const WaitingRoom: FC = () => {
           >
             reload
           </Button>
-          <Button
-            handleClick={() => {
-              navigate('/');
-            }}
-          >
-            cancel
-          </Button>
         </footer>
       </article>
     </>
@@ -119,13 +112,6 @@ export const WaitingRoom: FC = () => {
             }}
           >
             Team Up!
-          </Button>
-          <Button
-            handleClick={() => {
-              navigate('/');
-            }}
-          >
-            cancel
           </Button>
         </footer>
       </article>

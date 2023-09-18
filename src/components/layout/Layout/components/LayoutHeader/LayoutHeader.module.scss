@@ -1,7 +1,7 @@
 @use "style/_variable" as *;
 
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
   right: 0;
   left: 0;
@@ -28,11 +28,12 @@
   place-items: center;
   padding: 0;
   font-size: rem(24);
+  color: currentColor;
   cursor: pointer;
   background: none;
   border: none;
   outline: none;
-  appearance: none;
+  appearance: none
 }
 
 // メニューボタン
@@ -41,6 +42,7 @@
   gap: rem(12);
   align-items: center;
   padding: rem(6) rem(6);
+  color: currentColor;
   background: none;
   border: none;
   outline: none;
