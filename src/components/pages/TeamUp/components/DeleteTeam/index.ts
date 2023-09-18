@@ -1,0 +1,1 @@
+export { DeleteTeam } from './DeleteTeam';
