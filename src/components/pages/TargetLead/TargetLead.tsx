@@ -11,6 +11,7 @@ import {
   useGetTeamArticleQuery,
   useUpdateUsedUnitsMutation,
   useUpdateCurrentPositionMutation,
+  useCloseMissionMutation,
 } from 'store/player';
 
 import styles from './TargetLead.module.scss';
@@ -145,6 +146,16 @@ export const TargetLead: FC = () => {
     getDrawResultRefetch();
   }, [getDrawResultRefetch]);
 
+  // ミッション終了
+  const [sendCloseMission] = useCloseMissionMutation();
+
+  // ミッション結果をリセット
+  const handleCloseMission = useCallback(() => {
+    if (selectedTeam) sendCloseMission(selectedTeam);
+    navigate('/');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTeam]);
+
   return (
     <article className={styles.article}>
       <header className={styles.header}>
@@ -193,13 +204,7 @@ export const TargetLead: FC = () => {
             </Button>
           )
         ) : (
-          <Button
-            handleClick={() => {
-              navigate('/');
-            }}
-          >
-            Close Mission
-          </Button>
+          <Button handleClick={handleCloseMission}>Close Mission</Button>
         )}
       </footer>
     </article>
