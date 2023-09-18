@@ -11,7 +11,8 @@ import { useGetTeamArticleQuery, useAddChallengerMutation } from 'store/player';
 
 import styles from './WaitingRoom.module.scss';
 
-import { CurrentMembers } from './components/CurrentMembers/CurrentMembers';
+import { CurrentMembers } from './components/CurrentMembers';
+import { DrawConfirm } from './components/DrawConfirm';
 
 export const WaitingRoom: FC = () => {
   const navigate = useNavigate();
@@ -33,41 +34,56 @@ export const WaitingRoom: FC = () => {
   // 代表者を登録する
   const [sendAddChallenger] = useAddChallengerMutation();
 
+  // 集合している人数
+  const memberCount = useMemo(() => myTeam?.member.length || 1, [myTeam]);
+
+  // 抽選確認ダイアログ
+  const [confirmDraw, setConfirmDraw] = useState(false);
+
+  // 抽選確認
+  const handleDrawConfirm = () => {
+    // 最新チーム情報を取得
+    getDrawResultRefetch();
+    // 抽選確認中フラグを立てる
+    setIsDrawConfirm(true);
+  };
+
   // 抽選
   const [isDrawConfirm, setIsDrawConfirm] = useState(false);
+  // handleDrawConfirmの最新情報取得後に実行
   useEffect(() => {
     if (isDrawConfirm && !getDrawResultFetching && myTeam) {
-      if (myTeam.member.length > 1) {
-        if (
-          window.confirm(
-            myTeam.member.length +
-              ' people are currently entering. Do you want to raffle with these members?'
-          )
-        ) {
-          // 抽選
-          const result = getRandomElement(myTeam.member);
-          // 書き込み
-          sendAddChallenger({ id: selectedTeam || '', value: result });
-
-          // エネルギーチャージ画面へ
-          navigate('/energy-charge');
-        }
-      } else {
-        alert('There are not enough members to draw.');
+      // 抽選が終わっている場合はエネルギーチャージ画面へ
+      if (myTeam.challenger) navigate('/energy-charge');
+      else {
+        // 抽選が終わっていない場合はダイアログを開く
+        if (memberCount > 1) {
+          setConfirmDraw(true); // 抽選確認
+        } else alert('There are not enough members to draw.'); // 参加人数不足
       }
-
-      setIsDrawConfirm(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDrawConfirm, getDrawResultFetching, myTeam]);
 
-  const handleDraw = useCallback(() => {
-    // 抽選が終わっている場合はエネルギーチャージ画面へ
-    if (myTeam && myTeam.challenger) navigate('/energy-charge');
-    else {
-      // まだの場合は抽選を実行する
-      getDrawResultRefetch();
-      setIsDrawConfirm(true);
+  // 抽選実行
+  const handleAcceptDraw = useCallback(() => {
+    if (myTeam) {
+      // 抽選
+      const result = getRandomElement(myTeam.member);
+      // 書き込み
+      sendAddChallenger({ id: selectedTeam || '', value: result });
+
+      // エネルギーチャージ画面へ
+      navigate('/energy-charge');
+
+      // 抽選確認中フラグを下ろす
+      setIsDrawConfirm(false);
+
+      // ダイアログを閉じる
+      setConfirmDraw(false);
+
+      // 遷移
+      navigate('/energy-charge');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myTeam]);
@@ -95,11 +111,22 @@ export const WaitingRoom: FC = () => {
             <MdRefresh className={styles.buttonIcon} />
             Refresh team member
           </Button>
-          <Button handleClick={handleDraw} disabled={getDrawResultLoading || getDrawResultFetching}>
+          <Button
+            handleClick={handleDrawConfirm}
+            disabled={getDrawResultLoading || getDrawResultFetching}
+          >
             Ready to go!
           </Button>
         </footer>
       </article>
+      <DrawConfirm
+        isOpen={confirmDraw}
+        description={`${memberCount} people are currently entering. Do you want to raffle with these members?`}
+        handleCancel={() => {
+          setConfirmDraw(false);
+        }}
+        handleAccept={handleAcceptDraw}
+      />
     </>
   ) : (
     <>

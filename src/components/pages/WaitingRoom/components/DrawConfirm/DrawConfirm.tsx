@@ -3,19 +3,21 @@ import { FC, Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { Button } from 'components/parts/Button';
 
-import styles from './DeleteTeam.module.scss';
+import styles from './DrawConfirm.module.scss';
 
-type DeleteTeamProps = {
+type DrawConfirmProps = {
   isOpen: boolean;
+  description?: string;
   addClass?: string[];
   handleCancel: () => void;
   handleAccept: () => void;
   afterLeave?: () => void;
 };
 
-export const DeleteTeam: FC<DeleteTeamProps> = ({
+export const DrawConfirm: FC<DrawConfirmProps> = ({
   isOpen,
   addClass = [],
+  description,
   handleCancel,
   handleAccept,
   afterLeave,
@@ -45,10 +47,12 @@ export const DeleteTeam: FC<DeleteTeamProps> = ({
           afterLeave={afterLeave}
         >
           <Dialog.Panel className={styles.dialogPanel}>
-            <Dialog.Title className={styles.dialogTitle}>Delete team</Dialog.Title>
-            <Dialog.Description className={styles.dialogDescription}>
-              Are you sure you want to delete this team?
-            </Dialog.Description>
+            <Dialog.Title className={styles.dialogTitle}>Decide on a job?</Dialog.Title>
+            {description && (
+              <Dialog.Description className={styles.dialogDescription}>
+                {description}
+              </Dialog.Description>
+            )}
             <div className={styles.dialogFooter}>
               <button type="button" className={styles.dialogCancel} onClick={handleCancel}>
                 cancel
