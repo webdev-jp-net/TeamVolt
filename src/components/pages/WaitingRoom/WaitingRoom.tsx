@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
+import { MdRefresh } from 'react-icons/md';
 import { RootState } from 'store';
 import { useGetTeamArticleQuery, useAddChallengerMutation } from 'store/player';
 
@@ -86,14 +87,16 @@ export const WaitingRoom: FC = () => {
           />
         </div>
         <footer className={styles.footer}>
-          <Button handleClick={handleDraw} disabled={getDrawResultLoading || getDrawResultFetching}>
-            Ready to go!
-          </Button>
           <Button
             handleClick={getDrawResultRefetch}
             disabled={getDrawResultLoading || getDrawResultFetching}
+            addClass={[styles.button]}
           >
-            reload
+            <MdRefresh className={styles.buttonIcon} />
+            Refresh team member
+          </Button>
+          <Button handleClick={handleDraw} disabled={getDrawResultLoading || getDrawResultFetching}>
+            Ready to go!
           </Button>
         </footer>
       </article>

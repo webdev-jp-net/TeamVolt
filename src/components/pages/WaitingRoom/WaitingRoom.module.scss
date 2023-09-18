@@ -20,6 +20,18 @@
   margin: rem(24);
 }
 
+// ボタンアイコン
+.button {
+  display: flex;
+  gap: rem(12);
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonIcon {
+  font-size: rem(20);
+}
+
 // フッター
 .footer {
   display: flex;

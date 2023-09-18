@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { MdVolunteerActivism, MdBolt } from 'react-icons/md';
+
 import styles from './CurrentMembers.module.scss';
 
 type CurrentMembersProps = {
@@ -22,7 +24,15 @@ export const CurrentMembers: FC<CurrentMembersProps> = ({
           {challenger && (
             <span className={styles.job}>{item === challenger ? 'Rescuer' : 'Charger'}</span>
           )}
-          <span className={styles.memberIcon} style={{ color: `#${item}` }}></span>
+          <span className={styles.memberIcon} style={{ backgroundColor: `#${item}` }}>
+            {!challenger ? (
+              ''
+            ) : item === challenger ? (
+              <MdVolunteerActivism className={styles.jobIcon} />
+            ) : (
+              <MdBolt className={styles.jobIcon} />
+            )}
+          </span>
           {item === myself && <span className={styles.current}>myself</span>}
         </div>
       ))}

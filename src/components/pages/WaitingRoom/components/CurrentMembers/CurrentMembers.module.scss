@@ -17,9 +17,11 @@
 }
 
 .memberIcon {
-  @include rect(rem(24));
+  @include rect(rem(36));
 
-  display: block;
+  display: grid;
+  place-content: center;
+  font-size: rem(24);
   background-color: currentColor;
   border-radius: 50%;
 }
