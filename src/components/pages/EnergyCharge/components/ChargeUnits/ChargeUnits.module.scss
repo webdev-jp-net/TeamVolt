@@ -1,0 +1,17 @@
+@use "style/_variable" as *;
+
+.list {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: repeat(5, 1fr);
+  gap: rem(12);
+}
+
+.item {
+  @include rect(rem(48));
+
+  display: grid;
+  place-items: center;
+  font-size: rem(48);
+  color: yellowgreen;
+}

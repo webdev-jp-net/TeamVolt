@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
-import { MdRefresh } from 'react-icons/md';
+import { MdBatteryChargingFull, MdRefresh } from 'react-icons/md';
 import { RootState } from 'store';
 import {
   useGetTeamArticleQuery,
@@ -161,7 +161,8 @@ export const TargetLead: FC = () => {
       <header className={styles.header}>
         <h1>Target Lead</h1>
         <p>
-          🔋 x {batteryStock} / progress: {progress}%
+          <MdBatteryChargingFull className={styles.batteryIcon} /> x {batteryStock} / progress:{' '}
+          {progress}%
         </p>
       </header>
       <div className={styles.body}>
