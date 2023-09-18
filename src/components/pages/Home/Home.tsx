@@ -10,6 +10,8 @@ import { escapeTeam, useRemoveMemberMutation, useRemoveChallengerMutation } from
 
 import styles from './Home.module.scss';
 
+import { HowToPlay } from './components/HowToPlay';
+
 export const Home: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,6 +41,11 @@ export const Home: FC = () => {
         <h1 className={styles.title}>TeamVolt</h1>
       </header>
       <div className={styles.body}>
+        <p className={styles.description}>
+          TeamVolt is a group-based mobile browser game. Players divide into 'Chargers' and
+          'Rescuers' to tackle missions. Chargers generate energy while Rescuers use it to save
+          robots. Individual efforts synergize for team success!
+        </p>
         <Button
           handleClick={() => {
             navigate('/team-up');
@@ -47,11 +54,7 @@ export const Home: FC = () => {
         >
           Team Up!
         </Button>
-        <p className={styles.description}>
-          TeamVolt is a group-based mobile browser game. Players divide into 'Chargers' and
-          'Rescuers' to tackle missions. Chargers generate energy while Rescuers use it to save
-          robots. Individual efforts synergize for team success!
-        </p>
+        <HowToPlay />
       </div>
     </article>
   );
