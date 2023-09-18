@@ -6,6 +6,10 @@
   align-content: center;
 }
 
+.header {
+  margin: rem(120) 0 0;
+}
+
 .title {
   text-align: center;
 }
@@ -17,8 +21,20 @@
   line-height: 1;
 }
 
-.menu {
+.body {
   display: grid;
-  gap: rem(18) rem(12);
+  gap: rem(24);
+  align-items: center;
+  justify-content: center;
   padding: rem(24);
+}
+
+.button {
+  margin: 0 auto;
+}
+
+.description {
+  display: inline-block;
+  padding: 0 rem(24);
+  line-height: 1.8;
 }
