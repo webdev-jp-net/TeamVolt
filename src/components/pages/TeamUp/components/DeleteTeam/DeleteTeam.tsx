@@ -45,13 +45,13 @@ export const DeleteTeam: FC<DeleteTeamProps> = ({
           afterLeave={afterLeave}
         >
           <Dialog.Panel className={styles.dialogPanel}>
-            <Dialog.Title className={styles.dialogTitle}>Delete team</Dialog.Title>
+            <Dialog.Title className={styles.dialogTitle}>チーム削除</Dialog.Title>
             <Dialog.Description className={styles.dialogDescription}>
-              Are you sure you want to delete this team?
+              本当に選択中のチームを削除してもよいですか？
             </Dialog.Description>
             <div className={styles.dialogFooter}>
               <button type="button" className={styles.dialogCancel} onClick={handleCancel}>
-                cancel
+                キャンセル
               </button>
               <Button handleClick={handleAccept} addClass={[styles.dialogFooterButton]}>
                 OK

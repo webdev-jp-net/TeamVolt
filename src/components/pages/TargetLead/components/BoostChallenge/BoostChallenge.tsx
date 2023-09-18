@@ -93,6 +93,11 @@ export const BoostChallenge: FC<BoostChallengeProps> = ({
           <FaRobot className={styles.icon} />
         </div>
         <div className={styles.frame}></div>
+        <p className={styles.message}>
+          手ぶれしてしまう…
+          <br />
+          中心に届けてブースト充電をねらおう！
+        </p>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ export const CurrentMembers: FC<CurrentMembersProps> = ({
       {memberList.map(item => (
         <div key={item} className={styles.member}>
           {challenger && (
-            <span className={styles.job}>{item === challenger ? 'Rescuer' : 'Charger'}</span>
+            <span className={styles.job}>{item === challenger ? '救助係' : '充電係'}</span>
           )}
           <span className={styles.memberIcon} style={{ backgroundColor: `#${item}` }}>
             {!challenger ? (
@@ -33,7 +33,7 @@ export const CurrentMembers: FC<CurrentMembersProps> = ({
               <MdBolt className={styles.jobIcon} />
             )}
           </span>
-          {item === myself && <span className={styles.current}>myself</span>}
+          {item === myself && <span className={styles.current}>自分</span>}
         </div>
       ))}
     </div>

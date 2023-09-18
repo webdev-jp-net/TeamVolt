@@ -7,7 +7,7 @@ import styles from './DrawConfirm.module.scss';
 
 type DrawConfirmProps = {
   isOpen: boolean;
-  description?: string;
+  count: number;
   addClass?: string[];
   handleCancel: () => void;
   handleAccept: () => void;
@@ -16,8 +16,8 @@ type DrawConfirmProps = {
 
 export const DrawConfirm: FC<DrawConfirmProps> = ({
   isOpen,
+  count,
   addClass = [],
-  description,
   handleCancel,
   handleAccept,
   afterLeave,
@@ -47,15 +47,17 @@ export const DrawConfirm: FC<DrawConfirmProps> = ({
           afterLeave={afterLeave}
         >
           <Dialog.Panel className={styles.dialogPanel}>
-            <Dialog.Title className={styles.dialogTitle}>Decide on a job?</Dialog.Title>
-            {description && (
-              <Dialog.Description className={styles.dialogDescription}>
-                {description}
-              </Dialog.Description>
-            )}
+            <Dialog.Title className={styles.dialogTitle}>全員そろいましたか？</Dialog.Title>
+            <Dialog.Description className={styles.dialogDescription}>
+              <strong className={styles.count}>{count}人</strong>参加中です。
+              <br />
+              このメンバーではじめますか？
+              <br />
+              まだの人がいたら、キャンセルして声をかけてください。
+            </Dialog.Description>
             <div className={styles.dialogFooter}>
               <button type="button" className={styles.dialogCancel} onClick={handleCancel}>
-                cancel
+                キャンセル
               </button>
               <Button handleClick={handleAccept} addClass={[styles.dialogFooterButton]}>
                 OK

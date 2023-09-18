@@ -36,23 +36,23 @@ export const LayoutHeader: FC<LayoutHeaderProps> = ({ addClass = [], handleClick
               leaveTo={styles.leaveTo}
             >
               <Popover.Panel className={styles.panel}>
-                <p className={styles.gameFlowTitle}>How to play</p>
+                <p className={styles.gameFlowTitle}>あそびかた</p>
                 <ol className={styles.gameFlow}>
                   <li className={styles.gameFlowItem}>
-                    <strong className={styles.gameFlowHeadline}>Team Up</strong>
-                    <p>Pick your team.</p>
+                    <strong className={styles.gameFlowHeadline}>チームを組もう</strong>
+                    <p>参加するチームを選びます。</p>
                   </li>
                   <li className={styles.gameFlowItem}>
-                    <strong className={styles.gameFlowHeadline}>Meet Up & Draw Roles</strong>
-                    <p>Assign roles through a draw with teammates.</p>
+                    <strong className={styles.gameFlowHeadline}>仲間と集まって役割抽選</strong>
+                    <p>チームメイトと集合し、「充電係」と「救助係」を抽選で決めます。</p>
                   </li>
                   <li className={styles.gameFlowItem}>
-                    <strong className={styles.gameFlowHeadline}>Charge Energy</strong>
-                    <p>Charge batteries for robot handoff.</p>
+                    <strong className={styles.gameFlowHeadline}>エネルギー充電</strong>
+                    <p>ロボットへ渡すためのバッテリーを充電します。</p>
                   </li>
                   <li className={styles.gameFlowItem}>
-                    <strong className={styles.gameFlowHeadline}>Execute Rescue</strong>
-                    <p>Deliver batteries and assist escape.</p>
+                    <strong className={styles.gameFlowHeadline}>救出作戦</strong>
+                    <p>ロボットへバッテリーを渡して脱出をサポートします。</p>
                   </li>
                 </ol>
                 <hr />
@@ -65,7 +65,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = ({ addClass = [], handleClick
                   }}
                 >
                   <MdLogout className={styles.menuIcon} />
-                  Leave the mission
+                  ミッションを抜けて表紙に戻る
                 </button>
               </Popover.Panel>
             </Transition>

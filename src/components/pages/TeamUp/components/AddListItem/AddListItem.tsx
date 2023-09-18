@@ -35,7 +35,7 @@ export const AddListItem: FC<AddListItemProps> = ({ addClass = [], callback }) =
         type="text"
         value={newTeamName}
         onChange={handleInput}
-        placeholder="Your team not on the list?"
+        placeholder="新しいチームを追加"
         className={styles.input}
       />
       <Button

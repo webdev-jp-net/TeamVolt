@@ -89,9 +89,9 @@ export const WaitingRoom: FC = () => {
         </header>
         <div className={styles.body}>
           <p className={styles.paragraph}>
-            Let's wait for our friends to assemble.
+            チームメイトが集まるのを待ちましょう。メンバー全員が画面に表示されたら準備OK！
             <br />
-            You can start a mission with two or more people.
+            2人以上でミッションを開始できます。
           </p>
           <CurrentMembers
             memberList={myTeam.member}
@@ -106,14 +106,14 @@ export const WaitingRoom: FC = () => {
             addClass={[styles.button]}
           >
             <MdRefresh className={styles.buttonIcon} />
-            Refresh team member
+            メンバーが入ってきたか確認
           </Button>
           {!myTeam?.challenger ? (
             <Button
               handleClick={handleDrawConfirm}
               disabled={getDrawResultLoading || getDrawResultFetching || memberCount < 2}
             >
-              Ready to go!
+              準備OK！
             </Button>
           ) : (
             <Button
@@ -122,14 +122,14 @@ export const WaitingRoom: FC = () => {
               }}
               disabled={getDrawResultLoading || getDrawResultFetching || memberCount < 2}
             >
-              Energy Charge
+              充電ミッションへ
             </Button>
           )}
         </footer>
       </article>
       <DrawConfirm
         isOpen={confirmDraw}
-        description={`${memberCount} people are currently entering. Do you want to raffle with these members?`}
+        count={memberCount}
         handleCancel={() => {
           setConfirmDraw(false);
           setIsDrawConfirm(false);
@@ -141,16 +141,16 @@ export const WaitingRoom: FC = () => {
     <>
       <article className={styles.waitingRoom}>
         <header className={styles.header}>
-          <h1>You didn't pick the team.</h1>
+          <h1>チームが選ばれていません</h1>
         </header>
-        <p className={styles.paragraph}>Pick your team first.</p>
+        <p className={styles.paragraph}>先にチームを選んでください。</p>
         <footer className={styles.footer}>
           <Button
             handleClick={() => {
               navigate('/team-up');
             }}
           >
-            Team Up!
+            まずはチームを組もう！
           </Button>
         </footer>
       </article>

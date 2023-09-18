@@ -72,7 +72,10 @@ export const TeamUp: FC = () => {
     <>
       <article className={styles.article}>
         <header className={styles.header}>
-          <h1>Pick Your Team</h1>
+          <h1>チームを組もう</h1>
+          <p>
+            このゲームは対面やチャットで会話しながら進行します。話せるメンバーどうしでチームを組んでください。
+          </p>
         </header>
         <div className={styles.body}>
           <div>
@@ -96,17 +99,17 @@ export const TeamUp: FC = () => {
               }}
               disabled={entriesAddLoading || !selectedTeam || !localId}
             >
-              (debug) delete team
+              (debug) 選択中チームを削除
             </Button>
           </div>
         </div>
         <footer className={styles.footer}>
           <Button handleClick={getTeamListRefetch} addClass={[styles.button]}>
             <MdRefresh className={styles.buttonIcon} />
-            Refresh team list
+            チーム一覧を更新
           </Button>
           <Button handleClick={joinTeam} disabled={entriesAddLoading || !selectedTeam || !localId}>
-            join
+            選択中のチームへ参加
           </Button>
         </footer>
       </article>

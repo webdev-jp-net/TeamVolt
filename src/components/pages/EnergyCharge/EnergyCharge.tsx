@@ -30,7 +30,7 @@ export const EnergyCharge: FC = () => {
 
   // 役職
   const job = useMemo(() => {
-    return myTeam?.challenger === localId ? 'Rescuer' : 'Charger';
+    return myTeam?.challenger === localId ? '救助係' : '充電係';
   }, [myTeam, localId]);
 
   // チャレンジ済みフラグ
@@ -69,7 +69,7 @@ export const EnergyCharge: FC = () => {
   }, [isReady, currentTime]);
 
   const isDone = useMemo(() => {
-    return job === 'Rescuer' || hasChallenged;
+    return job === '救助係' || hasChallenged;
   }, [job, hasChallenged]);
 
   // スコアを加算
@@ -126,16 +126,16 @@ export const EnergyCharge: FC = () => {
     <article className={styles.article}>
       <header className={styles.header}>
         <h1 className={styles.title}>
-          You're on{' '}
+          あなたは{' '}
           <strong className={styles.job}>
-            {job === 'Rescuer' ? (
+            {job === '救助係' ? (
               <MdVolunteerActivism className={styles.jobIcon} />
             ) : (
               <MdBolt className={styles.jobIcon} />
             )}
             {job}
           </strong>{' '}
-          duty!
+          です！
         </h1>
       </header>
       <div className={styles.body}>
@@ -143,19 +143,19 @@ export const EnergyCharge: FC = () => {
           count={isDone ? totalChargeUnits : Math.floor(genEnergy / chargeThreshold)}
           addClass={[styles.chargeUnits]}
         />
-        {job === 'Charger' && !isReady && currentTime < 1 && !genEnergy && (
+        {job === '充電係' && !isReady && currentTime < 1 && !genEnergy && (
           <div className={styles.ready}>
-            <p>Tap the screen many times to charge the battery within the time limit.</p>
+            <p>制限時間内に画面を連打してバッテリーを充電してください。</p>
             <Button
               handleClick={() => {
                 setIsReady(true);
               }}
             >
-              I'm Ready
+              準備OK はじめる
             </Button>
           </div>
         )}
-        {job === 'Charger' && !hasChallenged && (
+        {job === '充電係' && !hasChallenged && (
           <div className={styles.console}>
             <TimeLeftUi currentTime={currentTime} limit={limit} />
             <p className={styles.genEnergy}>
@@ -163,24 +163,24 @@ export const EnergyCharge: FC = () => {
             </p>
           </div>
         )}
-        {job === 'Charger' && isReady && currentTime < limit && (
+        {job === '充電係' && isReady && currentTime < limit && (
           <button type="button" onClick={handleTap} className={styles.tap}>
             <GaugeUi
               addClass={[styles.gauge, currentTime >= limit ? styles['--invisible'] : '']}
               currentValue={Math.floor(((genEnergy % chargeThreshold) / chargeThreshold) * 100)}
             />
-            Tap Screen!!
+            スクリーンをタップ！
           </button>
         )}
-        {job === 'Charger' && hasChallenged && (
+        {job === '充電係' && hasChallenged && (
           <>
-            <h2 className={styles.result}>Batteries Earned</h2>
-            <p>Great job! Send your results to the Rescuers.</p>
+            <h2 className={styles.result}>充電完了</h2>
+            <p>素晴らしい働きでした！救出係へバッテリーを送ったことを伝えてください。</p>
           </>
         )}
-        {job === 'Rescuer' && (
+        {job === '救助係' && (
           <>
-            <p>Wait for the battery to arrive.</p>
+            <p>すべての充電係からバッテリーが届くのを待ってください。</p>
           </>
         )}
       </div>
@@ -193,7 +193,7 @@ export const EnergyCharge: FC = () => {
               addClass={[styles.button]}
             >
               <MdRefresh className={styles.buttonIcon} />
-              Check Team Charge
+              チームのバッテリーを確認
             </Button>
           </>
         )}
@@ -203,7 +203,7 @@ export const EnergyCharge: FC = () => {
           }}
           disabled={totalChargeUnits < 1}
         >
-          Start Rescue
+          救助ミッションへ
         </Button>
       </footer>
     </article>

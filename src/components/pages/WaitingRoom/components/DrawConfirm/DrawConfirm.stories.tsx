@@ -8,6 +8,7 @@ export default {
   component: DrawConfirm,
   args: {
     isOpen: true,
+    count: 3,
     handleCancel: action('cancel'),
     handleAccept: action('accept'),
   },

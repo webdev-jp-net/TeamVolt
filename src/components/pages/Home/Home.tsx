@@ -42,9 +42,7 @@ export const Home: FC = () => {
       </header>
       <div className={styles.body}>
         <p className={styles.description}>
-          TeamVolt is a group-based mobile browser game. Players divide into 'Chargers' and
-          'Rescuers' to tackle missions. Chargers generate energy while Rescuers use it to save
-          robots. Individual efforts synergize for team success!
+          TeamVoltは、グループで楽しむモバイルブラウザゲームです。プレイヤーは「充電係」と「救助係」に分かれ、エネルギー切れで動けなくなったロボットの救出ミッションに挑みます。充電係はエネルギーを生成し、救助係はそのエネルギーをロボットに届け出口までの移動を助けます。一人ひとりの活躍が成功の鍵です！
         </p>
         <Button
           handleClick={() => {
@@ -52,7 +50,7 @@ export const Home: FC = () => {
           }}
           addClass={[styles.button]}
         >
-          Team Up!
+          まずはチームを組もう！
         </Button>
         <HowToPlay />
       </div>
