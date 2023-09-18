@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo } from 'react';
+import { FC, useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 

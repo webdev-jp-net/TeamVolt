@@ -26,60 +26,37 @@
 
 .body {
   padding: 0 rem(24);
-  margin: rem(48) 0 0;
+  margin: rem(24) 0;
+}
+
+.chargeUnits {
+  position: absolute;
+  top: rem(240);
+  right: rem(24);
+  left: rem(24);
+  margin: auto 0;
 }
 
 // 準備
 .ready {
-  display: flex;
-  flex-direction: column;
+  @include fit;
+
+  display: grid;
   gap: rem(24);
-  margin: rem(24) 0;
+  place-items: center;
+  align-content: center;
+  padding: 0 rem(24) 0;
 }
 
 .console {
   display: flex;
   gap: rem(12);
   align-items: center;
-  // margin: rem(24) 0;
 }
 
 .result {
   margin-top: rem(-8);
   font-size: rem(18);
-}
-
-// stock
-.visualizer {
-  position: absolute;
-  top: rem(120);
-  right: rem(24);
-  left: rem(24);
-  display: grid;
-  align-items: end;
-}
-
-.stock {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: rem(24) 0;
-  align-items: end;
-  height: 1;
-  margin: rem(36) 0;
-  font-size: rem(72);
-}
-
-.stockItem {
-  width: rem(72);
-  line-height: 1;
-}
-
-.gauge {
-  margin: 0 rem(12);
-
-  &.--invisible {
-    opacity: 0;
-  }
 }
 
 // タップエリア
@@ -89,6 +66,9 @@
   right: 0;
   bottom: 0;
   left: 0;
+  display: grid;
+  align-content: center;
+  justify-content: center;
   padding: rem(180) 0 0;
   color: $c_dark;
   background: transparent;
@@ -112,10 +92,6 @@
   height: 1em;
   color: tomato;
   vertical-align: middle;
-}
-
-.jobIcon {
-  // font-size: rem(36);
 }
 
 // 結果確認

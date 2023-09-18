@@ -1,5 +1,7 @@
 import { FC, useRef, useState, useEffect } from 'react';
 
+import { FaRobot } from 'react-icons/fa';
+
 import styles from './BoostChallenge.module.scss';
 
 type BoostChallengeProps = {
@@ -88,7 +90,7 @@ export const BoostChallenge: FC<BoostChallengeProps> = ({
             animationDuration: `${duration * 1.25}ms`,
           }}
         >
-          🤖
+          <FaRobot className={styles.icon} />
         </div>
         <div className={styles.frame}></div>
       </div>

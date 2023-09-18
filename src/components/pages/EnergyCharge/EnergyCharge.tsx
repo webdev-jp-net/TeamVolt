@@ -5,8 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
-import { MdRefresh } from 'react-icons/md';
-import { MdVolunteerActivism, MdBolt } from 'react-icons/md';
+import { MdVolunteerActivism, MdBolt, MdRefresh } from 'react-icons/md';
 import { RootState } from 'store';
 import {
   useGetTeamArticleQuery,
@@ -17,6 +16,7 @@ import {
 
 import styles from './EnergyCharge.module.scss';
 
+import { ChargeUnits } from './components/ChargeUnits';
 import { GaugeUi } from './components/GaugeUi';
 import { TimeLeftUi } from './components/TimeLeftUi';
 
@@ -79,11 +79,13 @@ export const EnergyCharge: FC = () => {
 
   // 獲得バッテリーを送信
   const [sendAddChargeUnits] = useAddChargeUnitsMutation();
-  const handleSubmit = useCallback(() => {
-    const count = Math.floor(genEnergy / chargeThreshold);
-    sendAddChargeUnits({ id: selectedTeam || '', value: { member: localId, count } });
+  useEffect(() => {
+    if (genEnergy && currentTime >= limit) {
+      const count = Math.floor(genEnergy / chargeThreshold);
+      sendAddChargeUnits({ id: selectedTeam || '', value: { member: localId, count } });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [genEnergy, selectedTeam, localId]);
+  }, [currentTime, genEnergy, localId, selectedTeam]);
 
   // チーム情報の取得
   const {
@@ -136,73 +138,52 @@ export const EnergyCharge: FC = () => {
           duty!
         </h1>
       </header>
-      {isDone ? (
-        <>
-          <div className={styles.hasChallenged}>
-            <div className={styles.stock}>
-              {Array(totalChargeUnits)
-                .fill(0)
-                .map((_, index) => (
-                  <span key={index} className={styles.stockItem}>
-                    🔋
-                  </span>
-                ))}
-            </div>
+      <div className={styles.body}>
+        <ChargeUnits
+          count={isDone ? totalChargeUnits : Math.floor(genEnergy / chargeThreshold)}
+          addClass={[styles.chargeUnits]}
+        />
+        {job === 'Charger' && !isReady && currentTime < 1 && !genEnergy && (
+          <div className={styles.ready}>
+            <p>Tap the screen many times to charge the battery within the time limit.</p>
+            <Button
+              handleClick={() => {
+                setIsReady(true);
+              }}
+            >
+              I'm Ready
+            </Button>
           </div>
-        </>
-      ) : (
-        <>
-          <div className={styles.body}>
-            {!isReady ? (
-              <div className={styles.ready}>
-                <p>Tap the screen many times to charge the battery.</p>
-                <Button
-                  handleClick={() => {
-                    setIsReady(true);
-                  }}
-                >
-                  I'm Ready
-                </Button>
-              </div>
-            ) : currentTime < limit ? (
-              <>
-                <div className={styles.console}>
-                  <TimeLeftUi currentTime={currentTime} limit={limit} />
-                  <p className={styles.genEnergy}>⚡️ {genEnergy}</p>
-                </div>
-                <button type="button" onClick={handleTap} className={styles.tap}>
-                  Tap Screen!!
-                </button>
-              </>
-            ) : (
-              <>
-                <h2 className={styles.result}>Batteries Earned</h2>
-                <p>Great job! Send your results to the Rescuers.</p>
-              </>
-            )}
-            <div className={styles.stock}>
-              {Array(Math.floor(genEnergy / chargeThreshold))
-                .fill(0)
-                .map((_, index) => (
-                  <span key={index} className={styles.stockItem}>
-                    🔋
-                  </span>
-                ))}
-              {genEnergy > 0 && (
-                <GaugeUi
-                  addClass={[styles.gauge, currentTime >= limit ? styles['--invisible'] : '']}
-                  currentValue={Math.floor(((genEnergy % chargeThreshold) / chargeThreshold) * 100)}
-                />
-              )}
-            </div>
-            {genEnergy && currentTime >= limit ? (
-              <Button handleClick={handleSubmit}>submit</Button>
-            ) : (
-              ''
-            )}
+        )}
+        {job === 'Charger' && !hasChallenged && (
+          <div className={styles.console}>
+            <TimeLeftUi currentTime={currentTime} limit={limit} />
+            <p className={styles.genEnergy}>
+              <MdBolt className={styles.genEnergyIcon} /> {genEnergy}
+            </p>
           </div>
-        </>
-      )}
+        )}
+        {job === 'Charger' && isReady && currentTime < limit && (
+          <button type="button" onClick={handleTap} className={styles.tap}>
+            <GaugeUi
+              addClass={[styles.gauge, currentTime >= limit ? styles['--invisible'] : '']}
+              currentValue={Math.floor(((genEnergy % chargeThreshold) / chargeThreshold) * 100)}
+            />
+            Tap Screen!!
+          </button>
+        )}
+        {job === 'Charger' && hasChallenged && (
+          <>
+            <h2 className={styles.result}>Batteries Earned</h2>
+            <p>Great job! Send your results to the Rescuers.</p>
+          </>
+        )}
+        {job === 'Rescuer' && (
+          <>
+            <p>Wait for the battery to arrive.</p>
+          </>
+        )}
+      </div>
       <footer className={styles.footer}>
         {isDone && (
           <>
