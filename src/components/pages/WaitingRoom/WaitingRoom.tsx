@@ -95,7 +95,11 @@ export const WaitingRoom: FC = () => {
           <h1>{myTeam?.name}</h1>
         </header>
         <div className={styles.body}>
-          <p className={styles.paragraph}>Let's wait for our friends to assemble.</p>
+          <p className={styles.paragraph}>
+            Let's wait for our friends to assemble.
+            <br />
+            You can start a mission with two or more people.
+          </p>
           <CurrentMembers
             memberList={myTeam.member}
             myself={localId}
@@ -124,6 +128,7 @@ export const WaitingRoom: FC = () => {
         description={`${memberCount} people are currently entering. Do you want to raffle with these members?`}
         handleCancel={() => {
           setConfirmDraw(false);
+          setIsDrawConfirm(false);
         }}
         handleAccept={handleAcceptDraw}
       />
