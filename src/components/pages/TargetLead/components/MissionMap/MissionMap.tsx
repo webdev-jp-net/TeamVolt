@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import { FaRobot } from 'react-icons/fa';
+
 import styles from './MissionMap.module.scss';
 
 type MissionMapProps = {
@@ -21,7 +23,7 @@ export const MissionMap: FC<MissionMapProps> = ({ totalSteps, currentPosition, a
                 ' '
               )}
             >
-              {currentPosition === index && <span className={styles.icon}>🤖</span>}
+              {currentPosition === index && <FaRobot className={styles.icon} />}
             </div>
           ))
         }
