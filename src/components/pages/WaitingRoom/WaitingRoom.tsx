@@ -117,7 +117,7 @@ export const WaitingRoom: FC = () => {
           </Button>
           <Button
             handleClick={handleDrawConfirm}
-            disabled={getDrawResultLoading || getDrawResultFetching}
+            disabled={getDrawResultLoading || getDrawResultFetching || memberCount < 2}
           >
             Ready to go!
           </Button>
