@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
+import { MdRefresh } from 'react-icons/md';
 import { MdVolunteerActivism, MdBolt } from 'react-icons/md';
 import { RootState } from 'store';
 import {
@@ -208,7 +209,9 @@ export const EnergyCharge: FC = () => {
             <Button
               handleClick={handleTeamStockRequest}
               disabled={!selectedTeam || getDrawResultLoading || getDrawResultFetching}
+              addClass={[styles.button]}
             >
+              <MdRefresh className={styles.buttonIcon} />
               Check Team Charge
             </Button>
           </>
