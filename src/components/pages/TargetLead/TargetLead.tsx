@@ -152,7 +152,7 @@ export const TargetLead: FC = () => {
   // ミッション結果をリセット
   const handleCloseMission = useCallback(() => {
     if (selectedTeam) sendCloseMission(selectedTeam);
-    navigate('/');
+    navigate('/team-up');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTeam]);
 
