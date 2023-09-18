@@ -1,0 +1,68 @@
+@use "style/_variable" as *;
+
+.howtoplay {
+  background-color: whitesmoke;
+}
+
+// ゲームフロー
+.gameFlowTitle {
+  font-weight: bold;
+}
+
+.gameFlow {
+  padding: 0;
+  margin: 0;
+  counter-reset: gameFlowItem;
+}
+
+.gameFlowItem {
+  padding: rem(12) 0;
+  list-style: none;
+  counter-increment: gameFlowItem;
+}
+
+.gameFlowHeadline {
+  &::before {
+    margin: 0 rem(12) 0 0;
+    content: counter(gameFlowItem);
+  }
+}
+
+// 開閉ボタン
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: rem(12) rem(24);
+  background-color: transparent;
+  border: none;
+  appearance: none;
+}
+
+// パネル
+.panel {
+  padding: rem(12) rem(24);
+  border-top: 1px solid lightgray;
+
+  // headless UI Transition
+  &.enter {
+    transition: opacity $t_enter, transform $t_enter;
+  }
+
+  &.leave {
+    transition: opacity $t_leave, transform $t_leave;
+  }
+
+  &.enterFrom,
+  &.leaveTo {
+    opacity: 0;
+    transform: translateY(-.5em);
+  }
+
+  &.enterTo,
+  &.leaveFrom {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

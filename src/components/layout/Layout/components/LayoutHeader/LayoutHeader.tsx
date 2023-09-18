@@ -36,6 +36,26 @@ export const LayoutHeader: FC<LayoutHeaderProps> = ({ addClass = [], handleClick
               leaveTo={styles.leaveTo}
             >
               <Popover.Panel className={styles.panel}>
+                <p className={styles.gameFlowTitle}>How to play</p>
+                <ol className={styles.gameFlow}>
+                  <li className={styles.gameFlowItem}>
+                    <strong className={styles.gameFlowHeadline}>Team Up</strong>
+                    <p>Pick your team.</p>
+                  </li>
+                  <li className={styles.gameFlowItem}>
+                    <strong className={styles.gameFlowHeadline}>Meet Up & Draw Roles</strong>
+                    <p>Assign roles through a draw with teammates.</p>
+                  </li>
+                  <li className={styles.gameFlowItem}>
+                    <strong className={styles.gameFlowHeadline}>Charge Energy</strong>
+                    <p>Charge batteries for robot handoff.</p>
+                  </li>
+                  <li className={styles.gameFlowItem}>
+                    <strong className={styles.gameFlowHeadline}>Execute Rescue</strong>
+                    <p>Deliver batteries and assist escape.</p>
+                  </li>
+                </ol>
+                <hr />
                 <button
                   className={styles.menuButton}
                   type="button"

@@ -22,17 +22,47 @@ exports[`Home Homeのスナップショット 1`] = `
     <div
       class="body"
     >
+      <p
+        class="description"
+      >
+        TeamVolt is a group-based mobile browser game. Players divide into 'Chargers' and 'Rescuers' to tackle missions. Chargers generate energy while Rescuers use it to save robots. Individual efforts synergize for team success!
+      </p>
       <button
         class="button button --basic"
         type="button"
       >
         Team Up!
       </button>
-      <p
-        class="description"
+      <div
+        class="howtoplay"
       >
-        TeamVolt is a group-based mobile browser game. Players divide into 'Chargers' and 'Rescuers' to tackle missions. Chargers generate energy while Rescuers use it to save robots. Individual efforts synergize for team success!
-      </p>
+        <button
+          aria-expanded="false"
+          class="button"
+          data-headlessui-state=""
+          id="headlessui-disclosure-button-:r0:"
+          type="button"
+        >
+          HowToPlay
+          <svg
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 24 24"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+            <path
+              d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   </article>
 </DocumentFragment>

@@ -68,8 +68,9 @@
     top: rem(48);
     right: 0;
     width: 100%;
-    padding: rem(24);
+    padding: rem(12) rem(24);
     background: white;
+    border-top: whitesmoke solid 1px;
 
   // headless UI Transition
   &.enter {
@@ -100,4 +101,28 @@
   position: fixed;
   top: rem(48);
   background: #0006;
+}
+
+// ゲームフロー
+.gameFlowTitle {
+  font-weight: bold;
+}
+
+.gameFlow {
+  padding: 0;
+  margin: 0;
+  counter-reset: gameFlowItem;
+}
+
+.gameFlowItem {
+  padding: rem(12) 0;
+  list-style: none;
+  counter-increment: gameFlowItem;
+}
+
+.gameFlowHeadline {
+  &::before {
+    margin: 0 rem(12) 0 0;
+    content: counter(gameFlowItem);
+  }
 }
