@@ -4,11 +4,12 @@
   position: relative;
   display: grid;
   width: 100%;
-  padding: rem(6);
+  padding: rem(12);
   color: black;
   background-color: transparent;
   border: 0 none;
   appearance: none;
+
 
   &.current {
     color: white;

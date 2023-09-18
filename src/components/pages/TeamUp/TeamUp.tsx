@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
+import { MdRefresh, MdGroupAdd } from 'react-icons/md';
 import { RootState } from 'store';
 import { updateTeam, useAddMemberMutation } from 'store/player';
 import { useGetTeamListQuery, useRemoveTeamMutation } from 'store/team';
@@ -69,22 +70,22 @@ export const TeamUp: FC = () => {
         <header className={styles.header}>
           <h1>Pick Your Team</h1>
         </header>
-        <div>
-          <ul className={styles.list}>
-            {teamList.map((item, index) => (
-              <li key={index} className={styles.item}>
-                <ListItem
-                  selected={item.id === selectedTeam}
-                  name={item.name}
-                  handleClick={() => {
-                    handleSelectTeam(item.id);
-                  }}
-                />
-              </li>
-            ))}
-          </ul>
-          <AddListItem addClass={[styles.addForm]} />
-          <div className={styles.body}>
+        <div className={styles.body}>
+          <div>
+            <ul className={styles.list}>
+              {teamList.map((item, index) => (
+                <li key={index} className={styles.item}>
+                  <ListItem
+                    selected={item.id === selectedTeam}
+                    name={item.name}
+                    handleClick={() => {
+                      handleSelectTeam(item.id);
+                    }}
+                  />
+                </li>
+              ))}
+            </ul>
+            <AddListItem addClass={[styles.addForm]} />
             <Button
               handleClick={handleRemoveTeam}
               disabled={entriesAddLoading || !selectedTeam || !localId}
@@ -94,10 +95,13 @@ export const TeamUp: FC = () => {
           </div>
         </div>
         <footer className={styles.footer}>
+          <Button handleClick={getTeamListRefetch} addClass={[styles.button]}>
+            <MdRefresh className={styles.buttonIcon} />
+            Refresh team list
+          </Button>
           <Button handleClick={joinTeam} disabled={entriesAddLoading || !selectedTeam || !localId}>
             join
           </Button>
-          <Button handleClick={getTeamListRefetch}>reload</Button>
         </footer>
       </article>
     </>

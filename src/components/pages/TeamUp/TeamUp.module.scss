@@ -17,7 +17,6 @@
 
 .body {
   padding: 0 rem(24);
-  margin: rem(48) 0 0;
 }
 
 // リスト
@@ -25,11 +24,11 @@
   display: flex;
   flex-direction: column;
   padding: 0;
-  margin: rem(24);
+  margin: rem(24) 0;
 }
 
 .item {
-  padding: rem(12) 0;
+  padding: rem(6) 0;
   margin: 0;
   list-style: none;
   border-bottom: 1px solid #000;
@@ -38,7 +37,20 @@
 
 // 追加フォーム
 .addForm {
-  margin: rem(24);
+  height: rem(48);
+  margin: rem(24) 0;
+}
+
+// ボタンアイコン
+.button {
+  display: flex;
+  gap: rem(12);
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonIcon {
+  font-size: rem(20);
 }
 
 // フッター
