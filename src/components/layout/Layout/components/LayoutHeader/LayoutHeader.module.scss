@@ -1,0 +1,101 @@
+@use "style/_variable" as *;
+
+.header {
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: rem(48);
+  background: #fffe;
+}
+
+.title {
+  padding: 0 rem(6);
+}
+
+// メニュー開閉ボタン
+.opener {
+  @include rect(rem(48));
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  font-size: rem(24);
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  appearance: none;
+}
+
+// メニューボタン
+.menuButton {
+  display: flex;
+  gap: rem(12);
+  align-items: center;
+  padding: rem(6) rem(6);
+  background: none;
+  border: none;
+  outline: none;
+  appearance: none;
+}
+
+.menuIcon {
+  @include rect(rem(24));
+
+  display: grid;
+  place-items: center;
+  font-size: rem(24);
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  appearance: none;
+}
+
+// パネル
+.panel {
+    position: fixed;
+    top: rem(48);
+    right: 0;
+    width: 100%;
+    padding: rem(24);
+    background: white;
+
+  // headless UI Transition
+  &.enter {
+    transition: opacity $t_enter, transform $t_enter;
+  }
+
+  &.leave {
+    transition: opacity $t_leave, transform $t_leave;
+  }
+
+  &.enterFrom,
+  &.leaveTo {
+    opacity: 0;
+    transform: translateY(-.5em);
+  }
+
+  &.enterTo,
+  &.leaveFrom {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// 背景
+.overlay {
+  @include fit;
+
+  position: fixed;
+  top: rem(48);
+  background: #0006;
+}

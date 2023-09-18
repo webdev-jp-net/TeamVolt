@@ -17,6 +17,8 @@ import { useGenerateAndStoreSessionId } from 'hooks/useGenerateAndStoreSessionId
 
 import styles from './Layout.module.scss';
 
+import { LayoutHeader } from './components/LayoutHeader';
+
 export const Layout: FC = () => {
   const dispatch = useDispatch();
 
@@ -110,6 +112,7 @@ export const Layout: FC = () => {
 export const LayoutView: FC = () => {
   return (
     <div className={[styles.layout].join(' ')}>
+      <LayoutHeader />
       <Outlet />
     </div>
   );

@@ -32,6 +32,7 @@
     "last 2 versions"
   ],
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
     "firebase": "^10.3.1",
     "html-react-parser": "^3.0.1",
     "modern-css-reset": "^1.4.0",
@@ -39,6 +40,7 @@
     "postcss-syntax": "^0.36.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.11.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.0",
     "react-scripts": "^5.0.1",
