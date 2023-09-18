@@ -26,12 +26,6 @@ exports[`WaitingRoom WaitingRoomのスナップショット 1`] = `
       >
         Team Up!
       </button>
-      <button
-        class="button --basic"
-        type="button"
-      >
-        cancel
-      </button>
     </footer>
   </article>
 </DocumentFragment>

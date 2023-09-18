@@ -39,3 +39,33 @@
   gap: rem(24);
   margin: auto rem(24) rem(24);
 }
+
+// ダイアログ
+.dialogScreen {
+  @include fit;
+
+  position: fixed;
+  background: #0006;
+
+
+  // headless UI Transition
+  &.enter {
+    transition: opacity $t_enter, transform $t_enter;
+  }
+
+  &.leave {
+    transition: opacity $t_leave, transform $t_leave;
+  }
+
+  &.enterFrom,
+  &.leaveTo {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  &.enterTo,
+  &.leaveFrom {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

@@ -1,0 +1,100 @@
+@use "style/_variable" as *;
+
+.dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: rem(24);
+  background: #0006;
+}
+
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #0006;
+
+  // headless UI Transition
+  &.enter {
+    transition: opacity #{($t_duration * 0.5) * 1ms} ease-out;
+  }
+
+  &.leave {
+    transition: opacity #{($t_duration * 1.5) * 1ms} ease-in;
+  }
+
+  &.enterFrom,
+  &.leaveTo {
+    opacity: 0;
+  }
+
+  &.enterTo,
+  &.leaveFrom {
+    opacity: 1;
+  }
+}
+
+.dialogPanel {
+  position: relative;
+  bottom: rem(24);
+  z-index: 10;
+  padding: rem(12);
+  margin: auto;
+  background: white;
+
+  // headless UI Transition
+  &.enter {
+    transition: opacity $t_enter, transform $t_enter;
+  }
+
+  &.leave {
+    transition: opacity $t_leave, transform $t_leave;
+  }
+
+  &.enterFrom,
+  &.leaveTo {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  &.enterTo,
+  &.leaveFrom {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.dialogTitle {
+  margin: rem(12);
+  font-size: rem(18);
+}
+
+.dialogDescription {
+  margin: rem(12);
+}
+
+.dialogFooter {
+  display: flex;
+  gap: rem(24);
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dialogFooterButton {
+  padding: 0.5em 1em;
+}
+
+.dialogCancel {
+  padding: 0.5em 1em;
+  color: currentColor;
+  background-color: transparent;
+  border: none;
+  appearance: none;
+}

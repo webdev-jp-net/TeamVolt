@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect, useState, Fragment } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,12 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/parts/Button';
 import { MdRefresh } from 'react-icons/md';
 import { RootState } from 'store';
-import { updateTeam, useAddMemberMutation } from 'store/player';
+import { updateTeam, escapeTeam, useAddMemberMutation } from 'store/player';
 import { useGetTeamListQuery, useRemoveTeamMutation } from 'store/team';
 
 import styles from './TeamUp.module.scss';
 
 import { AddListItem } from './components/AddListItem';
+import { DeleteTeam } from './components/DeleteTeam';
 import { ListItem } from './components/ListItem';
 
 export const TeamUp: FC = () => {
@@ -54,13 +55,16 @@ export const TeamUp: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [entriesAddSuccess]);
 
+  // デバッグ用: チームの削除確認ダイアログ
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   // デバッグ用: チームの削除
   const [sendRemoveTeamMutation] = useRemoveTeamMutation();
   const handleRemoveTeam = useCallback(() => {
-    if (window.confirm('Are you sure you want to delete this team?')) {
-      sendRemoveTeamMutation(selectedTeam || '');
-      localStorage.removeItem('selectedTeam');
-    }
+    sendRemoveTeamMutation(selectedTeam || '');
+    localStorage.removeItem('selectedTeam');
+    setConfirmDelete(false);
+    dispatch(escapeTeam());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTeam]);
 
@@ -87,7 +91,9 @@ export const TeamUp: FC = () => {
             </ul>
             <AddListItem addClass={[styles.addForm]} />
             <Button
-              handleClick={handleRemoveTeam}
+              handleClick={() => {
+                setConfirmDelete(true);
+              }}
               disabled={entriesAddLoading || !selectedTeam || !localId}
             >
               (debug) delete team
@@ -104,6 +110,13 @@ export const TeamUp: FC = () => {
           </Button>
         </footer>
       </article>
+      <DeleteTeam
+        isOpen={confirmDelete}
+        handleCancel={() => {
+          setConfirmDelete(false);
+        }}
+        handleAccept={handleRemoveTeam}
+      />
     </>
   );
 };

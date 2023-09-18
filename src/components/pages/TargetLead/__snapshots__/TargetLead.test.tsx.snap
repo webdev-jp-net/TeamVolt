@@ -72,13 +72,7 @@ exports[`TargetLead TargetLeadのスナップショット 1`] = `
         class="button --basic"
         type="button"
       >
-        Check Mission Progress
-      </button>
-      <button
-        class="button --basic"
-        type="button"
-      >
-        cancel
+        Close Mission
       </button>
     </footer>
   </article>
