@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
-import { MdRefresh, MdGroupAdd } from 'react-icons/md';
+import { MdRefresh } from 'react-icons/md';
 import { RootState } from 'store';
 import { updateTeam, useAddMemberMutation } from 'store/player';
 import { useGetTeamListQuery, useRemoveTeamMutation } from 'store/team';

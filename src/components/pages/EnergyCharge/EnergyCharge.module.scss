@@ -96,6 +96,28 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+
+// タイトル
+.title {
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+  font-size: rem(22);
+}
+
+.job {
+  display: inline-flex;
+  gap: 0.2em;
+  align-items: center;
+  height: 1em;
+  color: tomato;
+  vertical-align: middle;
+}
+
+.jobIcon {
+  // font-size: rem(36);
+}
+
 // 結果確認
 .hasChallenged {
   display: flex;
@@ -111,4 +133,16 @@
   flex-direction: column;
   gap: rem(24);
   margin: auto rem(24) rem(24);
+}
+
+// ボタンアイコン
+.button {
+  display: flex;
+  gap: rem(12);
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonIcon {
+  font-size: rem(20);
 }

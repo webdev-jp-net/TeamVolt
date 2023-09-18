@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
+import { MdRefresh } from 'react-icons/md';
 import { RootState } from 'store';
 import {
   useGetTeamArticleQuery,
@@ -185,7 +186,9 @@ export const TargetLead: FC = () => {
             <Button
               handleClick={handleTeamProgressRequest}
               disabled={getDrawResultLoading || getDrawResultFetching}
+              addClass={[styles.button]}
             >
+              <MdRefresh className={styles.buttonIcon} />
               Check Mission Progress
             </Button>
           )

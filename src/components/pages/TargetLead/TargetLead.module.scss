@@ -46,3 +46,15 @@
   gap: rem(24);
   margin: auto rem(24) rem(24);
 }
+
+// ボタンアイコン
+.button {
+  display: flex;
+  gap: rem(12);
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonIcon {
+  font-size: rem(20);
+}

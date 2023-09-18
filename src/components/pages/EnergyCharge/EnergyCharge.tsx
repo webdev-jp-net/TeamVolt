@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
+import { MdRefresh } from 'react-icons/md';
+import { MdVolunteerActivism, MdBolt } from 'react-icons/md';
 import { RootState } from 'store';
 import {
   useGetTeamArticleQuery,
@@ -121,10 +123,18 @@ export const EnergyCharge: FC = () => {
   return (
     <article className={styles.article}>
       <header className={styles.header}>
-        <h1>Energy Charge</h1>
-        <p>
-          You're on <strong>{job}</strong> duty!
-        </p>
+        <h1 className={styles.title}>
+          You're on{' '}
+          <strong className={styles.job}>
+            {job === 'Rescuer' ? (
+              <MdVolunteerActivism className={styles.jobIcon} />
+            ) : (
+              <MdBolt className={styles.jobIcon} />
+            )}
+            {job}
+          </strong>{' '}
+          duty!
+        </h1>
       </header>
       {isDone ? (
         <>
@@ -199,7 +209,9 @@ export const EnergyCharge: FC = () => {
             <Button
               handleClick={handleTeamStockRequest}
               disabled={!selectedTeam || getDrawResultLoading || getDrawResultFetching}
+              addClass={[styles.button]}
             >
+              <MdRefresh className={styles.buttonIcon} />
               Check Team Charge
             </Button>
           </>
