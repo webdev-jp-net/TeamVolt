@@ -1,22 +1,26 @@
 import { combineReducers, configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
-import player, { playerGetApi, playerAddApi } from './player';
-import team, { teamGetApi, teamPostApi } from './team';
+import player, { playerGetApi, teamArticleGetApi, playerAddApi, teamPostApi } from './player';
+import team, { teamGetApi, teamListPostApi } from './team';
 
 const reducer = combineReducers({
   player,
   [playerGetApi.reducerPath]: playerGetApi.reducer,
   [playerAddApi.reducerPath]: playerAddApi.reducer,
+  [teamArticleGetApi.reducerPath]: teamArticleGetApi.reducer,
+  [teamPostApi.reducerPath]: teamPostApi.reducer,
   team,
   [teamGetApi.reducerPath]: teamGetApi.reducer,
-  [teamPostApi.reducerPath]: teamPostApi.reducer,
+  [teamListPostApi.reducerPath]: teamListPostApi.reducer,
 });
 
 const middleware = getDefaultMiddleware({ serializableCheck: false }).concat(
   playerGetApi.middleware,
+  teamArticleGetApi.middleware,
+  teamPostApi.middleware,
   playerAddApi.middleware,
   teamGetApi.middleware,
-  teamPostApi.middleware
+  teamListPostApi.middleware
 );
 
 export const store = configureStore({ reducer, middleware });

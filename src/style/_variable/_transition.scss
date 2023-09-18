@@ -1,1 +1,5 @@
 $t_ease: 250ms ease;
+$t_duration: 250;
+$t_ease: #{$t_duration * 1ms} ease;
+$t_enter: #{($t_duration * 1.5) * 1ms} ease-out;
+$t_leave: #{$t_duration * 1ms} ease-in;

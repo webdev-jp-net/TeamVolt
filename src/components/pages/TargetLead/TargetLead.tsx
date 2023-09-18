@@ -6,8 +6,11 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useGetTeamArticleQuery } from 'store/team';
-import { useUpdateUsedUnitsMutation, useUpdateCurrentPositionMutation } from 'store/team';
+import {
+  useGetTeamArticleQuery,
+  useUpdateUsedUnitsMutation,
+  useUpdateCurrentPositionMutation,
+} from 'store/player';
 
 import styles from './TargetLead.module.scss';
 
@@ -16,13 +19,7 @@ import { MissionMap } from './components/MissionMap';
 
 export const TargetLead: FC = () => {
   const navigate = useNavigate();
-  const { localId } = useSelector((state: RootState) => state.player);
-  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-
-  // 所属チームの情報
-  const myTeam = useMemo(() => {
-    return teamList.find(team => team.id === selectedTeam);
-  }, [teamList, selectedTeam]);
+  const { localId, selectedTeam, myTeam } = useSelector((state: RootState) => state.player);
 
   // 役職
   const job = useMemo(() => {
@@ -171,33 +168,36 @@ export const TargetLead: FC = () => {
       </div>
 
       <footer className={styles.footer}>
-        {job === 'Rescuer' ? (
-          <>
-            {!isSearching ? (
-              <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
-                Search for Rescues
-              </Button>
-            ) : (
-              <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
-                Deliver Charge
-              </Button>
-            )}
-          </>
+        {!isFailed && !isComplete ? (
+          job === 'Rescuer' ? (
+            <>
+              {!isSearching ? (
+                <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
+                  Search for Rescues
+                </Button>
+              ) : (
+                <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
+                  Deliver Charge
+                </Button>
+              )}
+            </>
+          ) : (
+            <Button
+              handleClick={handleTeamProgressRequest}
+              disabled={getDrawResultLoading || getDrawResultFetching}
+            >
+              Check Mission Progress
+            </Button>
+          )
         ) : (
           <Button
-            handleClick={handleTeamProgressRequest}
-            disabled={getDrawResultLoading || getDrawResultFetching}
+            handleClick={() => {
+              navigate('/');
+            }}
           >
-            Check Mission Progress
+            Close Mission
           </Button>
         )}
-        <Button
-          handleClick={() => {
-            navigate('/');
-          }}
-        >
-          cancel
-        </Button>
       </footer>
     </article>
   );

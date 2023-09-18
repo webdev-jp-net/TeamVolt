@@ -5,12 +5,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
 import { RootState } from 'store';
-import { useGetPlayerQuery, useAddPlayerMutation, updateLocalId } from 'store/player';
-import { useGetTeamListQuery, updateTeam } from 'store/team';
+import {
+  updateTeam,
+  useGetPlayerQuery,
+  useGetTeamArticleQuery,
+  useAddPlayerMutation,
+  updateLocalId,
+} from 'store/player';
 
 import { useGenerateAndStoreSessionId } from 'hooks/useGenerateAndStoreSessionId';
 
 import styles from './Layout.module.scss';
+
+import { LayoutHeader } from './components/LayoutHeader';
 
 export const Layout: FC = () => {
   const dispatch = useDispatch();
@@ -18,8 +25,7 @@ export const Layout: FC = () => {
   // ID生成
   const generateId = useGenerateAndStoreSessionId;
 
-  const { playerList } = useSelector((state: RootState) => state.player);
-  const { selectedTeam } = useSelector((state: RootState) => state.team);
+  const { playerList, selectedTeam } = useSelector((state: RootState) => state.player);
 
   // 既存のプレイヤー情報取得
   const { isSuccess: getPlayerSuccess } = useGetPlayerQuery();
@@ -76,7 +82,9 @@ export const Layout: FC = () => {
   }, [isExistLocalId, getPlayerSuccess]);
 
   // 既存のチーム情報取得
-  const {} = useGetTeamListQuery();
+  const { isSuccess: getTeamArticleSuccess } = useGetTeamArticleQuery(selectedTeam || '', {
+    skip: !selectedTeam,
+  });
 
   // ローカルストレージへ既存のチームが保存されているか
   const [isExistSelectedTeam, setIsExistSelectedTeam] = useState<string>('');
@@ -104,6 +112,7 @@ export const Layout: FC = () => {
 export const LayoutView: FC = () => {
   return (
     <div className={[styles.layout].join(' ')}>
+      <LayoutHeader />
       <Outlet />
     </div>
   );

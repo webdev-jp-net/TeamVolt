@@ -6,8 +6,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { updateGenEnergy, resetEnergy } from 'store/player';
-import { useGetTeamArticleQuery, useAddChargeUnitsMutation } from 'store/team';
+import {
+  useGetTeamArticleQuery,
+  useAddChargeUnitsMutation,
+  updateGenEnergy,
+  resetEnergy,
+} from 'store/player';
 
 import styles from './EnergyCharge.module.scss';
 
@@ -18,13 +22,9 @@ export const EnergyCharge: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { localId, genEnergy } = useSelector((state: RootState) => state.player);
-  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-
-  // 所属チームの情報
-  const myTeam = useMemo(() => {
-    return teamList.find(team => team.id === selectedTeam);
-  }, [teamList, selectedTeam]);
+  const { localId, selectedTeam, myTeam, genEnergy } = useSelector(
+    (state: RootState) => state.player
+  );
 
   // 役職
   const job = useMemo(() => {
@@ -46,6 +46,11 @@ export const EnergyCharge: FC = () => {
   const limit = 30;
   const chargeThreshold = 50;
 
+  // チャレンジ中フラグ
+  const onChallenge = useMemo(() => {
+    return isReady && currentTime < limit && !hasChallenged;
+  }, [isReady, currentTime, limit, hasChallenged]);
+
   // カウントダウンの処理
   useEffect(() => {
     let timerID: NodeJS.Timeout | undefined;
@@ -60,6 +65,10 @@ export const EnergyCharge: FC = () => {
       clearInterval(timerID!);
     };
   }, [isReady, currentTime]);
+
+  const isDone = useMemo(() => {
+    return job === 'Rescuer' || hasChallenged;
+  }, [job, hasChallenged]);
 
   // スコアを加算
   const handleTap = () => {
@@ -95,12 +104,16 @@ export const EnergyCharge: FC = () => {
       : 0;
   }, [myTeam]);
 
+  // スクロール禁止
+  useEffect(() => {
+    document.body.classList[onChallenge ? 'add' : 'remove']('isFixedScroll');
+  }, [onChallenge]);
+
   // 離脱のタイミングでリセット
   useEffect(() => {
-    document.body.classList.add('isFixedScroll');
     return () => {
-      document.body.classList.remove('isFixedScroll');
       dispatch(resetEnergy());
+      document.body.classList.remove('isFixedScroll');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -113,15 +126,9 @@ export const EnergyCharge: FC = () => {
           You're on <strong>{job}</strong> duty!
         </p>
       </header>
-      {job === 'Rescuer' || hasChallenged ? (
+      {isDone ? (
         <>
           <div className={styles.hasChallenged}>
-            <Button
-              handleClick={handleTeamStockRequest}
-              disabled={!selectedTeam || getDrawResultLoading || getDrawResultFetching}
-            >
-              Check Team Charge
-            </Button>
             <div className={styles.stock}>
               {Array(totalChargeUnits)
                 .fill(0)
@@ -132,15 +139,6 @@ export const EnergyCharge: FC = () => {
                 ))}
             </div>
           </div>
-          <footer className={styles.footer}>
-            <Button
-              handleClick={() => {
-                navigate('/target-lead');
-              }}
-            >
-              Start Rescue
-            </Button>
-          </footer>
         </>
       ) : (
         <>
@@ -187,23 +185,34 @@ export const EnergyCharge: FC = () => {
                 />
               )}
             </div>
-          </div>
-          <footer className={styles.footer}>
-            {currentTime >= limit && (
-              <>
-                <Button handleClick={handleSubmit}>submit</Button>
-                <Button
-                  handleClick={() => {
-                    navigate('/');
-                  }}
-                >
-                  exit
-                </Button>
-              </>
+            {genEnergy && currentTime >= limit ? (
+              <Button handleClick={handleSubmit}>submit</Button>
+            ) : (
+              ''
             )}
-          </footer>
+          </div>
         </>
       )}
+      <footer className={styles.footer}>
+        {isDone && (
+          <>
+            <Button
+              handleClick={handleTeamStockRequest}
+              disabled={!selectedTeam || getDrawResultLoading || getDrawResultFetching}
+            >
+              Check Team Charge
+            </Button>
+          </>
+        )}
+        <Button
+          handleClick={() => {
+            navigate('/target-lead');
+          }}
+          disabled={totalChargeUnits < 1}
+        >
+          Start Rescue
+        </Button>
+      </footer>
     </article>
   );
 };

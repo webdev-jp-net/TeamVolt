@@ -6,20 +6,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useRemoveMemberMutation, useRemoveChallengerMutation, escapeTeam } from 'store/team';
+import { escapeTeam, useRemoveMemberMutation, useRemoveChallengerMutation } from 'store/player';
 
 import styles from './Home.module.scss';
 
 export const Home: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { localId } = useSelector((state: RootState) => state.player);
-  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-
-  // 所属チームの情報
-  const myTeam = useMemo(() => {
-    return teamList.find(team => team.id === selectedTeam);
-  }, [teamList, selectedTeam]);
+  const { localId, selectedTeam, myTeam } = useSelector((state: RootState) => state.player);
 
   // 代表者を削除する
   const [sendRemoveChallenger] = useRemoveChallengerMutation();

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
 import { RootState } from 'store';
-import { useGetTeamArticleQuery, useAddChallengerMutation } from 'store/team';
+import { useGetTeamArticleQuery, useAddChallengerMutation } from 'store/player';
 
 import styles from './WaitingRoom.module.scss';
 
@@ -14,13 +14,7 @@ import { CurrentMembers } from './components/CurrentMembers/CurrentMembers';
 
 export const WaitingRoom: FC = () => {
   const navigate = useNavigate();
-  const { localId } = useSelector((state: RootState) => state.player);
-  const { teamList, selectedTeam } = useSelector((state: RootState) => state.team);
-
-  // 所属チームの情報
-  const myTeam = useMemo(() => {
-    return teamList.find(team => team.id === selectedTeam);
-  }, [teamList, selectedTeam]);
+  const { localId, selectedTeam, myTeam } = useSelector((state: RootState) => state.player);
 
   // チーム情報の取得
   const {
@@ -79,7 +73,7 @@ export const WaitingRoom: FC = () => {
 
   return myTeam ? (
     <>
-      <article className={styles.waitingRoom}>
+      <article className={styles.article}>
         <header className={styles.header}>
           <h1>{myTeam?.name}</h1>
         </header>
@@ -101,13 +95,6 @@ export const WaitingRoom: FC = () => {
           >
             reload
           </Button>
-          <Button
-            handleClick={() => {
-              navigate('/');
-            }}
-          >
-            cancel
-          </Button>
         </footer>
       </article>
     </>
@@ -125,13 +112,6 @@ export const WaitingRoom: FC = () => {
             }}
           >
             Team Up!
-          </Button>
-          <Button
-            handleClick={() => {
-              navigate('/');
-            }}
-          >
-            cancel
           </Button>
         </footer>
       </article>
