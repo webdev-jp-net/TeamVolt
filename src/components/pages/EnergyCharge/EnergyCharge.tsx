@@ -79,11 +79,13 @@ export const EnergyCharge: FC = () => {
 
   // 獲得バッテリーを送信
   const [sendAddChargeUnits] = useAddChargeUnitsMutation();
-  const handleSubmit = useCallback(() => {
-    const count = Math.floor(genEnergy / chargeThreshold);
-    sendAddChargeUnits({ id: selectedTeam || '', value: { member: localId, count } });
+  useEffect(() => {
+    if (genEnergy && currentTime >= limit) {
+      const count = Math.floor(genEnergy / chargeThreshold);
+      sendAddChargeUnits({ id: selectedTeam || '', value: { member: localId, count } });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [genEnergy, selectedTeam, localId]);
+  }, [currentTime, genEnergy, localId, selectedTeam]);
 
   // チーム情報の取得
   const {
@@ -138,6 +140,12 @@ export const EnergyCharge: FC = () => {
       </header>
       {isDone ? (
         <>
+          {job === 'Charger' && (
+            <div className={styles.body}>
+              <h2 className={styles.result}>Batteries Earned</h2>
+              <p>Great job! Send your results to the Rescuers.</p>
+            </div>
+          )}
           <div className={styles.hasChallenged}>
             <div className={styles.stock}>
               {Array(totalChargeUnits)
@@ -195,11 +203,6 @@ export const EnergyCharge: FC = () => {
                 />
               )}
             </div>
-            {genEnergy && currentTime >= limit ? (
-              <Button handleClick={handleSubmit}>submit</Button>
-            ) : (
-              ''
-            )}
           </div>
         </>
       )}
