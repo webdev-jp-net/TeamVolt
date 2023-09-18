@@ -54,8 +54,7 @@ export const WaitingRoom: FC = () => {
   useEffect(() => {
     if (isDrawConfirm && !getDrawResultFetching && myTeam) {
       // 抽選が終わっている場合はエネルギーチャージ画面へ
-      if (myTeam.challenger) navigate('/energy-charge');
-      else {
+      if (!myTeam.challenger) {
         // 抽選が終わっていない場合はダイアログを開く
         if (memberCount > 1) {
           setConfirmDraw(true); // 抽選確認
@@ -73,17 +72,11 @@ export const WaitingRoom: FC = () => {
       // 書き込み
       sendAddChallenger({ id: selectedTeam || '', value: result });
 
-      // エネルギーチャージ画面へ
-      navigate('/energy-charge');
-
       // 抽選確認中フラグを下ろす
       setIsDrawConfirm(false);
 
       // ダイアログを閉じる
       setConfirmDraw(false);
-
-      // 遷移
-      navigate('/energy-charge');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myTeam]);
@@ -115,12 +108,23 @@ export const WaitingRoom: FC = () => {
             <MdRefresh className={styles.buttonIcon} />
             Refresh team member
           </Button>
-          <Button
-            handleClick={handleDrawConfirm}
-            disabled={getDrawResultLoading || getDrawResultFetching || memberCount < 2}
-          >
-            Ready to go!
-          </Button>
+          {!myTeam?.challenger ? (
+            <Button
+              handleClick={handleDrawConfirm}
+              disabled={getDrawResultLoading || getDrawResultFetching || memberCount < 2}
+            >
+              Ready to go!
+            </Button>
+          ) : (
+            <Button
+              handleClick={() => {
+                navigate('/energy-charge');
+              }}
+              disabled={getDrawResultLoading || getDrawResultFetching || memberCount < 2}
+            >
+              Energy Charge
+            </Button>
+          )}
         </footer>
       </article>
       <DrawConfirm
