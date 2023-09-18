@@ -11,13 +11,12 @@
 .header {
   display: flex;
   flex-direction: column;
-  gap: rem(24);
   margin: rem(24) rem(24) auto;
 }
 
 
 .paragraph {
-  margin: rem(24);
+  margin: 0 rem(24);
 }
 
 // ボタンアイコン

@@ -157,19 +157,21 @@ export const TargetLead: FC = () => {
   }, [selectedTeam]);
 
   return (
-    <article className={styles.article}>
-      <header className={styles.header}>
-        <h1>Target Lead</h1>
+    <div className={styles.article}>
+      <div className={styles.header}>
         <p>
-          <MdBatteryChargingFull className={styles.batteryIcon} /> x {batteryStock} / progress:{' '}
+          スコープで暗い倉庫の中のロボットをさがし、エネルギーを届けます。バッテリーの数だけチャレンジできます。全部使い切る前に出口まで導きましょう。
+        </p>
+        <p>
+          <MdBatteryChargingFull className={styles.batteryIcon} /> x {batteryStock} / 進捗:{' '}
           {progress}%
         </p>
-      </header>
+      </div>
       <div className={styles.body}>
         <div className={styles.mapArea}>
-          {isComplete && <p className={styles.message}>Mission Complete!</p>}
-          {isFailed && <p className={styles.message}>Mission Failed...</p>}
-          {isBoost && <p className={styles.message}>Boosted!</p>}
+          {isComplete && <p className={styles.message}>救出成功！</p>}
+          {isFailed && <p className={styles.message}>救出失敗…</p>}
+          {isBoost && <p className={styles.message}>大成功！2倍チャージ</p>}
           <MissionMap totalSteps={totalSteps} currentPosition={currentPosition} />
           <BoostChallenge
             isActive={isSearching}
@@ -180,17 +182,17 @@ export const TargetLead: FC = () => {
         </div>
       </div>
 
-      <footer className={styles.footer}>
+      <div className={styles.footer}>
         {!isFailed && !isComplete ? (
           job === 'Rescuer' ? (
             <>
               {!isSearching ? (
                 <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
-                  Search for Rescues
+                  ロボットをさがす
                 </Button>
               ) : (
                 <Button handleClick={handleCharge} disabled={isFailed || isComplete}>
-                  Deliver Charge
+                  エネルギーを届ける
                 </Button>
               )}
             </>
@@ -201,13 +203,13 @@ export const TargetLead: FC = () => {
               addClass={[styles.button]}
             >
               <MdRefresh className={styles.buttonIcon} />
-              Check Mission Progress
+              救出ミッションの様子を確認
             </Button>
           )
         ) : (
-          <Button handleClick={handleCloseMission}>Close Mission</Button>
+          <Button handleClick={handleCloseMission}>このミッションを閉じる</Button>
         )}
-      </footer>
-    </article>
+      </div>
+    </div>
   );
 };
