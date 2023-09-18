@@ -2,29 +2,38 @@
 
 exports[`Home Homeのスナップショット 1`] = `
 <DocumentFragment>
-  <div
-    class="l-page home"
+  <article
+    class="home"
   >
-    <div
-      class="icon"
+    <header
+      class="header"
     >
-      ⚡️
-    </div>
-    <h1
-      class="title"
-    >
-      TeamVolt
-    </h1>
+      <div
+        class="icon"
+      >
+        ⚡️
+      </div>
+      <h1
+        class="title"
+      >
+        TeamVolt
+      </h1>
+    </header>
     <div
-      class="menu"
+      class="body"
     >
       <button
-        class="button --basic"
+        class="button button --basic"
         type="button"
       >
         Team Up!
       </button>
+      <p
+        class="description"
+      >
+        TeamVolt is a group-based mobile browser game. Players divide into 'Chargers' and 'Rescuers' to tackle missions. Chargers generate energy while Rescuers use it to save robots. Individual efforts synergize for team success!
+      </p>
     </div>
-  </div>
+  </article>
 </DocumentFragment>
 `;

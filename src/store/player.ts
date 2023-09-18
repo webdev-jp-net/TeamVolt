@@ -213,6 +213,23 @@ export const teamPostApi = createApi({
       } else {
         return { error: 'No such document!' };
       }
+    } else if (operationType === 'close_mission' && id) {
+      const docRef = doc(db, 'team', id);
+      // メンバー、役割、プレイ結果を削除
+      await updateDoc(docRef, {
+        member: deleteField(),
+        challenger: deleteField(),
+        chargeUnits: deleteField(),
+        currentPosition: deleteField(),
+        usedUnits: deleteField(),
+      });
+      // レスポンスで返す情報を再取得
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { data: { id, ...docSnap.data() } };
+      } else {
+        return { error: 'No such document!' };
+      }
     } else {
       return { error: 'No such document!' };
     }
@@ -274,6 +291,13 @@ export const teamPostApi = createApi({
         value,
       }),
     }),
+    // ミッション情報をクリア
+    closeMission: builder.mutation<TeamArticleData, string>({
+      query: id => ({
+        operationType: 'close_mission',
+        id,
+      }),
+    }),
   }),
 });
 export const {
@@ -284,6 +308,7 @@ export const {
   useAddChargeUnitsMutation,
   useUpdateUsedUnitsMutation,
   useUpdateCurrentPositionMutation,
+  useCloseMissionMutation,
 } = teamPostApi;
 
 const player = createSlice({
@@ -399,6 +424,13 @@ const player = createSlice({
     // 成功: 救出ミッション進捗更新
     builder.addMatcher(
       teamPostApi.endpoints.updateCurrentPosition.matchFulfilled,
+      (state, action: PayloadAction<TeamArticleData>) => {
+        state.myTeam = action.payload;
+      }
+    );
+    // 成功: ミッション情報クリア成功
+    builder.addMatcher(
+      teamPostApi.endpoints.closeMission.matchFulfilled,
       (state, action: PayloadAction<TeamArticleData>) => {
         state.myTeam = action.payload;
       }
