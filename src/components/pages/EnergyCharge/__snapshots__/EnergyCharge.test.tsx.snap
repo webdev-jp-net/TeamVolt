@@ -11,7 +11,7 @@ exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
       <h1
         class="title"
       >
-        You're on 
+        あなたは 
         <strong
           class="job"
         >
@@ -29,9 +29,9 @@ exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
               d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"
             />
           </svg>
-          Charger
+          充電係
         </strong>
-         duty!
+         です！
       </h1>
     </header>
     <div
@@ -44,13 +44,13 @@ exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
         class="ready"
       >
         <p>
-          Tap the screen many times to charge the battery within the time limit.
+          制限時間内に画面を連打してバッテリーを充電してください。
         </p>
         <button
           class="button --basic"
           type="button"
         >
-          I'm Ready
+          準備OK はじめる
         </button>
       </div>
       <div
@@ -109,7 +109,7 @@ exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
         disabled=""
         type="button"
       >
-        Start Rescue
+        救助ミッションへ
       </button>
     </footer>
   </article>

@@ -1,19 +1,24 @@
 @use "style/_variable" as *;
 
-.memberList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(rem(60), 1fr));
-  gap: rem(24);
+.currentMembers {
   padding: 0 rem(24);
   margin: rem(48) 0;
 }
 
+.memberList {
+  display: grid;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid #000;
+}
+
 .member {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: rem(36) 1fr;
+  gap: rem(12);
   align-items: center;
-  text-align: center;
+  padding: rem(12) 0;
+  border-bottom: 1px solid #000;
 }
 
 .memberIcon {
@@ -26,16 +31,18 @@
   border-radius: 50%;
 }
 
-.current {
-  position: absolute;
-  top: 100%;
-  margin: rem(6) 0;
-  font-size: rem(12);
+.name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.job {
-  position: absolute;
-  bottom: 100%;
-  margin: rem(6) 0;
-  font-size: rem(12);
+.jobIcon {
+  &.--light {
+    color: white;
+  }
+
+  &.--dark {
+    color: black;
+  }
 }

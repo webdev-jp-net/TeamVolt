@@ -12,8 +12,16 @@
   display: flex;
   flex-direction: column;
   margin: rem(24) rem(24) auto;
+  overflow: hidden;
 }
 
+.teamName {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
 
 .paragraph {
   margin: 0 rem(24);

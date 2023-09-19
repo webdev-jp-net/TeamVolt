@@ -6,6 +6,7 @@ import { Outlet } from 'react-router-dom';
 
 import { RootState } from 'store';
 import {
+  updateHandleName,
   updateTeam,
   useGetPlayerQuery,
   useGetTeamArticleQuery,
@@ -88,6 +89,7 @@ export const Layout: FC = () => {
 
   // ローカルストレージへ既存のチームが保存されているか
   const [isExistSelectedTeam, setIsExistSelectedTeam] = useState<string>('');
+
   useEffect(() => {
     if (isExistSelectedTeam && !selectedTeam) dispatch(updateTeam(isExistSelectedTeam));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -102,6 +104,9 @@ export const Layout: FC = () => {
     // localStorageにselectedTeamが存在しているか確認
     const watchTeam = localStorage.getItem('selectedTeam');
     setIsExistSelectedTeam(watchTeam || '');
+
+    // localStorageにhandleNameが存在している場合は状態管理へ反映
+    dispatch(updateHandleName(localStorage.getItem('handleName') || ''));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

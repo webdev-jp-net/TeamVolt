@@ -15,10 +15,11 @@ import {
 import { db } from 'firebaseDB';
 
 import type { PlayerArticleData } from 'types/player';
-import type { TeamArticleData, ChargeUnitsData } from 'types/team';
+import type { TeamArticleData, ChargeUnitsData, MemberData } from 'types/team';
 
 type State = {
   localId: string;
+  handleName?: string;
   player?: string;
   playerList: PlayerArticleData[];
   selectedTeam?: string;
@@ -100,7 +101,7 @@ export const { useAddPlayerMutation } = playerAddApi;
 type teamPostApiProps = {
   operationType: string;
   id?: string;
-  value?: string | number | ChargeUnitsData;
+  value?: string | number | ChargeUnitsData | MemberData;
 };
 export const teamPostApi = createApi({
   reducerPath: 'teamPostApi',
@@ -236,7 +237,7 @@ export const teamPostApi = createApi({
   },
   endpoints: builder => ({
     // メンバー追加
-    addMember: builder.mutation<TeamArticleData, { id: string; value: string }>({
+    addMember: builder.mutation<TeamArticleData, { id: string; value: MemberData }>({
       query: ({ id, value }) => ({
         operationType: 'add_member',
         id,
@@ -244,7 +245,7 @@ export const teamPostApi = createApi({
       }),
     }),
     // メンバー削除
-    removeMember: builder.mutation<TeamArticleData, { id: string; value: string }>({
+    removeMember: builder.mutation<TeamArticleData, { id: string; value: MemberData }>({
       query: ({ id, value }) => ({
         operationType: 'remove_member',
         id,
@@ -322,6 +323,13 @@ const player = createSlice({
       return {
         ...state,
         localId: action.payload,
+      };
+    },
+    // ハンドルネーム更新
+    updateHandleName: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        handleName: action.payload,
       };
     },
     // 所属チーム更新
@@ -439,8 +447,14 @@ const player = createSlice({
 });
 
 // Action Creator
-export const { updateLocalId, updateTeam, escapeTeam, updateGenEnergy, resetEnergy } =
-  player.actions;
+export const {
+  updateLocalId,
+  updateHandleName,
+  updateTeam,
+  escapeTeam,
+  updateGenEnergy,
+  resetEnergy,
+} = player.actions;
 
 // Reducer
 export default player.reducer;

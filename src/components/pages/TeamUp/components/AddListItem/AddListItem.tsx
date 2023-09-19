@@ -1,7 +1,7 @@
 import { FC, useState, useCallback, ChangeEvent } from 'react';
 
 import { Button } from 'components/parts/Button';
-import { MdGroupAdd } from 'react-icons/md';
+import { MdAdd } from 'react-icons/md';
 import { useAddTeamMutation } from 'store/team';
 
 import styles from './AddListItem.module.scss';
@@ -46,7 +46,7 @@ export const AddListItem: FC<AddListItemProps> = ({ addClass = [], callback }) =
         disabled={teamAddLoading || !newTeamName.length}
         addClass={[styles.button]}
       >
-        <MdGroupAdd className={styles.buttonIcon} />
+        <MdAdd className={styles.buttonIcon} />
       </Button>
     </div>
   );
