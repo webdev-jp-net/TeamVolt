@@ -15,7 +15,9 @@ import { HowToPlay } from './components/HowToPlay';
 export const Home: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { localId, selectedTeam, myTeam } = useSelector((state: RootState) => state.player);
+  const { localId, handleName, selectedTeam, myTeam } = useSelector(
+    (state: RootState) => state.player
+  );
 
   // 代表者を削除する
   const [sendRemoveChallenger] = useRemoveChallengerMutation();
@@ -28,7 +30,7 @@ export const Home: FC = () => {
     // 自分が代表者の場合は代表者を削除する
     if (myTeam?.challenger === localId)
       sendRemoveChallenger({ id: selectedTeam || '', value: localId });
-    sendRemoveMember({ id: selectedTeam || '', value: { id: localId, name: localId } });
+    sendRemoveMember({ id: selectedTeam || '', value: { id: localId, name: handleName || '' } });
     dispatch(escapeTeam());
     localStorage.removeItem('selectedTeam');
     // eslint-disable-next-line react-hooks/exhaustive-deps
