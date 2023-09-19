@@ -19,25 +19,35 @@ export const CurrentMembers: FC<CurrentMembersProps> = ({
   challenger,
   addClass = [],
 }) => {
+  const getForegroundColor = (hexColor: string): string => {
+    const r = parseInt(hexColor.substr(1, 2), 16);
+    const g = parseInt(hexColor.substr(3, 2), 16);
+    const b = parseInt(hexColor.substr(5, 2), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 128 ? 'dark' : 'light';
+  };
   return (
-    <div className={[styles.memberList, ...addClass].join(' ')}>
-      {memberList.map(item => (
-        <div key={item.id} className={styles.member}>
-          {challenger && (
-            <span className={styles.job}>{item.id === challenger ? '救助係' : '充電係'}</span>
-          )}
-          <span className={styles.memberIcon} style={{ backgroundColor: `#${item}` }}>
-            {!challenger ? (
-              ''
-            ) : item.id === challenger ? (
-              <MdVolunteerActivism className={styles.jobIcon} />
-            ) : (
-              <MdBolt className={styles.jobIcon} />
-            )}
-          </span>
-          {item.id === myself && <span className={styles.current}>自分</span>}
-        </div>
-      ))}
+    <div className={[styles.currentMembers, ...addClass].join(' ')}>
+      <ul className={styles.memberList}>
+        {memberList.map(item => (
+          <li key={item.id} className={styles.member}>
+            <span className={styles.memberIcon} style={{ backgroundColor: `#${item.id}` }}>
+              {!challenger ? (
+                ''
+              ) : item.id === challenger ? (
+                <MdVolunteerActivism
+                  className={[styles.jobIcon, styles[`--${getForegroundColor(item.id)}`]].join(' ')}
+                />
+              ) : (
+                <MdBolt
+                  className={[styles.jobIcon, styles[`--${getForegroundColor(item.id)}`]].join(' ')}
+                />
+              )}
+            </span>
+            <span className={styles.name}>{item.name}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
