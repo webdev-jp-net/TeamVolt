@@ -9,13 +9,13 @@ exports[`WaitingRoom WaitingRoomのスナップショット 1`] = `
       class="header"
     >
       <h1>
-        You didn't pick the team.
+        チームが選ばれていません
       </h1>
     </header>
     <p
       class="paragraph"
     >
-      Pick your team first.
+      先にチームを選んでください。
     </p>
     <footer
       class="footer"
@@ -24,7 +24,7 @@ exports[`WaitingRoom WaitingRoomのスナップショット 1`] = `
         class="button --basic"
         type="button"
       >
-        Team Up!
+        まずはチームを組もう！
       </button>
     </footer>
   </article>
