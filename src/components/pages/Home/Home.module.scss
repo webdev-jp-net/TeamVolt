@@ -7,7 +7,7 @@
 }
 
 .header {
-  margin: rem(120) 0 0;
+  margin: rem(72) 0 0;
 }
 
 .title {
@@ -23,7 +23,7 @@
 
 .body {
   display: grid;
-  gap: rem(24);
+  gap: rem(36);
   align-items: center;
   justify-content: center;
   padding: rem(24);
@@ -35,6 +35,5 @@
 
 .description {
   display: inline-block;
-  padding: 0 rem(24);
   line-height: 1.8;
 }
