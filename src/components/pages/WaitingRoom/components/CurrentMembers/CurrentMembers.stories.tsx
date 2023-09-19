@@ -7,8 +7,12 @@ export default {
   title: 'CurrentMembers',
   component: CurrentMembers,
   args: {
-    memberList: ['hoge', 'fuga', 'piyo'],
-    myself: 'hoge',
+    memberList: [
+      { id: 'hoge', name: 'hoge' },
+      { id: 'fuga', name: 'fuga' },
+      { id: 'piyo', name: 'piyo' },
+    ],
+    myself: 'fuga',
     challenger: 'fuga',
     handleClick: action(''),
   },

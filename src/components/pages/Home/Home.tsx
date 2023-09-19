@@ -28,7 +28,7 @@ export const Home: FC = () => {
     // 自分が代表者の場合は代表者を削除する
     if (myTeam?.challenger === localId)
       sendRemoveChallenger({ id: selectedTeam || '', value: localId });
-    sendRemoveMember({ id: selectedTeam || '', value: localId });
+    sendRemoveMember({ id: selectedTeam || '', value: { id: localId, name: localId } });
     dispatch(escapeTeam());
     localStorage.removeItem('selectedTeam');
     // eslint-disable-next-line react-hooks/exhaustive-deps

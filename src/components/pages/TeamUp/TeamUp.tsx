@@ -44,7 +44,7 @@ export const TeamUp: FC = () => {
   // 参加ボタン押下
   const joinTeam = useCallback(() => {
     if (selectedTeam) {
-      sendAddMember({ id: selectedTeam, value: localId });
+      sendAddMember({ id: selectedTeam, value: { id: localId, name: localId } });
       localStorage.setItem('selectedTeam', selectedTeam);
     }
   }, [localId, sendAddMember, selectedTeam]);

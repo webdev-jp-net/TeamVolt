@@ -67,8 +67,10 @@ export const WaitingRoom: FC = () => {
   // 抽選実行
   const handleAcceptDraw = useCallback(() => {
     if (myTeam) {
+      // idだけを抽出した配列を作成
+      const memberIdList = myTeam.member.map(item => item.id);
       // 抽選
-      const result = getRandomElement(myTeam.member);
+      const result = getRandomElement(memberIdList);
       // 書き込み
       sendAddChallenger({ id: selectedTeam || '', value: result });
 
