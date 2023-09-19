@@ -7,20 +7,21 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'components/parts/Button';
 import { MdRefresh } from 'react-icons/md';
 import { RootState } from 'store';
-import { updateTeam, escapeTeam, useAddMemberMutation } from 'store/player';
+import { updateTeam, updateHandleName, escapeTeam, useAddMemberMutation } from 'store/player';
 import { useGetTeamListQuery, useRemoveTeamMutation } from 'store/team';
 
 import styles from './TeamUp.module.scss';
 
 import { AddListItem } from './components/AddListItem';
 import { DeleteTeam } from './components/DeleteTeam';
+import { EditHandleName } from './components/EditHandleName';
 import { ListItem } from './components/ListItem';
 
 export const TeamUp: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { localId, selectedTeam } = useSelector((state: RootState) => state.player);
+  const { localId, handleName, selectedTeam } = useSelector((state: RootState) => state.player);
   const { teamList } = useSelector((state: RootState) => state.team);
 
   // 全チーム情報を取得
@@ -41,13 +42,19 @@ export const TeamUp: FC = () => {
     { isLoading: entriesAddLoading, isSuccess: entriesAddSuccess }, // mutation state
   ] = useAddMemberMutation();
 
-  // 参加ボタン押下
+  // 参加チーム決定
   const joinTeam = useCallback(() => {
-    if (selectedTeam) {
-      sendAddMember({ id: selectedTeam, value: { id: localId, name: localId } });
+    if (selectedTeam && localId && handleName) {
+      sendAddMember({ id: selectedTeam, value: { id: localId, name: handleName } });
       localStorage.setItem('selectedTeam', selectedTeam);
     }
-  }, [localId, sendAddMember, selectedTeam]);
+  }, [localId, handleName, sendAddMember, selectedTeam]);
+
+  // ハンドルネーム更新
+  const saveHandleName = (newName: string) => {
+    dispatch(updateHandleName(newName));
+    localStorage.setItem('handleName', newName);
+  };
 
   // 参加成功
   useEffect(() => {
@@ -93,6 +100,11 @@ export const TeamUp: FC = () => {
               ))}
             </ul>
             <AddListItem addClass={[styles.addForm]} />
+            <EditHandleName
+              value={handleName}
+              handleAccept={saveHandleName}
+              addClass={[styles.addForm]}
+            />
             <Button
               handleClick={() => {
                 setConfirmDelete(true);
@@ -108,7 +120,10 @@ export const TeamUp: FC = () => {
             <MdRefresh className={styles.buttonIcon} />
             チーム一覧を更新
           </Button>
-          <Button handleClick={joinTeam} disabled={entriesAddLoading || !selectedTeam || !localId}>
+          <Button
+            handleClick={joinTeam}
+            disabled={entriesAddLoading || !selectedTeam || !localId || !handleName}
+          >
             選択中のチームへ参加
           </Button>
         </footer>

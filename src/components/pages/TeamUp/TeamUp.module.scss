@@ -23,7 +23,7 @@
   display: flex;
   flex-direction: column;
   padding: 0;
-  margin: rem(24) 0;
+  margin: rem(24) 0 0;
   border-top: 1px solid #000;
 }
 
@@ -37,8 +37,8 @@
 
 // 追加フォーム
 .addForm {
-  height: rem(48);
-  margin: rem(24) 0;
+  height: rem(36);
+  margin: rem(12) 0;
 }
 
 // ボタンアイコン
@@ -58,7 +58,7 @@
   display: flex;
   flex-direction: column;
   gap: rem(24);
-  margin: auto rem(24) rem(24);
+  margin: rem(24);
 }
 
 // ダイアログ
