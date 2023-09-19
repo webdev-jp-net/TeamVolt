@@ -8,23 +8,17 @@
 .memberList {
   display: grid;
   padding: 0;
-  // grid-template-columns: repeat(auto-fill, minmax(rem(60), 1fr));
-  // gap: rem(24);
   margin: 0;
   border-top: 1px solid #000;
 }
 
 .member {
-  // position: relative;
   display: grid;
   grid-template-columns: rem(36) 1fr;
   gap: rem(12);
   align-items: center;
   padding: rem(12) 0;
   border-bottom: 1px solid #000;
-  // flex-direction: column;
-  // align-items: center;
-  // text-align: center;
 }
 
 .memberIcon {

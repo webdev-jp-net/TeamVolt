@@ -87,7 +87,7 @@ export const WaitingRoom: FC = () => {
     <>
       <article className={styles.article}>
         <header className={styles.header}>
-          <h1>{myTeam?.name}</h1>
+          <h1 className={styles.teamName}>{myTeam?.name}</h1>
         </header>
         <div className={styles.body}>
           <p className={styles.paragraph}>
