@@ -19,6 +19,7 @@ import type { TeamArticleData, ChargeUnitsData, MemberData } from 'types/team';
 
 type State = {
   localId: string;
+  handleName?: string;
   player?: string;
   playerList: PlayerArticleData[];
   selectedTeam?: string;
@@ -324,6 +325,13 @@ const player = createSlice({
         localId: action.payload,
       };
     },
+    // ハンドルネーム更新
+    updateHandleName: (state, action: PayloadAction<string>) => {
+      return {
+        ...state,
+        handleName: action.payload,
+      };
+    },
     // 所属チーム更新
     updateTeam: (state, action: PayloadAction<string>) => {
       return {
@@ -439,8 +447,14 @@ const player = createSlice({
 });
 
 // Action Creator
-export const { updateLocalId, updateTeam, escapeTeam, updateGenEnergy, resetEnergy } =
-  player.actions;
+export const {
+  updateLocalId,
+  updateHandleName,
+  updateTeam,
+  escapeTeam,
+  updateGenEnergy,
+  resetEnergy,
+} = player.actions;
 
 // Reducer
 export default player.reducer;
