@@ -80,9 +80,7 @@ export const TeamUp: FC = () => {
       <article className={styles.article}>
         <header className={styles.header}>
           <h1>チームを組もう</h1>
-          <p>
-            このゲームは対面やチャットで会話しながら進行します。話せるメンバーどうしでチームを組んでください。
-          </p>
+          <p>このゲームは会話が必要です。話せるメンバーどうしで同じチームに参加してください。</p>
         </header>
         <div className={styles.body}>
           <div className={styles.console}>

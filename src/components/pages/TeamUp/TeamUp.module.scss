@@ -10,8 +10,8 @@
 }
 
 .body {
-  padding: 0 rem(24);
-  margin: rem(24) 0 0;
+  @include tmp_body;
+
 }
 
 // 操作
@@ -19,7 +19,6 @@
   @include tmp_console;
 
   justify-content: space-between;
-  margin: rem(12) 0 0
 }
 
 .consoleButton {

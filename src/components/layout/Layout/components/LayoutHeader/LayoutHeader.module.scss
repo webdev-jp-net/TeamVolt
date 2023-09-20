@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: rem(48);
+  height: rem(60);
   background: $c_lightness;
   border-bottom: 1px solid $c_border;
 }
@@ -18,6 +18,8 @@
   display: flex;
   align-items: center;
   padding: 0 rem(6);
+  font-size: rem(18);
+  font-weight: bold;
 }
 
 .icon {
@@ -35,6 +37,7 @@
   display: grid;
   place-items: center;
   padding: 0;
+  margin: rem(6);
   font-size: rem(24);
   color: currentColor;
   cursor: pointer;
@@ -73,7 +76,7 @@
 // パネル
 .panel {
     position: fixed;
-    top: rem(48);
+    top: rem(60);
     right: 0;
     width: 100%;
     padding: rem(12) rem(24);
@@ -106,7 +109,7 @@
   @include fit;
 
   position: fixed;
-  top: rem(48);
+  top: rem(60);
   background: #0006;
 }
 

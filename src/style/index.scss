@@ -2,7 +2,7 @@
 @use '_variable' as *;
 
 // GoogleFonts
-// @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=Montserrat:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
 
 html {
   height: 100%;
@@ -12,7 +12,7 @@ body {
   height: 100dvh;
   min-height: 100%;
   margin: 0;
-  font-family: 'Hiragino Kaku Gothic ProN', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  font-family: 'Noto Sans JP','Hiragino Kaku Gothic ProN', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
   font-size: vw(16); // 幅375pxのアートボードで16px相当
   color: $c_dark;
   background-color: $c_lightness;
