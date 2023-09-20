@@ -1,10 +1,7 @@
 @use "style/_variable" as *;
 
 .article {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  height: 100%;
-  padding: rem(48) 0 0;
+  @include tmp_article;
 
   * {
     user-select: none;
@@ -13,11 +10,9 @@
 
 // ヘッダー
 .header {
-  display: flex;
-  flex-direction: column;
-  gap: rem(24);
-  margin: rem(24) rem(24) auto;
+  @include tmp_header;
 }
+
 
 // テキスト
 .paragraph {
@@ -27,14 +22,6 @@
 .body {
   padding: 0 rem(24);
   margin: rem(24) 0;
-}
-
-.chargeUnits {
-  position: absolute;
-  top: rem(240);
-  right: rem(24);
-  left: rem(24);
-  margin: auto 0;
 }
 
 // 準備
@@ -48,15 +35,18 @@
   padding: 0 rem(24) 0;
 }
 
-.console {
-  display: flex;
-  gap: rem(12);
-  align-items: center;
-}
-
 .result {
   margin-top: rem(-8);
   font-size: rem(18);
+}
+
+// 充電中
+.chargeUnits {
+  position: absolute;
+  top: rem(48 + 33 + 24 + 66 + 36);
+  right: rem(24);
+  left: rem(24);
+  margin: auto 0;
 }
 
 // タップエリア
@@ -69,20 +59,18 @@
   display: grid;
   align-content: center;
   justify-content: center;
-  padding: rem(180) 0 0;
+  padding: rem(180) 0 rem(44);
   color: $c_dark;
   background: transparent;
   border: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-
 // タイトル
 .title {
   display: flex;
   gap: 0.5em;
   align-items: center;
-  font-size: rem(22);
 }
 
 .job {
@@ -90,7 +78,7 @@
   gap: 0.2em;
   align-items: center;
   height: 1em;
-  color: tomato;
+  color: $c_accent;
   vertical-align: middle;
 }
 
@@ -103,22 +91,51 @@
   margin: rem(48) 0 0;
 }
 
-// フッター
-.footer {
-  display: flex;
-  flex-direction: column;
-  gap: rem(24);
-  margin: auto rem(24) rem(24);
+// バッテリーストックリスト
+// 操作
+.console {
+  @include tmp_console;
+
+  gap: rem(6);
+  justify-content: space-between;
+  margin: rem(12) 0 0;
 }
 
-// ボタンアイコン
-.button {
+.consoleButton {
+  @include tmp_consoleButton;
+
+  white-space: nowrap;
+}
+
+.count {
   display: flex;
   gap: rem(12);
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 rem(6);
 }
 
-.buttonIcon {
-  font-size: rem(20);
+.totalChargeUnits {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.genEnergyIcon {
+  position: relative;
+  top: -0.1em;
+  font-size: rem(22);
+  line-height: 1;
+  color: $c_current;
+}
+
+.total {
+  line-height: 1;
+}
+
+// フッター
+.footer {
+  @include tmp_footer;
 }

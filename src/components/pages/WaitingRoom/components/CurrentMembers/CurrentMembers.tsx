@@ -1,43 +1,33 @@
 import { FC } from 'react';
 
-import { MdQuestionMark, MdVolunteerActivism, MdBolt } from 'react-icons/md';
+import { MdQuestionMark, MdVolunteerActivism, MdChargingStation } from 'react-icons/md';
+
+import { useGetForegroundColor } from 'hooks/useGetForegroundColor';
 
 import styles from './CurrentMembers.module.scss';
 
 import type { MemberData } from 'types/team';
 
 type CurrentMembersProps = {
-  memberList?: MemberData[];
+  list?: MemberData[];
   myself?: string;
   challenger?: string;
   addClass?: string[];
 };
 
 export const CurrentMembers: FC<CurrentMembersProps> = ({
-  memberList = [],
+  list = [],
   myself,
   challenger,
   addClass = [],
 }) => {
-  /**
-   * 背景色から文字色を判定する関数
-   *
-   * @param hexColor 16進数形式の背景色 (#FFFFFF形式)
-   * @returns 文字色。明るい背景には'dark'、暗い背景には'light'を返す
-   *
-   * @example
-   * const color = getForegroundColor("#FFFFFF");  // Output: 'dark'
-   */
-  const getForegroundColor = (hexColor: string): string => {
-    const [r, g, b] = [1, 3, 5].map(start => parseInt(hexColor.substr(start, 2), 16));
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness > 140 ? 'dark' : 'light';
-  };
+  // 前景色を取得
+  const getForegroundColor = useGetForegroundColor;
 
   return (
     <div className={[styles.currentMembers, ...addClass].join(' ')}>
       <ul className={styles.list}>
-        {memberList.map(item => (
+        {list.map(item => (
           <li
             key={item.id}
             className={[styles.item, item.id === myself ? styles['--current'] : ''].join(' ')}
@@ -52,7 +42,7 @@ export const CurrentMembers: FC<CurrentMembersProps> = ({
                   className={[styles.jobIcon, styles[`--${getForegroundColor(item.id)}`]].join(' ')}
                 />
               ) : (
-                <MdBolt
+                <MdChargingStation
                   className={[styles.jobIcon, styles[`--${getForegroundColor(item.id)}`]].join(' ')}
                 />
               )}

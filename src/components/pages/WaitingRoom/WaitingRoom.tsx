@@ -104,11 +104,7 @@ export const WaitingRoom: FC = () => {
             </Button>
             <span className={styles.count}>{memberCount}人参加</span>
           </div>
-          <CurrentMembers
-            memberList={myTeam.member}
-            myself={localId}
-            challenger={myTeam.challenger}
-          />
+          <CurrentMembers list={myTeam.member} myself={localId} challenger={myTeam.challenger} />
         </div>
         <footer className={styles.footer}>
           {memberCount < 2 && <p className={styles.note}>2人以上でミッション開始できます</p>}

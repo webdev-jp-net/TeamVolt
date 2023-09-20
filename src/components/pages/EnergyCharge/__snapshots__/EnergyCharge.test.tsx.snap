@@ -38,22 +38,6 @@ exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
       class="body"
     >
       <div
-        class="list chargeUnits"
-      />
-      <div
-        class="ready"
-      >
-        <p>
-          制限時間内に画面を連打してバッテリーを充電してください。
-        </p>
-        <button
-          class="button --basic"
-          type="button"
-        >
-          準備OK はじめる
-        </button>
-      </div>
-      <div
         class="console"
       >
         <div
@@ -99,6 +83,19 @@ exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
           </svg>
            0
         </p>
+      </div>
+      <div
+        class="ready"
+      >
+        <p>
+          制限時間内に画面を連打してバッテリーを充電してください。
+        </p>
+        <button
+          class="button --basic"
+          type="button"
+        >
+          準備OK はじめる
+        </button>
       </div>
     </div>
     <footer

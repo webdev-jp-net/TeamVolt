@@ -160,14 +160,30 @@ export const TargetLead: FC = () => {
     <div className={styles.article}>
       <div className={styles.header}>
         <p>
-          スコープで暗い倉庫の中のロボットをさがし、エネルギーを届けます。バッテリーの数だけチャレンジできます。全部使い切る前に出口まで導きましょう。
-        </p>
-        <p>
-          <MdBatteryChargingFull className={styles.batteryIcon} /> x {batteryStock} / 進捗:{' '}
-          {progress}%
+          スコープで暗い倉庫の中のロボットをさがし、エネルギーを届けます。
+          <br />
+          バッテリーの数だけチャレンジできます。全部使い切る前に出口まで導きましょう。
         </p>
       </div>
       <div className={styles.body}>
+        <div className={styles.console}>
+          <Button
+            addClass={[styles.consoleButton]}
+            handleClick={handleTeamProgressRequest}
+            disabled={getDrawResultLoading || getDrawResultFetching}
+          >
+            <MdRefresh />
+            <span>救出の様子を更新</span>
+          </Button>
+        </div>
+        <div className={styles.console}>
+          <span className={styles.totalChargeUnits}>
+            <MdBatteryChargingFull className={styles.genEnergyIcon} />
+            <span className={styles.total}>× {batteryStock}</span>
+          </span>
+          進捗: {progress}%
+        </div>
+
         <div className={styles.mapArea}>
           {isComplete && <p className={styles.message}>救出成功！</p>}
           {isFailed && <p className={styles.message}>救出失敗…</p>}
@@ -184,7 +200,7 @@ export const TargetLead: FC = () => {
 
       <div className={styles.footer}>
         {!isFailed && !isComplete ? (
-          job === 'Rescuer' ? (
+          job === 'Rescuer' && (
             <>
               {!isSearching ? (
                 <Button handleClick={handleBoost} disabled={isFailed || isComplete}>
@@ -196,15 +212,6 @@ export const TargetLead: FC = () => {
                 </Button>
               )}
             </>
-          ) : (
-            <Button
-              handleClick={handleTeamProgressRequest}
-              disabled={getDrawResultLoading || getDrawResultFetching}
-              addClass={[styles.button]}
-            >
-              <MdRefresh className={styles.buttonIcon} />
-              救出ミッションの様子を確認
-            </Button>
           )
         ) : (
           <Button handleClick={handleCloseMission}>このミッションを閉じる</Button>

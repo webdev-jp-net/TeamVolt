@@ -1,19 +1,13 @@
 @use "style/_variable" as *;
 
 .article {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  height: 100%;
-  padding: rem(48) 0 0;
+  @include tmp_article;
 }
 
 
 // ヘッダー
 .header {
-  display: flex;
-  flex-direction: column;
-  gap: rem(24);
-  margin: rem(24) rem(24) auto;
+  @include tmp_header;
 }
 
 // 本文
@@ -21,11 +15,44 @@
   padding: rem(24);
 }
 
+.console {
+  @include tmp_console;
+
+  margin: rem(12) 0 0;
+}
+
+.consoleButton {
+  @include tmp_consoleButton;
+
+  white-space: nowrap;
+}
+
+.count {
+  display: flex;
+  gap: rem(12);
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 rem(6);
+}
 // バッテリー
-.batteryIcon {
-  font-size: rem(24);
-  color: yellowgreen;
-  vertical-align: middle;
+.totalChargeUnits {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.genEnergyIcon {
+  position: relative;
+  top: -0.1em;
+  font-size: rem(22);
+  line-height: 1;
+  color: $c_current;
+}
+
+.total {
+  line-height: 1;
 }
 
 .mapArea {
@@ -48,20 +75,5 @@
 
 // フッター
 .footer {
-  display: flex;
-  flex-direction: column;
-  gap: rem(24);
-  margin: auto rem(24) rem(24);
-}
-
-// ボタンアイコン
-.button {
-  display: flex;
-  gap: rem(12);
-  align-items: center;
-  justify-content: center;
-}
-
-.buttonIcon {
-  font-size: rem(20);
+  @include tmp_footer;
 }

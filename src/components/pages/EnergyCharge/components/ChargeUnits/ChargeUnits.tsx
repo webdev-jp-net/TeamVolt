@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { MdBatteryChargingFull } from 'react-icons/md';
+import { MdBatteryChargingFull, MdBattery0Bar } from 'react-icons/md';
 
 import styles from './ChargeUnits.module.scss';
 
@@ -19,6 +19,7 @@ export const ChargeUnits: FC<ChargeUnitsProps> = ({ count, addClass = [] }) => {
             <MdBatteryChargingFull />
           </span>
         ))}
+      <MdBattery0Bar className={styles.unknown} />
     </div>
   );
 };
