@@ -4,6 +4,7 @@
   display: grid;
   place-items: center;
   align-content: center;
+  padding: rem(48) 0;
 }
 
 .header {
@@ -21,6 +22,7 @@
   margin: 0 auto;
   font-size: rem(60);
   line-height: 1;
+  color: $c_current;
 }
 
 .body {

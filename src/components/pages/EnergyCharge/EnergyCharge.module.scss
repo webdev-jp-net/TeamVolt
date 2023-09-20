@@ -93,13 +93,15 @@
 
 .genEnergy {
   display: flex;
-  font-size: rem(24);
+  font-family: 'Russo One', sans-serif;
+  font-size: rem(18);
+  line-height: rem(24);
 }
 
 .genEnergyIcon {
   position: relative;
   top: -0.1em;
-  font-size: rem(42);
+  font-size: rem(24);
   line-height: 1;
   color: $c_current;
 }

@@ -40,9 +40,6 @@ export const EnergyCharge: FC = () => {
     return myTeam?.challenger === localId ? '救助係' : '充電係';
   }, [myTeam, localId]);
 
-  // 集合している人数
-  const memberCount = useMemo(() => myTeam?.member.length || 1, [myTeam]);
-
   // チャレンジ済みフラグ
   const hasChallenged = useMemo(() => {
     return myTeam?.chargeUnits
@@ -90,9 +87,15 @@ export const EnergyCharge: FC = () => {
   // 獲得バッテリーを送信
   const [sendAddChargeUnits] = useAddChargeUnitsMutation();
   useEffect(() => {
-    if (genEnergy && currentTime >= limit) {
+    if (currentTime >= limit) {
       const count = Math.floor(genEnergy / chargeThreshold);
-      sendAddChargeUnits({ id: selectedTeam || '', value: { member: localId, count } });
+      if (count) {
+        sendAddChargeUnits({ id: selectedTeam || '', value: { member: localId, count } });
+      } else {
+        setIsReady(false);
+        setCurrentTime(0);
+        dispatch(updateGenEnergy(0));
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTime, genEnergy, localId, selectedTeam]);
@@ -226,7 +229,7 @@ export const EnergyCharge: FC = () => {
                   <MdBatteryChargingFull className={styles.batteryIcon} />
                   <span className={styles.total}>× {totalChargeUnits}</span>
                 </span>
-                {myTeam?.chargeUnits?.length} / {memberCount - 1}人完了
+                {myTeam?.chargeUnits?.length ?? 0} / {chargerList.length}人完了
               </span>
             </div>
             <ChargerList myself={localId} list={chargerList} />

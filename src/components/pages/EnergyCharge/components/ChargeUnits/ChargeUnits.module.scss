@@ -13,10 +13,22 @@
   display: grid;
   place-items: center;
   font-size: rem(48);
-  color: yellowgreen;
+  color: $c_current;
 }
+
+@keyframes slowBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
 
 .unknown {
   font-size: rem(48);
   color: $c_disabled;
+  animation: slowBlink 2000ms infinite ease-in-out;
 }

@@ -33,20 +33,12 @@
   }
 }
 
-// .name {
-//   display: block;
-//   overflow: hidden;
-//   line-height: rem(24);
-//   text-align: left;
-//   text-overflow: ellipsis;
-//   white-space: nowrap;
-// }
-
 .name {
   grid-row: 1 / 2;
   grid-column: 2 / 3;
   max-width: 100%;
   overflow: hidden;
+  font-weight: 500;
   text-overflow: ellipsis;
 }
 

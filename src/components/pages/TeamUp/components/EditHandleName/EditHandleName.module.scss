@@ -7,10 +7,6 @@
   gap: rem(6);
 }
 
-.label {
-  @include tmp_label;
-}
-
 .form {
   @include tmp_form;
 }

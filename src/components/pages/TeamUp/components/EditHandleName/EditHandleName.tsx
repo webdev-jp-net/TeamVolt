@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, FormEvent, useState } from 'react';
+import { FC, ChangeEvent, FormEvent, useState, useCallback, useEffect } from 'react';
 
 import { Button } from 'components/parts/Button';
 import { MdEdit } from 'react-icons/md';
@@ -24,39 +24,38 @@ export const EditHandleName: FC<EditHandleNameProps> = ({
   };
 
   // 空欄の場合は元の値を入れる
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     if (newHandleName === '') setNewHandleName(value);
-  };
+  }, [newHandleName, value]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleAccept(newHandleName || '');
   };
 
+  useEffect(() => {
+    setNewHandleName(value);
+  }, [value]);
+
   return (
-    <div className={[styles.addListItem, ...addClass].join(' ')}>
-      <span className={styles.label} data-required={newHandleName === ''}>
-        ハンドルネーム
-      </span>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={newHandleName}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          placeholder="ハンドルネームを決めてください"
-          className={styles.input}
-        />
-        <Button
-          handleClick={() => {
-            handleAccept(newHandleName || '');
-          }}
-          disabled={!newHandleName}
-          addClass={[styles.button]}
-        >
-          <MdEdit />
-        </Button>
-      </form>
-    </div>
+    <form className={[styles.form, ...addClass].join(' ')} onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={newHandleName}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        placeholder="ハンドルネームを決めてください"
+        className={styles.input}
+      />
+      <Button
+        handleClick={() => {
+          handleAccept(newHandleName || '');
+        }}
+        disabled={!newHandleName}
+        addClass={[styles.button]}
+      >
+        <MdEdit />
+      </Button>
+    </form>
   );
 };
