@@ -1,19 +1,13 @@
 @use "style/_variable" as *;
 
 .addListItem {
-  display: flex;
-  gap: rem(12);
+  @include tmp_console;
 }
 
 .input {
-  width: 100%;
-  padding: 0 1em;
+  @include tmp_input;
 }
 
 .button {
-  padding: 0 rem(12);
-}
-
-.buttonIcon {
-  font-size: rem(24);
+  @include tmp_consoleButton;
 }

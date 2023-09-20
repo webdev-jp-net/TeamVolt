@@ -30,23 +30,28 @@ export const EditHandleName: FC<EditHandleNameProps> = ({
 
   return (
     <div className={[styles.addListItem, ...addClass].join(' ')}>
-      <input
-        type="text"
-        value={newHandleName}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        placeholder="ハンドルネームが必要です"
-        className={styles.input}
-      />
-      <Button
-        handleClick={() => {
-          handleAccept(newHandleName || '');
-        }}
-        disabled={!newHandleName}
-        addClass={[styles.button]}
-      >
-        <MdEdit className={styles.buttonIcon} />
-      </Button>
+      <span className={styles.label} data-required>
+        ハンドルネーム
+      </span>
+      <form className={styles.form}>
+        <input
+          type="text"
+          value={newHandleName}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          placeholder="ハンドルネームを決めてください"
+          className={styles.input}
+        />
+        <Button
+          handleClick={() => {
+            handleAccept(newHandleName || '');
+          }}
+          disabled={!newHandleName}
+          addClass={[styles.button]}
+        >
+          <MdEdit />
+        </Button>
+      </form>
     </div>
   );
 };

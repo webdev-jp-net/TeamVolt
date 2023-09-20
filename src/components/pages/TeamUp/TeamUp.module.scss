@@ -1,21 +1,29 @@
 @use "style/_variable" as *;
 
 .article {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  height: 100%;
-  padding: rem(48) 0 0;
+  @include tmp_article;
 }
 
 // ヘッダー
 .header {
-  display: flex;
-  flex-direction: column;
-  margin: rem(24) rem(24) auto;
+  @include tmp_header;
 }
 
 .body {
   padding: 0 rem(24);
+  margin: rem(24) 0 0;
+}
+
+// 操作
+.console {
+  @include tmp_console;
+
+  justify-content: space-between;
+  margin: rem(12) 0 0
+}
+
+.consoleButton {
+  @include tmp_consoleButton;
 }
 
 // リスト
@@ -23,22 +31,19 @@
   display: flex;
   flex-direction: column;
   padding: 0;
-  margin: rem(24) 0 0;
-  border-top: 1px solid #000;
+  margin: rem(12) 0 0;
+  border-top: 1px solid $c_border;
 }
 
 .item {
-  padding: rem(6) 0;
   margin: 0;
   list-style: none;
-  border-bottom: 1px solid #000;
-
+  border-bottom: 1px solid $c_border;
 }
 
 // 追加フォーム
 .addForm {
-  height: rem(36);
-  margin: rem(12) 0;
+  margin: rem(12) 0 0;
 }
 
 // ボタンアイコン
@@ -55,10 +60,7 @@
 
 // フッター
 .footer {
-  display: flex;
-  flex-direction: column;
-  gap: rem(24);
-  margin: rem(24);
+  @include tmp_footer;
 }
 
 // ダイアログ

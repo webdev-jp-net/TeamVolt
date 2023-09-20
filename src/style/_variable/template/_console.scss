@@ -1,0 +1,39 @@
+@use '../function/rem' as *;
+@use '../color' as *;
+
+@mixin tmp_console() {
+  display: flex;
+  gap: rem(12);
+}
+@mixin tmp_consoleButton() {
+  padding: rem(0) rem(6);
+
+  svg {
+    font-size: rem(22);
+    vertical-align: middle;
+  }
+
+  span {
+    margin: 0 rem(6);
+    font-size: rem(14);
+  }
+}
+@mixin tmp_input() {
+  width: 100%;
+  padding: 0 0.5em;
+  border: 1px solid $c_border;
+  border-radius: rem(4);
+}
+@mixin tmp_label() {
+  display: flex;
+  align-items: center;
+  font-size: rem(14);
+  color: $c_sub;
+
+  &[data-required]::after {
+    margin-left: rem(6);
+    font-size: rem(9);
+    color: $c_error;
+    content: '必須';
+  }
+}
