@@ -18,6 +18,10 @@
     font-size: rem(14);
   }
 }
+@mixin tmp_form() {
+  display: flex;
+  gap: rem(12);
+}
 @mixin tmp_input() {
   width: 100%;
   padding: 0 0.5em;
@@ -30,7 +34,7 @@
   font-size: rem(14);
   color: $c_sub;
 
-  &[data-required]::after {
+  &[data-required="true"]::after {
     margin-left: rem(6);
     font-size: rem(9);
     color: $c_error;

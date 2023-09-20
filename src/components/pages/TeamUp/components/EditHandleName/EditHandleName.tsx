@@ -1,4 +1,4 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { FC, ChangeEvent, FormEvent, useState } from 'react';
 
 import { Button } from 'components/parts/Button';
 import { MdEdit } from 'react-icons/md';
@@ -24,16 +24,21 @@ export const EditHandleName: FC<EditHandleNameProps> = ({
   };
 
   // 空欄の場合は元の値を入れる
-  const handleBlur = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleBlur = () => {
     if (newHandleName === '') setNewHandleName(value);
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleAccept(newHandleName || '');
   };
 
   return (
     <div className={[styles.addListItem, ...addClass].join(' ')}>
-      <span className={styles.label} data-required>
+      <span className={styles.label} data-required={newHandleName === ''}>
         ハンドルネーム
       </span>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <input
           type="text"
           value={newHandleName}
