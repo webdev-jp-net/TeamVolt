@@ -11,7 +11,7 @@
 @mixin tmp_header() {
   display: grid;
   gap: rem(12);
-  margin: 0 rem(24);
+  margin: rem(18) rem(24) 0;
 }
 
 @mixin tmp_footer() {

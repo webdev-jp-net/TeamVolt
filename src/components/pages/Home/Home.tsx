@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
+import { MdBolt } from 'react-icons/md';
 import { RootState } from 'store';
 import { escapeTeam, useRemoveMemberMutation, useRemoveChallengerMutation } from 'store/player';
 
@@ -39,7 +40,7 @@ export const Home: FC = () => {
   return (
     <article className={styles.home}>
       <header className={styles.header}>
-        <div className={styles.icon}>⚡️</div>
+        <MdBolt className={styles.icon} />
         <h1 className={styles.title}>TeamVolt</h1>
       </header>
       <div className={styles.body}>

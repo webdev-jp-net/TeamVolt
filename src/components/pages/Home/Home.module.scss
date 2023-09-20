@@ -7,7 +7,7 @@
 }
 
 .header {
-  margin: rem(72) 0 0;
+  text-align: center;
 }
 
 .title {
@@ -15,8 +15,7 @@
 }
 
 .icon {
-  display: grid;
-  place-items: center;
+  margin: 0 auto;
   font-size: rem(60);
   line-height: 1;
 }
