@@ -104,7 +104,7 @@ export const TeamUp: FC = () => {
             {teamList.map((item, index) => (
               <li key={index} className={styles.item}>
                 <ListItem
-                  status={item.member.length}
+                  status={item.member ? item.member.length : 0}
                   selected={item.id === selectedTeam}
                   name={item.name}
                   handleClick={() => {
