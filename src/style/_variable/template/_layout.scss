@@ -5,7 +5,7 @@
   display: grid;
   grid-template-rows: auto 1fr auto;
   height: 100%;
-  padding: rem(48) 0 0;
+  padding: rem(60) 0 0;
 }
 
 @mixin tmp_header() {
@@ -14,8 +14,18 @@
   margin: rem(18) rem(24) 0;
 }
 
+@mixin tmp_body() {
+  padding: 0 rem(24);
+  margin: rem(24) 0;
+}
+
 @mixin tmp_footer() {
+  position: sticky;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: grid;
   gap: rem(12);
-  margin: rem(24);
+  padding: rem(24);
+  background-color: #fffc;
 }

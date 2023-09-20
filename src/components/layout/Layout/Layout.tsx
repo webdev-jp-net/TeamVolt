@@ -122,6 +122,11 @@ export const Layout: FC = () => {
 };
 
 export const LayoutView: FC<{ hasLayoutHeader?: boolean }> = ({ hasLayoutHeader = false }) => {
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <div className={[styles.layout].join(' ')}>
       {hasLayoutHeader && <LayoutHeader />}

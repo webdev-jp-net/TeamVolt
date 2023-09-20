@@ -11,6 +11,9 @@
 }
 
 .title {
+  font-family: 'Russo One', sans-serif;
+  font-size: rem(36);
+  font-weight: normal;
   text-align: center;
 }
 
@@ -25,7 +28,7 @@
   gap: rem(36);
   align-items: center;
   justify-content: center;
-  padding: rem(24);
+  padding: 0 rem(24);
 }
 
 .button {
@@ -34,5 +37,6 @@
 
 .description {
   display: inline-block;
+  margin: rem(36) 0 0;
   line-height: 1.8;
 }
