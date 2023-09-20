@@ -226,7 +226,7 @@ export const EnergyCharge: FC = () => {
                   <MdBatteryChargingFull className={styles.batteryIcon} />
                   <span className={styles.total}>× {totalChargeUnits}</span>
                 </span>
-                {myTeam?.chargeUnits?.length} / {memberCount - 1}人完了
+                {myTeam?.chargeUnits?.length ?? 0} / {chargerList.length}人完了
               </span>
             </div>
             <ChargerList myself={localId} list={chargerList} />
