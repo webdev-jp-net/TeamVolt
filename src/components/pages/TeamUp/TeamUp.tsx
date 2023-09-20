@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
-import { MdRefresh, MdAdd, MdDelete } from 'react-icons/md';
+import { MdRefresh, MdCheckCircle, MdError, MdDelete } from 'react-icons/md';
 import { RootState } from 'store';
 import { updateTeam, updateHandleName, escapeTeam, useAddMemberMutation } from 'store/player';
 import { useGetTeamListQuery, useRemoveTeamMutation } from 'store/team';
@@ -83,39 +83,59 @@ export const TeamUp: FC = () => {
           <p>このゲームは会話が必要です。話せるメンバーどうしで同じチームに参加してください。</p>
         </header>
         <div className={styles.body}>
-          <div className={styles.console}>
-            <Button addClass={[styles.consoleButton]} handleClick={getTeamListRefetch}>
-              <MdRefresh />
-              <span>リストを更新</span>
-            </Button>
-            <Button
-              addClass={[styles.consoleButton]}
-              handleClick={() => {
-                setConfirmDelete(true);
-              }}
-              disabled={entriesAddLoading || !selectedTeam || !localId}
-            >
-              <MdDelete />
-            </Button>
-          </div>
-          <ul className={styles.list}>
-            {teamList.map((item, index) => (
-              <li key={index} className={styles.item}>
-                <ListItem
-                  status={item.member ? item.member.length : 0}
-                  selected={item.id === selectedTeam}
-                  name={item.name}
-                  handleClick={() => {
-                    handleSelectTeam(item.id);
-                  }}
-                />
-              </li>
-            ))}
-          </ul>
+          <article className={styles.subSection}>
+            <header className={styles.subHeader}>
+              <h2 className={styles.subTitle}>ハンドルネーム</h2>
+              {handleName ? (
+                <MdCheckCircle className={styles.iconValid} />
+              ) : (
+                <MdError className={styles.iconError} />
+              )}
+            </header>
+            <EditHandleName value={handleName} handleAccept={saveHandleName} />
+          </article>
+          <article className={styles.subSection}>
+            <header className={styles.subHeader}>
+              <h2 className={styles.subTitle}>参加チーム</h2>
+              {selectedTeam ? (
+                <MdCheckCircle className={styles.iconValid} />
+              ) : (
+                <MdError className={styles.iconError} />
+              )}
+            </header>
+            <div className={styles.console}>
+              <Button addClass={[styles.consoleButton]} handleClick={getTeamListRefetch}>
+                <MdRefresh />
+                <span>リストを更新</span>
+              </Button>
+              <Button
+                addClass={[styles.consoleButton]}
+                handleClick={() => {
+                  setConfirmDelete(true);
+                }}
+                disabled={entriesAddLoading || !selectedTeam || !localId}
+              >
+                <MdDelete />
+              </Button>
+            </div>
+            <ul className={styles.list}>
+              {teamList.map((item, index) => (
+                <li key={index} className={styles.item}>
+                  <ListItem
+                    status={item.member ? item.member.length : 0}
+                    selected={item.id === selectedTeam}
+                    name={item.name}
+                    handleClick={() => {
+                      handleSelectTeam(item.id);
+                    }}
+                  />
+                </li>
+              ))}
+            </ul>
+          </article>
           <AddListItem addClass={[styles.addForm]} />
         </div>
         <footer className={styles.footer}>
-          <EditHandleName value={handleName} handleAccept={saveHandleName} />
           <Button
             handleClick={joinTeam}
             disabled={entriesAddLoading || !selectedTeam || !localId || !handleName}

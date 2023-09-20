@@ -28,16 +28,3 @@
   border: 1px solid $c_border;
   border-radius: rem(4);
 }
-@mixin tmp_label() {
-  display: flex;
-  align-items: center;
-  font-size: rem(14);
-  color: $c_sub;
-
-  &[data-required="true"]::after {
-    margin-left: rem(6);
-    font-size: rem(9);
-    color: $c_error;
-    content: '必須';
-  }
-}

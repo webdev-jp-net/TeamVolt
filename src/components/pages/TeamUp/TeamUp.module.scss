@@ -12,6 +12,31 @@
 .body {
   @include tmp_body;
 
+  margin: 0 0 rem(24);
+}
+
+// 小見出し
+.subHeader {
+  display: flex;
+  gap: rem(6);
+  align-items: center;
+  margin: 0 0 rem(12);
+}
+
+.subTitle {
+  font-size: rem(16);
+}
+
+.subSection {
+  margin: rem(32) 0 0;
+}
+
+.iconValid {
+  color: $c_current;
+}
+
+.iconError {
+  color: $c_error;
 }
 
 // 操作
@@ -43,18 +68,6 @@
 // 追加フォーム
 .addForm {
   margin: rem(12) 0 0;
-}
-
-// ボタンアイコン
-.button {
-  display: flex;
-  gap: rem(12);
-  align-items: center;
-  justify-content: center;
-}
-
-.buttonIcon {
-  font-size: rem(20);
 }
 
 // フッター
