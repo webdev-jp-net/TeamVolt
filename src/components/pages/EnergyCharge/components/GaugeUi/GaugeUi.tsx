@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { MdBatteryStd, MdBattery0Bar } from 'react-icons/md';
+import { MdBatteryStd } from 'react-icons/md';
 
 import styles from './GaugeUi.module.scss';
 

@@ -1,0 +1,21 @@
+@use '../function/rem' as *;
+@use '../color' as *;
+
+@mixin tmp_article() {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+  padding: rem(48) 0 0;
+}
+
+@mixin tmp_header() {
+  display: grid;
+  gap: rem(12);
+  margin: rem(18) rem(24) 0;
+}
+
+@mixin tmp_footer() {
+  display: grid;
+  gap: rem(12);
+  margin: rem(24);
+}

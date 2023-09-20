@@ -88,34 +88,32 @@ export const WaitingRoom: FC = () => {
       <article className={styles.article}>
         <header className={styles.header}>
           <h1 className={styles.teamName}>{myTeam?.name}</h1>
+          <p className={styles.paragraph}>
+            チームメイトが集まるのを待ちましょう。メンバー全員が画面に表示されたら集合OK！
+          </p>
         </header>
         <div className={styles.body}>
-          <p className={styles.paragraph}>
-            チームメイトが集まるのを待ちましょう。メンバー全員が画面に表示されたら準備OK！
-            <br />
-            2人以上でミッションを開始できます。
-          </p>
-          <CurrentMembers
-            memberList={myTeam.member}
-            myself={localId}
-            challenger={myTeam.challenger}
-          />
+          <div className={styles.console}>
+            <Button
+              addClass={[styles.consoleButton]}
+              handleClick={getDrawResultRefetch}
+              disabled={getDrawResultLoading || getDrawResultFetching}
+            >
+              <MdRefresh />
+              <span>リストを更新</span>
+            </Button>
+            <span className={styles.count}>{memberCount}人参加</span>
+          </div>
+          <CurrentMembers list={myTeam.member} myself={localId} challenger={myTeam.challenger} />
         </div>
         <footer className={styles.footer}>
-          <Button
-            handleClick={getDrawResultRefetch}
-            disabled={getDrawResultLoading || getDrawResultFetching}
-            addClass={[styles.button]}
-          >
-            <MdRefresh className={styles.buttonIcon} />
-            メンバーが入ってきたか確認
-          </Button>
+          {memberCount < 2 && <p className={styles.note}>2人以上でミッション開始できます</p>}
           {!myTeam?.challenger ? (
             <Button
               handleClick={handleDrawConfirm}
               disabled={getDrawResultLoading || getDrawResultFetching || memberCount < 2}
             >
-              準備OK！
+              全員そろった！
             </Button>
           ) : (
             <Button

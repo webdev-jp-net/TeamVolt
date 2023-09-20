@@ -1,8 +1,10 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useMemo } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+
+import path from 'path';
 
 import { RootState } from 'store';
 import {
@@ -22,6 +24,7 @@ import { LayoutHeader } from './components/LayoutHeader';
 
 export const Layout: FC = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   // ID生成
   const generateId = useGenerateAndStoreSessionId;
@@ -111,13 +114,17 @@ export const Layout: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <LayoutView />;
+  const hasLayoutHeader = useMemo(() => {
+    return location.pathname !== '/';
+  }, [location]);
+
+  return <LayoutView hasLayoutHeader={hasLayoutHeader} />;
 };
 
-export const LayoutView: FC = () => {
+export const LayoutView: FC<{ hasLayoutHeader?: boolean }> = ({ hasLayoutHeader = false }) => {
   return (
     <div className={[styles.layout].join(' ')}>
-      <LayoutHeader />
+      {hasLayoutHeader && <LayoutHeader />}
       <Outlet />
     </div>
   );

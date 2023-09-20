@@ -7,7 +7,7 @@
 }
 
 .header {
-  margin: rem(120) 0 0;
+  text-align: center;
 }
 
 .title {
@@ -15,15 +15,14 @@
 }
 
 .icon {
-  display: grid;
-  place-items: center;
+  margin: 0 auto;
   font-size: rem(60);
   line-height: 1;
 }
 
 .body {
   display: grid;
-  gap: rem(24);
+  gap: rem(36);
   align-items: center;
   justify-content: center;
   padding: rem(24);
@@ -35,6 +34,5 @@
 
 .description {
   display: inline-block;
-  padding: 0 rem(24);
   line-height: 1.8;
 }

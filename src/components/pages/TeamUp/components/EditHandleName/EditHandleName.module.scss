@@ -3,18 +3,22 @@
 
 .addListItem {
   display: flex;
-  gap: rem(12);
+  flex-direction: column;
+  gap: rem(6);
+}
+
+.label {
+  @include tmp_label;
+}
+
+.form {
+  @include tmp_form;
 }
 
 .input {
-  width: 100%;
-  padding: 0 1em;
+  @include tmp_input;
 }
 
 .button {
-  padding: 0 rem(12);
-}
-
-.buttonIcon {
-  font-size: rem(24);
+  @include tmp_consoleButton;
 }

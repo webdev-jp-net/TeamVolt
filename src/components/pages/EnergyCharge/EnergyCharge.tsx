@@ -5,7 +5,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
-import { MdVolunteerActivism, MdBolt, MdRefresh } from 'react-icons/md';
+import {
+  MdVolunteerActivism,
+  MdChargingStation,
+  MdRefresh,
+  MdBatteryChargingFull,
+  MdBolt,
+} from 'react-icons/md';
 import { RootState } from 'store';
 import {
   useGetTeamArticleQuery,
@@ -16,6 +22,7 @@ import {
 
 import styles from './EnergyCharge.module.scss';
 
+import { ChargerList } from './components/ChargerList';
 import { ChargeUnits } from './components/ChargeUnits';
 import { GaugeUi } from './components/GaugeUi';
 import { TimeLeftUi } from './components/TimeLeftUi';
@@ -32,6 +39,9 @@ export const EnergyCharge: FC = () => {
   const job = useMemo(() => {
     return myTeam?.challenger === localId ? '救助係' : '充電係';
   }, [myTeam, localId]);
+
+  // 集合している人数
+  const memberCount = useMemo(() => myTeam?.member.length || 1, [myTeam]);
 
   // チャレンジ済みフラグ
   const hasChallenged = useMemo(() => {
@@ -99,6 +109,21 @@ export const EnergyCharge: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const chargerList = useMemo((): { id: string; name: string; count: number }[] => {
+    let result: { id: string; name: string; count: number }[] = [];
+    if (myTeam) {
+      const chargerMember = myTeam.member.filter(member => myTeam.challenger !== member.id);
+      result = chargerMember.map(member => {
+        const chargeUnit = myTeam.chargeUnits
+          ? myTeam.chargeUnits.find(chargeUnit => chargeUnit.member === member.id)
+          : 0;
+        const count = chargeUnit ? chargeUnit?.count : 0;
+        return { ...member, count };
+      });
+    }
+    return result;
+  }, [myTeam]);
+
   // チームで獲得しているバッテリー数
   const totalChargeUnits = useMemo(() => {
     return myTeam?.chargeUnits
@@ -131,19 +156,32 @@ export const EnergyCharge: FC = () => {
             {job === '救助係' ? (
               <MdVolunteerActivism className={styles.jobIcon} />
             ) : (
-              <MdBolt className={styles.jobIcon} />
+              <MdChargingStation className={styles.jobIcon} />
             )}
             {job}
           </strong>{' '}
           です！
         </h1>
+        {job === '救助係' && <p>充電係からバッテリーが届くのを待ってください。</p>}
+
+        {job === '充電係' && hasChallenged && (
+          <>
+            <p>素晴らしい働きでした！救出係へバッテリーを送ったことを伝えてください。</p>
+          </>
+        )}
       </header>
       <div className={styles.body}>
-        <ChargeUnits
-          count={isDone ? totalChargeUnits : Math.floor(genEnergy / chargeThreshold)}
-          addClass={[styles.chargeUnits]}
-        />
-        {job === '充電係' && !isReady && currentTime < 1 && !genEnergy && (
+        {/* 充電ミッションのタイマーとスコア */}
+        {job === '充電係' && !hasChallenged && (
+          <div className={styles.challengeConsole}>
+            <TimeLeftUi currentTime={currentTime} limit={limit} />
+            <p className={styles.genEnergy}>
+              <MdBolt className={styles.genEnergyIcon} /> {genEnergy}
+            </p>
+          </div>
+        )}
+        {/* 充電ミッションの解説 */}
+        {job === '充電係' && !isReady && currentTime < 1 && !isDone && (
           <div className={styles.ready}>
             <p>制限時間内に画面を連打してバッテリーを充電してください。</p>
             <Button
@@ -155,48 +193,47 @@ export const EnergyCharge: FC = () => {
             </Button>
           </div>
         )}
-        {job === '充電係' && !hasChallenged && (
-          <div className={styles.console}>
-            <TimeLeftUi currentTime={currentTime} limit={limit} />
-            <p className={styles.genEnergy}>
-              <MdBolt className={styles.genEnergyIcon} /> {genEnergy}
-            </p>
-          </div>
-        )}
+        {/* 充電ミッションチャレンジ中の要素 */}
         {job === '充電係' && isReady && currentTime < limit && (
-          <button type="button" onClick={handleTap} className={styles.tap}>
-            <GaugeUi
-              addClass={[styles.gauge, currentTime >= limit ? styles['--invisible'] : '']}
-              currentValue={Math.floor(((genEnergy % chargeThreshold) / chargeThreshold) * 100)}
-            />
-            スクリーンをタップ！
-          </button>
-        )}
-        {job === '充電係' && hasChallenged && (
           <>
-            <h2 className={styles.result}>充電完了</h2>
-            <p>素晴らしい働きでした！救出係へバッテリーを送ったことを伝えてください。</p>
+            <ChargeUnits
+              count={isDone ? totalChargeUnits : Math.floor(genEnergy / chargeThreshold)}
+              addClass={[styles.chargeUnits]}
+            />
+            <button type="button" onClick={handleTap} className={styles.tap}>
+              <GaugeUi
+                addClass={[styles.gauge, currentTime >= limit ? styles['--invisible'] : '']}
+                currentValue={Math.floor(((genEnergy % chargeThreshold) / chargeThreshold) * 100)}
+              />
+              スクリーンを連打！！
+            </button>
           </>
         )}
-        {job === '救助係' && (
+        {/* チームの所持バッテリー一覧 */}
+        {isDone && (
           <>
-            <p>すべての充電係からバッテリーが届くのを待ってください。</p>
+            <div className={styles.console}>
+              <Button
+                addClass={[styles.consoleButton]}
+                handleClick={handleTeamStockRequest}
+                disabled={!selectedTeam || getDrawResultLoading || getDrawResultFetching}
+              >
+                <MdRefresh />
+                <span>リストを更新</span>
+              </Button>
+              <span className={styles.count}>
+                <span className={styles.totalChargeUnits}>
+                  <MdBatteryChargingFull className={styles.batteryIcon} />
+                  <span className={styles.total}>× {totalChargeUnits}</span>
+                </span>
+                {myTeam?.chargeUnits?.length} / {memberCount - 1}人完了
+              </span>
+            </div>
+            <ChargerList myself={localId} list={chargerList} />
           </>
         )}
       </div>
       <footer className={styles.footer}>
-        {isDone && (
-          <>
-            <Button
-              handleClick={handleTeamStockRequest}
-              disabled={!selectedTeam || getDrawResultLoading || getDrawResultFetching}
-              addClass={[styles.button]}
-            >
-              <MdRefresh className={styles.buttonIcon} />
-              チームのバッテリーを確認
-            </Button>
-          </>
-        )}
         <Button
           handleClick={() => {
             navigate('/target-lead');

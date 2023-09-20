@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
+import { MdBolt } from 'react-icons/md';
 import { RootState } from 'store';
 import { escapeTeam, useRemoveMemberMutation, useRemoveChallengerMutation } from 'store/player';
 
@@ -39,12 +40,12 @@ export const Home: FC = () => {
   return (
     <article className={styles.home}>
       <header className={styles.header}>
-        <div className={styles.icon}>⚡️</div>
+        <MdBolt className={styles.icon} />
         <h1 className={styles.title}>TeamVolt</h1>
       </header>
       <div className={styles.body}>
         <p className={styles.description}>
-          TeamVoltは、グループで楽しむモバイルブラウザゲームです。プレイヤーは「充電係」と「救助係」に分かれ、エネルギー切れで動けなくなったロボットの救出ミッションに挑みます。充電係はエネルギーを生成し、救助係はそのエネルギーをロボットに届け出口までの移動を助けます。一人ひとりの活躍が成功の鍵です！
+          TeamVoltは、グループで楽しむブラウザゲームです。プレイヤーは「充電係」と「救助係」に分かれ、エネルギー切れで動けなくなったロボットの救出ミッションに挑みます。充電係はエネルギーを生成し、救助係はエネルギーをロボットに届け出口までの移動を助けます。一人ひとりの活躍が成功の鍵です！
         </p>
         <Button
           handleClick={() => {

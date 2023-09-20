@@ -10,11 +10,19 @@
   align-items: center;
   justify-content: space-between;
   height: rem(48);
-  background: #fffe;
+  background: $c_lightness;
+  border-bottom: 1px solid $c_border;
 }
 
 .title {
+  display: flex;
+  align-items: center;
   padding: 0 rem(6);
+}
+
+.icon {
+  font-size: rem(30);
+  line-height: 1;
 }
 
 // メニュー開閉ボタン
@@ -70,7 +78,6 @@
     width: 100%;
     padding: rem(12) rem(24);
     background: white;
-    border-top: whitesmoke solid 1px;
 
   // headless UI Transition
   &.enter {

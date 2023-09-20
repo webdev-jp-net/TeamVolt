@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from 'components/parts/Button';
-import { MdRefresh } from 'react-icons/md';
+import { MdRefresh, MdAdd, MdDelete } from 'react-icons/md';
 import { RootState } from 'store';
 import { updateTeam, updateHandleName, escapeTeam, useAddMemberMutation } from 'store/player';
 import { useGetTeamListQuery, useRemoveTeamMutation } from 'store/team';
@@ -85,41 +85,39 @@ export const TeamUp: FC = () => {
           </p>
         </header>
         <div className={styles.body}>
-          <div>
-            <ul className={styles.list}>
-              {teamList.map((item, index) => (
-                <li key={index} className={styles.item}>
-                  <ListItem
-                    selected={item.id === selectedTeam}
-                    name={item.name}
-                    handleClick={() => {
-                      handleSelectTeam(item.id);
-                    }}
-                  />
-                </li>
-              ))}
-            </ul>
-            <AddListItem addClass={[styles.addForm]} />
-            <EditHandleName
-              value={handleName}
-              handleAccept={saveHandleName}
-              addClass={[styles.addForm]}
-            />
+          <div className={styles.console}>
+            <Button addClass={[styles.consoleButton]} handleClick={getTeamListRefetch}>
+              <MdRefresh />
+              <span>リストを更新</span>
+            </Button>
             <Button
+              addClass={[styles.consoleButton]}
               handleClick={() => {
                 setConfirmDelete(true);
               }}
               disabled={entriesAddLoading || !selectedTeam || !localId}
             >
-              (debug) 選択中チームを削除
+              <MdDelete />
             </Button>
           </div>
+          <ul className={styles.list}>
+            {teamList.map((item, index) => (
+              <li key={index} className={styles.item}>
+                <ListItem
+                  status={item.member ? item.member.length : 0}
+                  selected={item.id === selectedTeam}
+                  name={item.name}
+                  handleClick={() => {
+                    handleSelectTeam(item.id);
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+          <AddListItem addClass={[styles.addForm]} />
         </div>
         <footer className={styles.footer}>
-          <Button handleClick={getTeamListRefetch} addClass={[styles.button]}>
-            <MdRefresh className={styles.buttonIcon} />
-            チーム一覧を更新
-          </Button>
+          <EditHandleName value={handleName} handleAccept={saveHandleName} />
           <Button
             handleClick={joinTeam}
             disabled={entriesAddLoading || !selectedTeam || !localId || !handleName}
