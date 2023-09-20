@@ -58,7 +58,7 @@ export const CurrentMembers: FC<CurrentMembersProps> = ({
               )}
             </span>
             <span className={styles.name}>{item.name}</span>
-            <span className={styles.job}>
+            <span className={styles.status}>
               {!challenger ? '???' : item.id === challenger ? '救助' : '充電'}
             </span>
           </li>

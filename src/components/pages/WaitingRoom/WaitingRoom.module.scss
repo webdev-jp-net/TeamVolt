@@ -57,6 +57,12 @@
   @include tmp_footer;
 }
 
+.note {
+  font-size: rem(14);
+  color: $c_sub;
+  text-align: center;
+}
+
 // ダイアログ
 .dialogScreen {
   @include fit;

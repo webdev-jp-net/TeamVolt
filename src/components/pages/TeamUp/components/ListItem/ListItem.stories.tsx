@@ -8,6 +8,7 @@ export default {
   component: ListItem,
   args: {
     name: 'SAMPLE TEAM',
+    status: 1,
     selected: false,
     handleClick: action(''),
   },

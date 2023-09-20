@@ -6,6 +6,7 @@ import styles from './ListItem.module.scss';
 
 type ListItemProps = {
   name: string;
+  status: number;
   selected: boolean;
   addClass?: string[];
   disabled?: boolean;
@@ -14,6 +15,7 @@ type ListItemProps = {
 
 export const ListItem: FC<ListItemProps> = ({
   name,
+  status,
   selected,
   addClass = [],
   disabled,
@@ -28,6 +30,7 @@ export const ListItem: FC<ListItemProps> = ({
     >
       {selected ? <MdFlag className={styles.icon} /> : <MdOutlinedFlag className={styles.icon} />}
       <span className={styles.name}>{name}</span>
+      <span className={styles.status}>{status}人参加</span>
     </button>
   );
 };

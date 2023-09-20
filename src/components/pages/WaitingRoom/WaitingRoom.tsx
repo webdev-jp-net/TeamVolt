@@ -90,8 +90,6 @@ export const WaitingRoom: FC = () => {
           <h1 className={styles.teamName}>{myTeam?.name}</h1>
           <p className={styles.paragraph}>
             チームメイトが集まるのを待ちましょう。メンバー全員が画面に表示されたら集合OK！
-            <br />
-            2人以上でミッションを開始できます。
           </p>
         </header>
         <div className={styles.body}>
@@ -113,12 +111,13 @@ export const WaitingRoom: FC = () => {
           />
         </div>
         <footer className={styles.footer}>
+          {memberCount < 2 && <p className={styles.note}>2人以上でミッション開始できます</p>}
           {!myTeam?.challenger ? (
             <Button
               handleClick={handleDrawConfirm}
               disabled={getDrawResultLoading || getDrawResultFetching || memberCount < 2}
             >
-              集合OK！
+              全員そろった！
             </Button>
           ) : (
             <Button
