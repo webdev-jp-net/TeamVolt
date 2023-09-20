@@ -29,6 +29,7 @@
   top: -0.05em;
   font-size: rem(30);
   line-height: 1;
+  color: $c_current;
 }
 
 // メニュー開閉ボタン
@@ -51,12 +52,18 @@
   appearance: none
 }
 
+.separate {
+  height: 1px;
+  background-color:  $c_border;
+  border: none;
+}
+
 // メニューボタン
 .menuButton {
   display: flex;
   gap: rem(12);
   align-items: center;
-  padding: rem(6) rem(6);
+  padding: rem(12) rem(6);
   color: currentColor;
   background: none;
   border: none;

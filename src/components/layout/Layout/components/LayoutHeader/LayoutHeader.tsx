@@ -57,7 +57,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = ({ addClass = [], handleClick
                     <p>ロボットへバッテリーを渡して脱出をサポートします。</p>
                   </li>
                 </ol>
-                <hr />
+                <hr className={styles.separate} />
                 <button
                   className={styles.menuButton}
                   type="button"
@@ -67,7 +67,7 @@ export const LayoutHeader: FC<LayoutHeaderProps> = ({ addClass = [], handleClick
                   }}
                 >
                   <MdLogout className={styles.menuIcon} />
-                  ミッションを抜けて表紙に戻る
+                  ミッションをぬけて表紙に戻る
                 </button>
               </Popover.Panel>
             </Transition>
