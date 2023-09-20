@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
 
-import { MdBolt, MdBatteryChargingFull, MdBatteryUnknown } from 'react-icons/md';
+import { MdChargingStation, MdBatteryChargingFull, MdBatteryUnknown } from 'react-icons/md';
 
 import { useGetForegroundColor } from 'hooks/useGetForegroundColor';
 
@@ -30,7 +30,7 @@ export const ChargerList: FC<ChargerListProps> = ({ myself, list, addClass = [] 
             className={[styles.item, item.id === myself ? styles['--current'] : ''].join(' ')}
           >
             <span className={styles.memberIcon} style={{ backgroundColor: `#${item.id}` }}>
-              <MdBolt
+              <MdChargingStation
                 className={[styles.jobIcon, styles[`--${getForegroundColor(item.id)}`]].join(' ')}
               />
             </span>

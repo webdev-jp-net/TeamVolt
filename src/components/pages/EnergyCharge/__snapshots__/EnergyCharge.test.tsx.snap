@@ -26,7 +26,11 @@ exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M11 21h-1l1-7H7.5c-.58 0-.57-.32-.38-.66.19-.34.05-.08.07-.12C8.48 10.94 10.42 7.54 13 3h1l-1 7h3.5c.49 0 .56.33.47.51l-.07.15C12.96 17.55 11 21 11 21z"
+              d="M0 0h24v24H0z"
+              fill="none"
+            />
+            <path
+              d="M14.5 11l-3 6v-4h-2l3-6v4h2zM7 1h10c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H7c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2zm0 5v12h10V6H7z"
             />
           </svg>
           充電係
@@ -38,7 +42,7 @@ exports[`EnergyCharge EnergyChargeのスナップショット 1`] = `
       class="body"
     >
       <div
-        class="console"
+        class="challengeConsole"
       >
         <div
           class="timeLeftUi "

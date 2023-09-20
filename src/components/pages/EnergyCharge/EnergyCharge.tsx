@@ -10,6 +10,7 @@ import {
   MdChargingStation,
   MdRefresh,
   MdBatteryChargingFull,
+  MdBolt,
 } from 'react-icons/md';
 import { RootState } from 'store';
 import {
@@ -172,10 +173,10 @@ export const EnergyCharge: FC = () => {
       <div className={styles.body}>
         {/* 充電ミッションのタイマーとスコア */}
         {job === '充電係' && !hasChallenged && (
-          <div className={styles.console}>
+          <div className={styles.challengeConsole}>
             <TimeLeftUi currentTime={currentTime} limit={limit} />
             <p className={styles.genEnergy}>
-              <MdChargingStation className={styles.genEnergyIcon} /> {genEnergy}
+              <MdBolt className={styles.genEnergyIcon} /> {genEnergy}
             </p>
           </div>
         )}
@@ -221,13 +222,11 @@ export const EnergyCharge: FC = () => {
                 <span>リストを更新</span>
               </Button>
               <span className={styles.count}>
-                {totalChargeUnits && (
-                  <span className={styles.totalChargeUnits}>
-                    <MdBatteryChargingFull className={styles.genEnergyIcon} />
-                    <span className={styles.total}>× {totalChargeUnits}</span>
-                  </span>
-                )}
-                {myTeam?.chargeUnits?.length ?? 0} / {memberCount - 1}人完了
+                <span className={styles.totalChargeUnits}>
+                  <MdBatteryChargingFull className={styles.batteryIcon} />
+                  <span className={styles.total}>× {totalChargeUnits}</span>
+                </span>
+                {myTeam?.chargeUnits?.length} / {memberCount - 1}人完了
               </span>
             </div>
             <ChargerList myself={localId} list={chargerList} />

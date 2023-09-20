@@ -91,6 +91,26 @@
   margin: rem(48) 0 0;
 }
 
+// チャレンジ中要素
+.challengeConsole {
+  display: flex;
+  gap: rem(24);
+  align-items: center;
+}
+
+.genEnergy {
+  display: flex;
+  font-size: rem(24);
+}
+
+.genEnergyIcon {
+  position: relative;
+  top: -0.1em;
+  font-size: rem(42);
+  line-height: 1;
+  color: $c_current;
+}
+
 // バッテリーストックリスト
 // 操作
 .console {
@@ -116,6 +136,14 @@
   padding: 0 rem(6);
 }
 
+.batteryIcon {
+  position: relative;
+  top: -0.1em;
+  font-size: rem(22);
+  line-height: 1;
+  color: $c_current;
+}
+
 .totalChargeUnits {
   display: flex;
   align-items: center;
@@ -123,13 +151,6 @@
   text-align: center;
 }
 
-.genEnergyIcon {
-  position: relative;
-  top: -0.1em;
-  font-size: rem(22);
-  line-height: 1;
-  color: $c_current;
-}
 
 .total {
   line-height: 1;
