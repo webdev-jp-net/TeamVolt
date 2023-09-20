@@ -47,11 +47,11 @@ export const DrawConfirm: FC<DrawConfirmProps> = ({
           afterLeave={afterLeave}
         >
           <Dialog.Panel className={styles.dialogPanel}>
-            <Dialog.Title className={styles.dialogTitle}>全員そろいましたか？</Dialog.Title>
+            <Dialog.Title className={styles.dialogTitle}>
+              <strong className={styles.count}>{count}人</strong>参加中です
+            </Dialog.Title>
             <Dialog.Description className={styles.dialogDescription}>
-              <strong className={styles.count}>{count}人</strong>参加中です。
-              <br />
-              このメンバーではじめますか？
+              このメンバーで役割を決めますか？
               <br />
               まだの人がいたら、キャンセルして声をかけてください。
             </Dialog.Description>
