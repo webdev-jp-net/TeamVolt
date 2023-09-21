@@ -84,11 +84,11 @@ export const BoostChallenge: FC<BoostChallengeProps> = ({
         <div
           ref={target}
           className={styles.target}
-          // style={{
-          //   transform: `translate(${xOffset}px, ${yOffset}px)`,
-          //   transitionDuration: `${duration}ms`,
-          //   animationDuration: `${duration * 1.25}ms`,
-          // }}
+          style={{
+            transform: `translate(${xOffset}px, ${yOffset}px)`,
+            transitionDuration: `${duration}ms`,
+            animationDuration: `${duration * 1.25}ms`,
+          }}
         >
           <FaRobot className={styles.icon} />
         </div>
