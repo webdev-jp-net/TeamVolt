@@ -84,20 +84,16 @@ export const BoostChallenge: FC<BoostChallengeProps> = ({
         <div
           ref={target}
           className={styles.target}
-          style={{
-            transform: `translate(${xOffset}px, ${yOffset}px)`,
-            transitionDuration: `${duration}ms`,
-            animationDuration: `${duration * 1.25}ms`,
-          }}
+          // style={{
+          //   transform: `translate(${xOffset}px, ${yOffset}px)`,
+          //   transitionDuration: `${duration}ms`,
+          //   animationDuration: `${duration * 1.25}ms`,
+          // }}
         >
           <FaRobot className={styles.icon} />
         </div>
         <div className={styles.frame}></div>
-        <p className={styles.message}>
-          手ぶれしてしまう…
-          <br />
-          中心に届けてブースト充電をねらおう！
-        </p>
+        <p className={styles.message}>顔が中心のとき届けると、2倍ブースト充電！</p>
       </div>
     </div>
   );
