@@ -19,6 +19,7 @@ import { TeamArticleData } from 'types/team';
 import styles from './TargetLead.module.scss';
 
 import { BoostChallenge } from './components/BoostChallenge';
+import { ConfirmClose } from './components/ConfirmClose';
 import { MissionMap } from './components/MissionMap';
 
 export const TargetLead: FC = () => {
@@ -162,16 +163,16 @@ export const TargetLead: FC = () => {
     }
   }, [job, isComplete, isFailed, myTeam, addLogSuccess, addLogLoading, sendAddLog]);
 
+  // ミッション終了確認ダイアログ
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   // ミッション終了
   const [sendCloseMission] = useCloseMissionMutation();
 
   // ミッション結果をリセット
   const handleCloseMission = useCallback(() => {
-    if (selectedTeam && job === 'Rescuer') {
-      window.confirm(
-        'ミッションを閉じると、まだ結果を確認していないチームの仲間は結果を見られなくなります。全員が結果を確認できていたら、OKで閉じてください。'
-      ) && sendCloseMission(selectedTeam);
-    } else navigate('/team-up');
+    if (selectedTeam && job === 'Rescuer') setConfirmDelete(true);
+    else navigate('/team-up');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTeam]);
 
@@ -238,6 +239,17 @@ export const TargetLead: FC = () => {
           </Button>
         )}
       </div>
+      <ConfirmClose
+        isOpen={confirmDelete}
+        handleCancel={() => {
+          setConfirmDelete(false);
+        }}
+        handleAccept={() => {
+          selectedTeam && sendCloseMission(selectedTeam);
+          setConfirmDelete(false);
+          navigate('/team-up');
+        }}
+      />
     </div>
   );
 };
