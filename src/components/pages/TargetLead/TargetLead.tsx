@@ -1,4 +1,4 @@
-import { FC, useMemo, useState, useCallback } from 'react';
+import { FC, useMemo, useState, useCallback, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -13,10 +13,13 @@ import {
   useUpdateCurrentPositionMutation,
   useCloseMissionMutation,
 } from 'store/player';
+import { useAddLogMutation } from 'store/team';
+import { TeamArticleData } from 'types/team';
 
 import styles from './TargetLead.module.scss';
 
 import { BoostChallenge } from './components/BoostChallenge';
+import { ConfirmClose } from './components/ConfirmClose';
 import { MissionMap } from './components/MissionMap';
 
 export const TargetLead: FC = () => {
@@ -146,13 +149,30 @@ export const TargetLead: FC = () => {
     getDrawResultRefetch();
   }, [getDrawResultRefetch]);
 
+  // プレイ結果をログに追加
+  const [sendAddLog, { isSuccess: addLogSuccess, isLoading: addLogLoading }] = useAddLogMutation();
+
+  // ミッション結果をログに追加
+  useEffect(() => {
+    if (job === 'Rescuer' && myTeam) {
+      if (!addLogSuccess && !addLogLoading) {
+        if (isComplete || isFailed) {
+          sendAddLog(myTeam as TeamArticleData);
+        }
+      }
+    }
+  }, [job, isComplete, isFailed, myTeam, addLogSuccess, addLogLoading, sendAddLog]);
+
+  // ミッション終了確認ダイアログ
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
   // ミッション終了
   const [sendCloseMission] = useCloseMissionMutation();
 
   // ミッション結果をリセット
   const handleCloseMission = useCallback(() => {
-    if (selectedTeam) sendCloseMission(selectedTeam);
-    navigate('/team-up');
+    if (selectedTeam && job === 'Rescuer') setConfirmDelete(true);
+    else navigate('/team-up');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTeam]);
 
@@ -214,9 +234,22 @@ export const TargetLead: FC = () => {
             </>
           )
         ) : (
-          <Button handleClick={handleCloseMission}>このミッションを閉じる</Button>
+          <Button handleClick={handleCloseMission} disabled={addLogLoading}>
+            このミッションを閉じる
+          </Button>
         )}
       </div>
+      <ConfirmClose
+        isOpen={confirmDelete}
+        handleCancel={() => {
+          setConfirmDelete(false);
+        }}
+        handleAccept={() => {
+          selectedTeam && sendCloseMission(selectedTeam);
+          setConfirmDelete(false);
+          navigate('/team-up');
+        }}
+      />
     </div>
   );
 };

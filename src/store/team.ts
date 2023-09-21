@@ -4,14 +4,14 @@ import { doc, getDocs, addDoc, deleteDoc, collection } from 'firebase/firestore'
 import { db } from 'firebaseDB';
 import { TeamArticleData } from 'types/team';
 
-import type { ChargeUnitsData } from 'types/team';
-
 type State = {
   teamList: TeamArticleData[];
+  logList?: TeamArticleData[];
 };
 
 const initialState: State = {
   teamList: [],
+  logList: [],
 };
 
 // RTK Queryの設定
@@ -40,7 +40,7 @@ export const { useGetTeamListQuery } = teamGetApi;
 type teamListPostApiProps = {
   operationType: string;
   id?: string;
-  value?: string | number | ChargeUnitsData;
+  value?: string | number | TeamArticleData;
 };
 export const teamListPostApi = createApi({
   reducerPath: 'teamListPostApi',
@@ -57,6 +57,11 @@ export const teamListPostApi = createApi({
       // チームを削除
       await deleteDoc(doc(db, 'team', id));
       return { data: id };
+    } else if (operationType === 'add_log' && value) {
+      // プレイログを追加
+      const logRef = collection(db, 'log');
+      await addDoc(logRef, value as TeamArticleData);
+      return { data: null };
     } else {
       return { error: 'No such document!' };
     }
@@ -76,9 +81,16 @@ export const teamListPostApi = createApi({
         id,
       }),
     }),
+    // プレイログを追加
+    addLog: builder.mutation<void, TeamArticleData>({
+      query: value => ({
+        operationType: 'add_log',
+        value,
+      }),
+    }),
   }),
 });
-export const { useAddTeamMutation, useRemoveTeamMutation } = teamListPostApi;
+export const { useAddTeamMutation, useRemoveTeamMutation, useAddLogMutation } = teamListPostApi;
 
 const team = createSlice({
   name: 'team',
